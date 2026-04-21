@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taxi & Run-Up — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+  </style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-taxi-runup.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1 — COVER & OVERVIEW -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">GND 01 · Taxi & Run-Up</span>
+    <span class="page-num">Page 1/3</span>
+  </div>
+
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Ground Operations</div>
+    <div class="cover-lesson-title">Taxi and Run-Up</div>
+    <div class="cover-lesson-subtitle">Ground handling · taxiway procedures · engine run-up · pre-departure checks</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</span>
+      <span class="meta-chip aircraft">ROTAX 912 iSc 3 Sport</span>
+      <span class="meta-chip stage">Ground Operations</span>
+      <span class="meta-chip env">Day · Controlled & Uncontrolled</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <!-- DURATION -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">HR</div>
+              <div class="dur-label">Ground + Air</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Ground time 0.5 hrs (taxi, run-up, checks); Flight time 0.5 hrs (local area circuit practice)</div>
+        </div>
+      </div>
+      <!-- PREREQUISITES -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">02 · Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Completed pre-flight inspection — airframe, engine, controls checked</li>
+            <li>Cockpit familiarisation — location of all switches, instruments, circuit breakers known</li>
+            <li>ATC radio phraseology — understands readback requirements and standard calls</li>
+            <li>Traffic pattern awareness — understands local aerodrome layout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- OBJECTIVES -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg>
+          </div>
+          <span class="ov-card-label">03 · Learning Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Obtain correct ATC clearance before moving — read back runway, taxiway, hold short instructions</li>
+            <li>Taxi at safe speed with differential braking and appropriate wing attitude for crosswind</li>
+            <li>Conduct engine run-up per CAPA SOP checklist — verify LANE A/B integrity, all systems green</li>
+            <li>Identify defects that prevent flight — take no-go decisions with confidence</li>
+            <li>Complete pre-take-off checks (BUMFICH) correctly before entering runway</li>
+          </ul>
+        </div>
+      </div>
+      <!-- TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">Walk pace</div>
+              <div class="tol-param">Taxi Speed</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±0.5 m</div>
+              <div class="tol-param">Centreline</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">3000 RPM</div>
+              <div class="tol-param">Run-up RPM</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">>50°C</div>
+              <div class="tol-param">Oil Temp</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value"><50 RPM</div>
+              <div class="tol-param">LANE Drop</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">>1400 RPM</div>
+              <div class="tol-param">Idle RPM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- COMMON MISTAKES -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 14L14 2M14 14L2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">05 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Not checking for traffic on taxiway — always visual scan before entering</li>
+            <li>Taxiing too fast — braking distance insufficient in tight turns</li>
+            <li>Forgetting to set parking brake before applying run-up power</li>
+            <li>Not monitoring oil temperature — power application before >50°C causes engine stress</li>
+            <li>Incomplete BUMFICH — missing items are hidden defects waiting to happen in flight</li>
+          </ul>
+        </div>
+      </div>
+      <!-- REFERENCES -->
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 2H14V14H2V2Z" stroke="white" stroke-width="1.3"/><path d="M5 6H11M5 9H11M5 12H9" stroke="white" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">06 · References</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">CAPA SOP E2R1 §1.4 Pre-Flight & Taxi</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">CAPA SOP E2R1 §1.5 Run-Up & Pre-T/O</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag manual">MANUAL</span>
+              <span class="ref-text">ROTAX 912 iSc Operator Manual</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag manual">AFM</span>
+              <span class="ref-text">Tecnam P2002-JF Normal Procedures</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Taxi & Run-Up · GND 01</span>
+    <span>© 2026 CAPA Flight School</span>
+  </div>
+</div>
+
+<!-- PAGE 2 — GROUND OPERATIONS -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">GND 01 · Taxi & Run-Up</span>
+    <span class="page-num">Page 2/3</span>
+  </div>
+
+  <div class="page-body">
+    <!-- SECTION 1: TAXI PROCEDURES -->
+    <div class="section-banner" data-num="1" style="margin-bottom:10px;">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Taxi Procedures</div>
+        <div class="section-subtitle">ATC clearance · taxiway navigation · crosswind technique · runway crossings</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop">
+      <div class="block-header">
+        <span class="block-type-pill">SOP</span>
+        <span class="block-title">Obtaining Clearance & Initial Taxi</span>
+      </div>
+      <div class="block-body">
+        <p style="margin-bottom:8px;"><strong>Cleared to taxi:</strong></p>
+        <ul class="procedure-list">
+          <li>Read back runway, taxiway routing, and hold-short instructions — verify ATC acknowledges</li>
+          <li>Check instruments once more: heading indicator correct, lights on, landing gear check</li>
+          <li>Release parking brake and apply slow, controlled power — walking pace only (~5 knots)</li>
+          <li>In congested areas or narrow taxiways, reduce speed further — aim for minimal thrust needed</li>
+        </ul>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP E2R1 §1.4</span>
+          <span class="sop-text">Always obtain explicit ATC clearance before entering any runway. Read back all runway crossing/take-off clearances.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">En Route — Turns & Attitude</span>
+      </div>
+      <div class="block-body">
+        <ul class="procedure-list">
+          <li>Use differential braking for turns — <strong>NOT</strong> excessive speed into corners</li>
+          <li>Apply opposing brake gently; coordinate with nose wheel steering (if equipped)</li>
+          <li>When tail/nose attitude blocks forward view: execute shallow S-turns to see ahead</li>
+          <li>Crosswind taxi technique: aileron into wind (upwind aileron UP) — prevents weathercocking</li>
+          <li>Wings level in calm conditions; maintain the crosswind correction throughout taxi</li>
+          <li>Stop-and-look at all runway crossings — even with explicit ATC clearance, visually verify clear</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- SECTION 2: PRE-RUN-UP CHECKS -->
+    <div class="section-banner" data-num="2" style="margin-top:10px;margin-bottom:10px;">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Pre-Run-Up Checks</div>
+        <div class="section-subtitle">Run-up area positioning · systems verification · temperature limits</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check">
+      <div class="block-header">
+        <span class="block-type-pill">CHECKS</span>
+        <span class="block-title">Run-Up Position & System Status</span>
+      </div>
+      <div class="block-body">
+        <ul class="procedure-list">
+          <li>Position aircraft into wind, clear of other aircraft, clear of prop blast hazards</li>
+          <li>Set parking brake firmly — hold brakes throughout run-up; do not rely on friction lock alone</li>
+          <li>Oil temperature: must be >50°C before run-up power is applied (ROTAX requirement)</li>
+          <li>Oil pressure: confirm 2.0–5.0 bar (normal range on gauge)</li>
+          <li>Fuel selection: select both tanks; use fullest tank on selector if available</li>
+          <li>Fuel pressure: confirm 2.8–3.2 bar within specification</li>
+          <li>Throttle friction: adjust to prevent creep during climb — set resistance appropriately</li>
+          <li>Flight controls: cycle pitch, roll, yaw fully and freely — confirm no stiffness or binding (EFATO consideration)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- SECTION 3: ENGINE RUN-UP -->
+    <div class="section-banner" data-num="3" style="margin-top:10px;margin-bottom:10px;">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Engine Run-Up — ROTAX 912 iSc 3</div>
+        <div class="section-subtitle">Fuel-injected engine · dual electronic ignition (LANE A/B) · health checks</div>
+      </div>
+    </div>
+
+    <div class="instr-note">
+      <div class="instr-note-label">IMPORTANT NOTE</div>
+      <div class="instr-note-text">The ROTAX 912 iSc 3 is <strong>fuel-injected</strong> — no carburettor heat check applies. It uses dual electronic ignition (LANE A and LANE B) in place of magnetos. Ignition system switches are your primary electrical systems check during run-up.</div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-check">
+      <div class="block-header">
+        <span class="block-type-pill">CHECKS</span>
+        <span class="block-title">ROTAX 912 iSc 3 Run-Up Sequence</span>
+      </div>
+      <div class="block-body">
+        <ul class="procedure-list">
+          <li>Set 3000 RPM: hold brakes firmly with both feet, advance throttle to 3000 RPM (baseline)</li>
+          <li>LANE A check: switch ignition to LANE A only — observe RPM drop. Maximum acceptable drop: 50 RPM</li>
+          <li>Switch to BOTH LANES — confirm RPM returns to 3000 RPM baseline</li>
+          <li>LANE B check: from BOTH, switch ignition to LANE B only — observe RPM drop. Maximum acceptable drop: 50 RPM</li>
+          <li>Return to BOTH LANES — confirm stable 3000 RPM</li>
+          <li>Throttle response check: advance smoothly from 3000 RPM to 2250 RPM (MCP setting) — check for immediate response, no hesitation or lag</li>
+          <li>Return to idle (1000–1100 RPM target) — confirm minimum stable idle of 1400 RPM after warm-up</li>
+          <li>EGT and engine temperatures: all parameters in green range — no red-line exceedances</li>
+        </ul>
+
+        <div class="caution-strip" style="margin-top:10px;">
+          <div class="warn-icon">⚠</div>
+          <div>
+            <div class="warn-title">ROTAX 912 iSc 3 LANE CHECK LIMITS</div>
+            <div class="warn-text">Maximum acceptable RPM drop on single-lane operation is <strong>50 RPM</strong>. If drop exceeds 50 RPM or engine runs rough on either lane — DO NOT DEPART. Report defect to maintenance immediately.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Taxi & Run-Up · GND 01</span>
+    <span>© 2026 CAPA Flight School</span>
+  </div>
+</div>
+
+<!-- PAGE 3 — PRE-TAKE-OFF & DEBRIEF -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">GND 01 · Taxi & Run-Up</span>
+    <span class="page-num">Page 3/3</span>
+  </div>
+
+  <div class="page-body">
+    <!-- SECTION 4: PRE-TAKE-OFF CHECKS -->
+    <div class="section-banner" data-num="4" style="margin-bottom:10px;">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Pre-Take-Off Checks (BUMFICH)</div>
+        <div class="section-subtitle">Final configuration · systems armed · ready to enter runway</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check">
+      <div class="block-header">
+        <span class="block-type-pill">CHECKS</span>
+        <span class="block-title">BUMFICH Mnemonic — Final Pre-Departure</span>
+      </div>
+      <div class="block-body">
+        <ul class="procedure-list">
+          <li><strong>B</strong>rakes — set during check, release only when ready to enter runway</li>
+          <li><strong>U</strong>ndercarriage — fixed gear confirmed (visual check, no retract mechanism available)</li>
+          <li><strong>M</strong>ixture/Fuel — fuel sufficient for flight + reserve, correct tank selected, pressure normal</li>
+          <li><strong>F</strong>laps — set for take-off (Flap 1 per CAPA SOP — typically 5–10° depending on AFM)</li>
+          <li><strong>I</strong>nstruments — altimeter set to QNH, directional indicator aligned to magnetic compass, artificial horizon erect</li>
+          <li><strong>C</strong>ompass — swing check against known heading; confirm compass and DI are aligned</li>
+          <li><strong>H</strong>atches/Harness — canopy latched and locked, all harnesses tight and locked, doors secure</li>
+        </ul>
+
+        <div class="sop-strip" style="margin-top:10px;">
+          <span class="sop-badge">SOP E2R1 §1.5</span>
+          <span class="sop-text">T/O config: Flap 1 · MCP (2250 RPM) to 500 ft AGL minimum before any power reduction.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 5: DEBRIEF CRITERIA -->
+    <div class="section-banner" data-num="5" style="margin-bottom:10px;">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Debrief & Self-Assessment</div>
+        <div class="section-subtitle">Evaluation criteria · learning review · next steps</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief">
+      <div class="block-header">
+        <span class="block-type-pill">DEBRIEF</span>
+        <span class="block-title">Debrief Criteria & Performance Review</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <div class="debrief-num">1</div>
+            <span>Was ATC clearance obtained and read back correctly before moving? Did you verify all hold-short and routing instructions?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">2</div>
+            <span>Was taxi speed appropriate (walking pace)? Did you avoid excessive power and unnecessary acceleration?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">3</div>
+            <span>Was run-up position correct (into wind, clear of hazards)? Did you set parking brake firmly?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">4</div>
+            <span>Was oil temperature verified >50°C before applying run-up power? Why is this critical for ROTAX engines?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">5</div>
+            <span>Were LANE A/B checks conducted correctly? Did you understand what RPM drop >50 RPM would indicate?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">6</div>
+            <span>Were all BUMFICH items completed before entering runway? Did you confirm every switch and system?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">7</div>
+            <span>Any defects identified during run-up or checks? How would you handle a failed system check?</span>
+          </div>
+        </div>
+
+        <div class="warn-strip" style="margin-top:12px;">
+          <div class="warn-icon">🛑</div>
+          <div>
+            <div class="warn-title">SCHEDULE PRESSURE IS NOT AN EXCUSE</div>
+            <div class="warn-text">NEVER RUSH PRE-DEPARTURE CHECKS. No schedule pressure, no waiting passengers, no delays justify skipping any item on the checklist. If in doubt about any system: <strong>stay on the ground.</strong> A 30-minute ground delay is better than a 30-minute search-and-rescue callout.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="key-principle">
+      <div class="key-principle-label">CORE PRINCIPLE</div>
+      <div class="key-principle-text">Thorough ground operations set the foundation for safe flight. Every checklist item exists because something went wrong once. Respect the procedures.</div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">BRP-Rotax GmbH &amp; Co. KG. (2024). <em>ROTAX 912 iSc series operator's manual</em>. BRP-Rotax GmbH &amp; Co. KG.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Taxi & Run-Up · GND 01</span>
+    <span>© 2026 CAPA Flight School</span>
+  </div>
+</div>
+
+</body>
+</html>

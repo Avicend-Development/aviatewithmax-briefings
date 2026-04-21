@@ -1,0 +1,101 @@
+/* =====================================================================
+   briefing-chrome.css — shared top bar for every briefing page.
+   Injected into each briefing <body> via scripts/inject-chrome.py.
+   Designed to sit above the existing briefing document without
+   interfering with its internal CSS (all selectors are namespaced
+   under .awm-topbar / .awm-spacer).
+   ===================================================================== */
+
+.awm-topbar,
+.awm-topbar * { box-sizing: border-box; }
+
+.awm-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  background: #0b1b3a;
+  color: #fff;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.awm-topbar::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, #2f7dc4 0%, #5aa3da 55%, #d9881a 100%);
+}
+.awm-topbar-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.awm-topbar .awm-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.awm-topbar .awm-brand .awm-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #d9881a;
+  box-shadow: 0 0 0 3px rgba(217,136,26,.2);
+}
+.awm-topbar .awm-spacer { flex: 1 1 auto; }
+.awm-topbar .awm-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.awm-topbar .awm-action:hover {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.28);
+  color: #fff;
+}
+.awm-topbar .awm-action.is-primary {
+  background: #2f7dc4;
+  border-color: #2f7dc4;
+}
+.awm-topbar .awm-action.is-primary:hover {
+  background: #5aa3da;
+  border-color: #5aa3da;
+}
+.awm-topbar .awm-icon {
+  width: 13px; height: 13px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Hide the chrome when printing (briefings should print as clean docs) */
+@media print {
+  .awm-topbar { display: none !important; }
+}
+
+@media (max-width: 560px) {
+  .awm-topbar-inner { padding: 0 12px; gap: 10px; }
+  .awm-topbar .awm-brand small,
+  .awm-topbar .awm-action .awm-label { display: none; }
+  .awm-topbar .awm-action { padding: 7px 9px; }
+}

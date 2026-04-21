@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tecnam P-Mentor — Technical Quick Reference — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+/* overview grid */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.afm{background:var(--sky);color:var(--white);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:11px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-tech .block-header{background:var(--navy-light);}
+.block-tech .block-type-pill{background:var(--sky);color:var(--white);}
+.block-tech .block-title{color:var(--white);}
+.block-tech2 .block-header{background:var(--grey-100);}
+.block-tech2 .block-type-pill{background:var(--navy);color:var(--white);}
+.block-perf .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-perf .block-type-pill{background:var(--green);color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:6px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:6px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;}
+.six-col{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+
+/* ── TECH REFERENCE SPECIFIC ── */
+.speed-tile{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:8px 7px;text-align:center;border-top:3px solid var(--sky);}
+.speed-tile.red{border-top-color:var(--red);}
+.speed-tile.amber{border-top-color:var(--amber);}
+.speed-tile.green{border-top-color:var(--green);}
+.speed-tile.navy{border-top-color:var(--navy);}
+.speed-tile.purple{border-top-color:#7B4FBF;}
+.speed-val{font-family:var(--font-display);font-size:22px;font-weight:800;line-height:1;}
+.speed-tile.red .speed-val{color:var(--red);}
+.speed-tile.amber .speed-val{color:#8B6000;}
+.speed-tile.green .speed-val{color:var(--green);}
+.speed-tile.navy .speed-val{color:var(--navy);}
+.speed-tile.purple .speed-val{color:#7B4FBF;}
+.speed-tile .speed-val{color:var(--sky);}
+.speed-unit{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);letter-spacing:0.05em;margin-top:1px;}
+.speed-label{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--navy);margin-top:2px;}
+.speed-desc{font-size:8px;color:var(--grey-500);margin-top:2px;line-height:1.3;}
+
+.tr-table{width:100%;border-collapse:collapse;}
+.tr-table th{background:var(--navy-light);color:var(--white);font-family:var(--font-mono);font-size:8.5px;text-transform:uppercase;letter-spacing:0.07em;padding:5px 9px;text-align:left;}
+.tr-table td{padding:4px 9px;font-size:10px;color:var(--grey-700);border-bottom:1px solid var(--grey-200);}
+.tr-table tr:last-child td{border-bottom:none;}
+.tr-table tr:nth-child(even) td{background:var(--grey-100);}
+.tr-table td.mono{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--navy);}
+.tr-table td.limit-red{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);}
+.tr-table td.limit-amber{font-family:var(--font-mono);font-size:10px;font-weight:600;color:#8B6000;}
+.tr-table td.limit-green{font-family:var(--font-mono);font-size:10px;font-weight:600;color:var(--green);}
+.tr-table td.limit-sky{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--sky);}
+.tr-table td.dim{color:var(--grey-500);font-size:9.5px;}
+
+.param-box{background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 8px;text-align:center;}
+.param-label{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;}
+.param-val{font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--navy);line-height:1.2;}
+.param-val.red{color:var(--red);}
+.param-val.amber{color:#8B6000;}
+.param-val.green{color:var(--green);}
+.param-val.sky{color:var(--sky);}
+.param-note{font-size:8px;color:var(--grey-500);margin-top:2px;line-height:1.3;}
+
+.limit-badge{display:inline-block;font-family:var(--font-mono);font-size:8px;font-weight:500;padding:1px 5px;border-radius:3px;letter-spacing:0.05em;margin-left:4px;}
+.limit-badge.max{background:var(--red-pale);color:var(--red);border:1px solid #F5C6C3;}
+.limit-badge.norm{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.limit-badge.caution{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.limit-badge.info{background:var(--sky-pale);color:var(--sky);border:1px solid #A8D4EF;}
+
+.mini-stat{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid var(--grey-200);}
+.mini-stat:last-child{border-bottom:none;}
+.mini-stat-label{font-size:9.5px;color:var(--grey-700);}
+.mini-stat-val{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--navy);}
+.mini-stat-val.red{color:var(--red);}
+.mini-stat-val.green{color:var(--green);}
+.mini-stat-val.amber{color:#8B6000;}
+
+.sub-header{font-family:var(--font-mono);font-size:8.5px;text-transform:uppercase;letter-spacing:0.09em;color:var(--sky);padding-bottom:4px;border-bottom:1px dashed var(--grey-200);margin-bottom:6px;}
+.sub-header.red{color:var(--red);}
+.sub-header.amber{color:#8B6000;}
+.sub-header.green{color:var(--green);}
+
+.stat-banner{background:linear-gradient(90deg,var(--navy-mid),var(--navy-light));border-radius:var(--radius);padding:8px 12px;display:flex;align-items:center;gap:20px;margin-bottom:8px;}
+.stat-banner-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.stat-banner-val{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--white);line-height:1;}
+.stat-banner-val span{font-size:12px;color:var(--sky-light);}
+.stat-banner-label{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.06em;}
+.stat-banner-div{width:1px;height:30px;background:rgba(255,255,255,0.12);}
+
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200,#E8ECF0);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display,'Barlow Condensed',sans-serif);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy,#0D1B2A);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700,#4A5568);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body,'Inter',sans-serif);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-p-mentor-technical-ref.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 1 — COVER + AIRSPEED REFERENCE
+═══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Technical Reference Document · Aircraft Data Summary</div>
+    <div class="cover-lesson-title">P-Mentor Technical Data</div>
+    <div class="cover-lesson-subtitle">Tecnam P2002-JF Sierra · ROTAX 912 iSc 3 Sport · Key values from AFM, ROTAX Manual &amp; CAPA SOP</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P2002-JF Sierra</span>
+      <span class="meta-chip stage">AFM Rev 10</span>
+      <span class="meta-chip env">ROTAX 912 iSc 3 Sport</span>
+      <span class="meta-chip env">MT Propeller MTV-21</span>
+      <span class="meta-chip env">SOP E2R1</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+
+    <!-- AIRCRAFT STATS BANNER -->
+    <div class="stat-banner">
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">720 <span>kg</span></div>
+        <div class="stat-banner-label">MTOW</div>
+      </div>
+      <div class="stat-banner-div"></div>
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">135 <span>KIAS</span></div>
+        <div class="stat-banner-label">V<sub style="font-size:10px">NE</sub></div>
+      </div>
+      <div class="stat-banner-div"></div>
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">100 <span>HP</span></div>
+        <div class="stat-banner-label">Max T/O Power</div>
+      </div>
+      <div class="stat-banner-div"></div>
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">131.6 <span>L</span></div>
+        <div class="stat-banner-label">Usable Fuel</div>
+      </div>
+      <div class="stat-banner-div"></div>
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">13,000 <span>ft</span></div>
+        <div class="stat-banner-label">Service Ceiling</div>
+      </div>
+      <div class="stat-banner-div"></div>
+      <div class="stat-banner-item">
+        <div class="stat-banner-val">+3.8 <span>g</span></div>
+        <div class="stat-banner-label">G-Limit (clean)</div>
+      </div>
+    </div>
+
+    <!-- SECTION 01 — AIRSPEED LIMITATIONS -->
+    <div class="section-banner" data-num="01">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Airspeed Limitations</div>
+        <div class="section-subtitle">AFM Section 2 · All speeds in KIAS · Never-exceed and structural limits</div>
+      </div>
+    </div>
+
+    <!-- Speed tiles row 1: limitation speeds -->
+    <div class="no-break">
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:7px;">
+        <div class="speed-tile red">
+          <div class="speed-val">135</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>NE</sub></div>
+          <div class="speed-desc">Never Exceed</div>
+        </div>
+        <div class="speed-tile amber">
+          <div class="speed-val">107</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>NO</sub></div>
+          <div class="speed-desc">Max Structural Cruise</div>
+        </div>
+        <div class="speed-tile amber">
+          <div class="speed-val">102</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>A</sub></div>
+          <div class="speed-desc">Manoeuvring (MTOW)</div>
+        </div>
+        <div class="speed-tile" style="border-top-color:var(--sky);">
+          <div class="speed-val" style="color:var(--sky);">106</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>FE1</sub></div>
+          <div class="speed-desc">Flap 1 Max</div>
+        </div>
+        <div class="speed-tile" style="border-top-color:var(--sky);">
+          <div class="speed-val" style="color:var(--sky);">96</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>FE2</sub></div>
+          <div class="speed-desc">Flap 2 Max</div>
+        </div>
+        <div class="speed-tile green">
+          <div class="speed-val">50</div>
+          <div class="speed-unit">KIAS</div>
+          <div class="speed-label">V<sub>S1</sub></div>
+          <div class="speed-desc">Stall — Clean Config</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 02 — CIRCUIT & OPERATING SPEEDS (SOP) -->
+    <div class="section-banner" data-num="02">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">Circuit &amp; Operating Speeds</div>
+        <div class="section-subtitle">CAPA SOP E2R1 · All speeds in KIAS</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <div class="two-col" style="gap:9px;">
+        <!-- Circuit speeds table -->
+        <div class="content-block block-tech">
+          <div class="block-header">
+            <span class="block-type-pill">SOP</span>
+            <span class="block-title">Circuit Speeds</span>
+          </div>
+          <div class="block-body" style="padding:0;">
+            <table class="tr-table">
+              <thead>
+                <tr>
+                  <th>Phase</th>
+                  <th>Speed</th>
+                  <th>Config</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rotate (V<sub>R</sub>)</td>
+                  <td class="limit-sky">53 kt</td>
+                  <td class="dim">Flap 1 · MCP</td>
+                </tr>
+                <tr>
+                  <td>Initial Climb (V<sub>Y</sub> safe)</td>
+                  <td class="limit-green">56 kt</td>
+                  <td class="dim">Flap 1 · positive ROC</td>
+                </tr>
+                <tr>
+                  <td>Climb (V<sub>Y</sub>)</td>
+                  <td class="limit-green">70 kt</td>
+                  <td class="dim">Clean · MCP</td>
+                </tr>
+                <tr>
+                  <td>Cruise Climb</td>
+                  <td class="limit-green">80 kt</td>
+                  <td class="dim">Clean · MCP</td>
+                </tr>
+                <tr>
+                  <td>Downwind</td>
+                  <td class="mono">90 kt</td>
+                  <td class="dim">Clean</td>
+                </tr>
+                <tr>
+                  <td>Base &amp; Final</td>
+                  <td class="mono">70 kt</td>
+                  <td class="dim">Flap 2</td>
+                </tr>
+                <tr>
+                  <td>Threshold</td>
+                  <td class="mono">63 kt</td>
+                  <td class="dim">Flap 2</td>
+                </tr>
+                <tr>
+                  <td>Best Glide</td>
+                  <td class="limit-amber">70 kt</td>
+                  <td class="dim">Clean · engine idle</td>
+                </tr>
+                <tr>
+                  <td>Stall — Landing (V<sub>S0</sub>)</td>
+                  <td class="limit-red">45 kt</td>
+                  <td class="dim">Flap 2 · power off</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Altimeter & instrument tolerances -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="content-block block-tech2">
+            <div class="block-header">
+              <span class="block-type-pill">AFM</span>
+              <span class="block-title">Instrument Tolerances</span>
+            </div>
+            <div class="block-body">
+              <div class="sub-header">Altimetry — SOP Pre-Flight Check</div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Individual altimeter tolerance</span>
+                <span class="mini-stat-val amber">±60 ft</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Max difference between instruments</span>
+                <span class="mini-stat-val red">90 ft</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Action if exceeded</span>
+                <span class="mini-stat-val" style="font-size:9px;">Do not depart</span>
+              </div>
+            </div>
+          </div>
+          <div class="content-block block-tech2">
+            <div class="block-header">
+              <span class="block-type-pill">AFM</span>
+              <span class="block-title">Weight Summary</span>
+            </div>
+            <div class="block-body">
+              <div class="sub-header">Mass &amp; Balance</div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Max Take-Off Weight (MTOW)</span>
+                <span class="mini-stat-val red">720 kg</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Aircraft category</span>
+                <span class="mini-stat-val">LSA / Light Sport</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Max fuel imbalance (wing tanks)</span>
+                <span class="mini-stat-val red">30 L</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Tecnam P-Mentor — Technical Quick Reference</span>
+    <span>Page 1 of 3</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 2 — ENGINE LIMITS & FUEL SYSTEM
+═══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">ROTAX 912 iSc 3 Sport · Engine &amp; Fuel Data</span>
+    <span class="page-num">Page 2 / 3</span>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+
+    <!-- SECTION 03 — ENGINE POWER SETTINGS -->
+    <div class="section-banner" data-num="03">
+      <div class="section-num">03</div>
+      <div class="section-text">
+        <div class="section-title">Engine Power Settings</div>
+        <div class="section-subtitle">ROTAX 912 iSc 3 Sport · 75 kW / 100 HP · Gearbox ratio 2.43:1 · SOP E2R1 power schedule</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <!-- Engine power tiles -->
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-bottom:8px;">
+        <div class="speed-tile red">
+          <div class="speed-val" style="color:var(--red);">5800</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">Max T/O</div>
+          <div class="speed-desc">5 min limit · 100 HP</div>
+        </div>
+        <div class="speed-tile amber">
+          <div class="speed-val" style="color:#8B6000;">5500</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">Max Continuous</div>
+          <div class="speed-desc">97 HP · no time limit</div>
+        </div>
+        <div class="speed-tile navy">
+          <div class="speed-val" style="color:var(--navy);">2250</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">MCP (SOP)</div>
+          <div class="speed-desc">Max Cont. Power (ops)</div>
+        </div>
+        <div class="speed-tile" style="border-top-color:var(--sky);">
+          <div class="speed-val" style="color:var(--sky);">2060</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">75% Power</div>
+          <div class="speed-desc">Cruise setting</div>
+        </div>
+        <div class="speed-tile" style="border-top-color:var(--sky);">
+          <div class="speed-val" style="color:var(--sky);">1975</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">65% Power</div>
+          <div class="speed-desc">Economy cruise</div>
+        </div>
+        <div class="speed-tile green">
+          <div class="speed-val" style="color:var(--green);">1400</div>
+          <div class="speed-unit">RPM</div>
+          <div class="speed-label">Min Idle</div>
+          <div class="speed-desc">Warm &amp; stabilised</div>
+        </div>
+      </div>
+
+      <!-- SOP circuit power settings -->
+      <div class="content-block block-tech2">
+        <div class="block-header">
+          <span class="block-type-pill">SOP</span>
+          <span class="block-title">Circuit Power Schedule (Manifold Pressure)</span>
+        </div>
+        <div class="block-body" style="padding:0;">
+          <table class="tr-table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>MAP / Power</th>
+                <th>RPM (approx)</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Take-Off / MCP climb</td>
+                <td class="limit-amber">MCP · 2250 RPM</td>
+                <td class="mono">2250</td>
+                <td class="dim">Full power to 500 ft AGL min</td>
+              </tr>
+              <tr>
+                <td>Circuit (downwind)</td>
+                <td class="limit-sky">MAP 22–23"</td>
+                <td class="mono">~2060</td>
+                <td class="dim">Maintain 90 kt level flight</td>
+              </tr>
+              <tr>
+                <td>Descent</td>
+                <td class="mono">MAP 14"</td>
+                <td class="mono">1770–1800</td>
+                <td class="dim">55% power / ~500 ft/min</td>
+              </tr>
+              <tr>
+                <td>Abeam threshold</td>
+                <td class="mono">MAP 12"</td>
+                <td class="mono">~1700</td>
+                <td class="dim">Begin descent to base</td>
+              </tr>
+              <tr>
+                <td>Final approach</td>
+                <td class="mono">As required</td>
+                <td class="mono">Variable</td>
+                <td class="dim">Maintain 70 kt · adjust for glide path</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 04 — ENGINE TEMPERATURE & PRESSURE LIMITS -->
+    <div class="section-banner" data-num="04">
+      <div class="section-num">04</div>
+      <div class="section-text">
+        <div class="section-title">Engine Temperature &amp; Pressure Limits</div>
+        <div class="section-subtitle">ROTAX 912 iSc 3 Sport · ROTAX Installation Manual · AFM Section 2</div>
+      </div>
+    </div>
+
+    <div class="no-break two-col" style="gap:9px;">
+      <!-- Temperature limits -->
+      <div class="content-block block-warning">
+        <div class="block-header">
+          <span class="block-type-pill">LIMIT</span>
+          <span class="block-title">Temperature Limits</span>
+        </div>
+        <div class="block-body" style="padding:0;">
+          <table class="tr-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Normal</th>
+                <th>Maximum</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oil Temperature</td>
+                <td class="limit-green">90–110 °C</td>
+                <td class="limit-red">130 °C</td>
+              </tr>
+              <tr>
+                <td>Coolant Temperature</td>
+                <td class="limit-green">&lt;120 °C</td>
+                <td class="limit-red">120 °C</td>
+              </tr>
+              <tr>
+                <td>EGT (Exhaust Gas Temp)</td>
+                <td class="limit-green">&lt;900 °C</td>
+                <td class="limit-red">950 °C</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Pressure limits -->
+      <div class="content-block block-warning">
+        <div class="block-header">
+          <span class="block-type-pill">LIMIT</span>
+          <span class="block-title">Pressure Limits</span>
+        </div>
+        <div class="block-body" style="padding:0;">
+          <table class="tr-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Normal</th>
+                <th>Max / Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oil Pressure</td>
+                <td class="limit-green">2.0–5.0 bar</td>
+                <td class="limit-amber">7 bar (cold start)</td>
+              </tr>
+              <tr>
+                <td>Fuel Pressure</td>
+                <td class="limit-green">2.8–3.2 bar</td>
+                <td class="limit-red">3.5 bar max</td>
+              </tr>
+              <tr>
+                <td>Starter engagement</td>
+                <td class="dim">Max 10 sec</td>
+                <td class="limit-red">Cont. limit: 10 s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="caution-strip no-break">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <div class="warn-title">Oil Pressure — Cold Start</div>
+        <div class="warn-text">Oil pressure may read up to 7 bar on cold start. Allow engine to warm at 1400 RPM minimum. Do not apply power until pressure drops to normal range (2.0–5.0 bar). If pressure does not drop within 30 seconds, shut down and investigate.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 05 — FUEL SYSTEM -->
+    <div class="section-banner" data-num="05">
+      <div class="section-num">05</div>
+      <div class="section-text">
+        <div class="section-title">Fuel System</div>
+        <div class="section-subtitle">AFM Section 2 &amp; 7 · SOP E2R1 · ROTAX 912 iSc 3 Fuel Requirements</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <div class="two-col" style="gap:9px;">
+        <!-- Fuel capacity -->
+        <div class="content-block block-theory">
+          <div class="block-header">
+            <span class="block-type-pill">AFM</span>
+            <span class="block-title">Fuel Capacity &amp; Planning</span>
+          </div>
+          <div class="block-body">
+            <div class="sub-header">Capacity</div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Total fuel capacity</span>
+              <span class="mini-stat-val">140 L</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Usable fuel</span>
+              <span class="mini-stat-val green">131.6 L</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Unusable fuel</span>
+              <span class="mini-stat-val">8.4 L</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Max imbalance (L tank vs R tank)</span>
+              <span class="mini-stat-val red">30 L max</span>
+            </div>
+            <div class="sub-header" style="margin-top:7px;">SOP Fuel Planning</div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Taxi / run-up allowance</span>
+              <span class="mini-stat-val">3 L</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Contingency (% of trip fuel)</span>
+              <span class="mini-stat-val">10%</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Final reserve (fixed)</span>
+              <span class="mini-stat-val amber">45 min</span>
+            </div>
+          </div>
+        </div>
+        <!-- Approved fuels -->
+        <div class="content-block block-theory">
+          <div class="block-header">
+            <span class="block-type-pill">ROTAX</span>
+            <span class="block-title">Approved Fuels &amp; Oils</span>
+          </div>
+          <div class="block-body">
+            <div class="sub-header">Approved Avgas / Mogas</div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">AVGAS 100LL</span>
+              <span class="mini-stat-val sky">Approved</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">MOGAS EN228 Super (RON 95+)</span>
+              <span class="mini-stat-val sky">Approved</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">MOGAS EN228 Super Plus (RON 98)</span>
+              <span class="mini-stat-val sky">Approved</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Minimum octane (RON)</span>
+              <span class="mini-stat-val red">RON 95</span>
+            </div>
+            <div class="sub-header" style="margin-top:7px;">Engine Oil</div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Oil spec</span>
+              <span class="mini-stat-val">RON 424 multi-grade</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Viscosity grades (typical)</span>
+              <span class="mini-stat-val sky">10W-40 / 15W-40 / 20W-50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Tecnam P-Mentor — Technical Quick Reference</span>
+    <span>Page 2 of 3</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 3 — PERFORMANCE, G-LIMITS & PROPELLER
+═══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">Performance · Structural Limits · Propeller</span>
+    <span class="page-num">Page 3 / 3</span>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+
+    <!-- SECTION 06 — TAKE-OFF & LANDING PERFORMANCE -->
+    <div class="section-banner" data-num="06">
+      <div class="section-num">06</div>
+      <div class="section-text">
+        <div class="section-title">Take-Off &amp; Landing Performance</div>
+        <div class="section-subtitle">AFM Section 5 · ISA conditions · MTOW 720 kg · Paved surface · Zero wind</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <div class="four-col" style="margin-bottom:8px;">
+        <div class="param-box">
+          <div class="param-label">T/O Ground Roll</div>
+          <div class="param-val sky">240 m</div>
+          <div class="param-note">ISA · MTOW · paved</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">T/O Distance to 50 ft</div>
+          <div class="param-val sky">850 m</div>
+          <div class="param-note">ISA · MTOW · paved</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">Landing Roll</div>
+          <div class="param-val green">153 m</div>
+          <div class="param-note">ISA · MTOW · paved</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">Landing over 50 ft obstacle</div>
+          <div class="param-val green">584 m</div>
+          <div class="param-note">ISA · MTOW · paved</div>
+        </div>
+      </div>
+
+      <div class="caution-strip">
+        <span class="warn-icon">⚠</span>
+        <div>
+          <div class="warn-title">Performance Factors</div>
+          <div class="warn-text">Published figures are AFM reference values at ISA, MTOW, sea level, zero wind, paved surface. Increase T/O distance by ~10% per 300 ft pressure altitude, ~5–7% for grass. Headwind reduces distance; tailwind significantly increases it — max tailwind component per SOP.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 07 — CLIMB PERFORMANCE -->
+    <div class="section-banner" data-num="07">
+      <div class="section-num">07</div>
+      <div class="section-text">
+        <div class="section-title">Climb Performance</div>
+        <div class="section-subtitle">AFM Section 5 · MTOW · ISA · Best rate of climb and service ceiling</div>
+      </div>
+    </div>
+
+    <div class="no-break four-col" style="margin-bottom:8px;">
+      <div class="param-box">
+        <div class="param-label">Best Rate of Climb (V<sub>Y</sub>)</div>
+        <div class="param-val green">822–855 ft/min</div>
+        <div class="param-note">70 kt · MTOW · ISA SL</div>
+      </div>
+      <div class="param-box">
+        <div class="param-label">V<sub>Y</sub> Speed</div>
+        <div class="param-val sky">70 kt</div>
+        <div class="param-note">Best rate of climb speed</div>
+      </div>
+      <div class="param-box">
+        <div class="param-label">Cruise Climb Speed</div>
+        <div class="param-val sky">80 kt</div>
+        <div class="param-note">Preferred cruise climb</div>
+      </div>
+      <div class="param-box">
+        <div class="param-label">Service Ceiling</div>
+        <div class="param-val navy">13,000 ft</div>
+        <div class="param-note">100 ft/min ROC remaining</div>
+      </div>
+    </div>
+
+    <!-- SECTION 08 — G-LIMITS & STRUCTURAL -->
+    <div class="section-banner" data-num="08">
+      <div class="section-num">08</div>
+      <div class="section-text">
+        <div class="section-title">G-Limits &amp; Structural Envelope</div>
+        <div class="section-subtitle">AFM Section 2 · Load factor limits · Flap configuration restrictions</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <div class="two-col" style="gap:9px;">
+        <div class="content-block block-warning">
+          <div class="block-header">
+            <span class="block-type-pill">LIMIT</span>
+            <span class="block-title">Load Factor Limits — Clean Configuration</span>
+          </div>
+          <div class="block-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div class="param-box" style="border-top:3px solid var(--sky);">
+                <div class="param-label">Positive G-Limit</div>
+                <div class="param-val sky">+3.8 g</div>
+                <div class="param-note">Flaps retracted</div>
+              </div>
+              <div class="param-box" style="border-top:3px solid var(--red);">
+                <div class="param-label">Negative G-Limit</div>
+                <div class="param-val red">−1.9 g</div>
+                <div class="param-note">Flaps retracted</div>
+              </div>
+            </div>
+            <div class="warn-strip" style="margin-top:0;">
+              <span class="warn-icon">⚠</span>
+              <div>
+                <div class="warn-title">Negative G — ROTAX Restriction</div>
+                <div class="warn-text">ROTAX 912 iSc 3: negative g not to exceed −0.5 g for more than 5 seconds. Prolonged negative g will cause oil starvation and engine damage.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-block block-warning">
+          <div class="block-header">
+            <span class="block-type-pill">LIMIT</span>
+            <span class="block-title">Load Factor Limits — With Flaps</span>
+          </div>
+          <div class="block-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div class="param-box" style="border-top:3px solid var(--amber);">
+                <div class="param-label">Positive G — Flap 1/2</div>
+                <div class="param-val amber">+1.9 g</div>
+                <div class="param-note">Any flap setting</div>
+              </div>
+              <div class="param-box" style="border-top:3px solid var(--red);">
+                <div class="param-label">Negative G — Flap 1/2</div>
+                <div class="param-val red">0 g</div>
+                <div class="param-note">No negative g with flaps</div>
+              </div>
+            </div>
+            <div class="caution-strip" style="margin-top:0;">
+              <span class="warn-icon">⚠</span>
+              <div>
+                <div class="warn-title">Flap Speed — Always Check Before Extension</div>
+                <div class="warn-text">Ensure airspeed is below V<sub>FE</sub> before extending flaps. V<sub>FE1</sub> = 106 kt · V<sub>FE2</sub> = 96 kt.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 09 — PROPELLER -->
+    <div class="section-banner" data-num="09">
+      <div class="section-num">09</div>
+      <div class="section-text">
+        <div class="section-title">Propeller &amp; Drivetrain</div>
+        <div class="section-subtitle">AFM Section 2 · MT Propeller · ROTAX gearbox reduction ratio</div>
+      </div>
+    </div>
+
+    <div class="no-break">
+      <div class="four-col" style="margin-bottom:8px;">
+        <div class="param-box">
+          <div class="param-label">Propeller Model</div>
+          <div class="param-val sky" style="font-size:10px;">MT MTV-21-A/180-51</div>
+          <div class="param-note">Ground-adjustable pitch</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">Diameter</div>
+          <div class="param-val sky">1800 mm</div>
+          <div class="param-note">2-blade composite</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">Gearbox Reduction</div>
+          <div class="param-val navy">2.43 : 1</div>
+          <div class="param-note">Engine-to-prop shaft</div>
+        </div>
+        <div class="param-box">
+          <div class="param-label">Max Prop RPM @ 5800</div>
+          <div class="param-val amber">2387 RPM</div>
+          <div class="param-note">5800 ÷ 2.43</div>
+        </div>
+      </div>
+
+      <!-- References -->
+      <div class="content-block block-tech2">
+        <div class="block-header">
+          <span class="block-type-pill">REF</span>
+          <span class="block-title">Source Documents</span>
+        </div>
+        <div class="block-body" style="padding:8px 10px;">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag afm">AFM</span>
+              <span class="ref-text">Tecnam P2002-JF Sierra — Pilot's Operating Handbook / AFM (Rev 10)</span>
+              <span class="ref-section">§2, §5, §7</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag manual">ROTAX</span>
+              <span class="ref-text">ROTAX 912 iSc 3 Sport — Operator's Manual &amp; Installation Manual</span>
+              <span class="ref-section">§3, §4</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">CAPA Standard Operating Procedures — SOP E2R1</span>
+              <span class="ref-section">§1.5, §1.17, §1.23</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">BRP-Rotax GmbH &amp; Co. KG. (2024). <em>ROTAX 912 iSc series operator's manual</em>. BRP-Rotax GmbH &amp; Co. KG.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">Garmin Ltd. (2024). <em>GFC 500 autopilot system pilot's guide</em>. Garmin Ltd.</div>
+        <div class="apa-ref-entry">Garmin Ltd. (2024). <em>GI 275 electronic flight instrument pilot's guide</em>. Garmin Ltd.</div>
+      </div>
+    </div>
+
+  </div><!-- end page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">Tecnam P-Mentor — Technical Quick Reference</span>
+    <span>Page 3 of 3</span>
+  </div>
+</div>
+
+</body>
+</html>

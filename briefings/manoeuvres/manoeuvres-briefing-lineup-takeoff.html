@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 03 — Line-up &amp; Take-off — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+/* COVER */
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+/* OVERVIEW GRID */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+/* SECTION */
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+/* BLOCKS */
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.manoeuvre-layout{display:grid;grid-template-columns:1fr 210px;gap:12px;align-items:start;}
+.manoeuvre-diagram{background:var(--navy);border-radius:var(--radius);overflow:hidden;border:1px solid var(--navy-light);}
+.manoeuvre-diagram svg{width:100%;height:auto;display:block;}
+.diagram-caption{background:var(--navy-light);padding:4px 8px;font-family:var(--font-mono);font-size:8.5px;color:var(--grey-300);text-align:center;letter-spacing:0.04em;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-title{color:#7A5A00;}
+.caution-strip .warn-text{color:#5A4400;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.step-phase{font-family:var(--font-display);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--white);background:var(--navy-mid);padding:3px 9px;border-radius:3px;display:inline-block;margin:7px 0 4px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.callout-box{border:2px solid var(--amber);border-radius:var(--radius);padding:7px 11px;background:var(--amber-pale);display:flex;align-items:flex-start;gap:8px;}
+.tol-panel{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.tol-panel-item{background:var(--white);border:1px solid var(--grey-200);border-top:2px solid var(--amber);border-radius:var(--radius);padding:5px 8px;text-align:center;min-width:68px;}
+.tol-panel-value{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-panel-label{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200,#E8ECF0);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display,'Barlow Condensed',sans-serif);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy,#0D1B2A);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700,#4A5568);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body,'Inter',sans-serif);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-lineup-takeoff.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1 — OVERVIEW -->
+<div class="page">
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · DGH 03</div>
+    <div class="cover-lesson-title">Line-up &amp; Take-off</div>
+    <div class="cover-lesson-subtitle">Normal take-off procedure · Line-up calls · Departure briefing · Climb-out sequence</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">P-Mentor · Tecnam P2002</span>
+      <span class="meta-chip stage">Stage: DGH 03</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">EKRK Circuit</span>
+      <span class="meta-chip env">Briefing: 10 min</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <!-- DURATION -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">HR</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Circuit area EKRK. Calm to light wind preferred, XWC max 5 kt for first exposure.</div>
+        </div>
+      </div>
+      <!-- PREREQUISITES -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">02 · Student Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Completed DGH 01 &amp; 02 — basic aircraft control, trim technique, S&amp;L flight</li>
+            <li>Knows cockpit layout and all pre-take-off checklist items</li>
+            <li>Can taxi aircraft safely on centreline</li>
+            <li>Understands departure briefing structure (§ 1.9.1)</li>
+            <li>Reviewed CAPA SOP §1.10–1.12 prior to briefing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- OBJECTIVES -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg>
+          </div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Perform departure briefing correctly and completely</li>
+            <li>Execute line-up procedure with correct calls and HSI check</li>
+            <li>Conduct normal take-off roll with proper directional control</li>
+            <li>Call VR 53 KIAS, rotate, establish 70 KIAS climb attitude</li>
+            <li>Retract flaps at 400 ft AGL safely with speed call-out</li>
+            <li>Track extended centreline on climb-out to 500 ft AGL turn</li>
+          </ul>
+        </div>
+      </div>
+      <!-- TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">53 kt</div>
+              <div class="tol-param">VR Call</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">70 kt</div>
+              <div class="tol-param">VY Climb</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">400 ft</div>
+              <div class="tol-param">Flaps Up</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±5 m</div>
+              <div class="tol-param">Centreline</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10°</div>
+              <div class="tol-param">Climb HDG</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">500 ft</div>
+              <div class="tol-param">Turn Alt AGL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- MOTIVATION -->
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6H14L10.5 8.5L12 13L8 10.5L4 13L5.5 8.5L2 6H6.5L8 2Z" stroke="white" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="ov-card-label">05 · Motivation</span>
+        </div>
+        <div class="ov-card-body">
+          <p class="prose">The take-off is the transition from ground to air — the most critical phase of every flight. Correct line-up procedure, departure briefing, and an accurate take-off roll are foundational skills that every subsequent exercise depends on. The procedures taught here are identical in structure to those used throughout the CAPA programme and must be executed precisely and consistently from the very first exposure. Errors in this phase carry the highest consequence of any training exercise.</p>
+        </div>
+      </div>
+      <!-- COMMON MISTAKES -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">06 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Insufficient rudder on take-off roll — aircraft yaws left uncorrected</li>
+            <li>Missing or incorrect departure briefing — incomplete engine failure plan</li>
+            <li>Forgetting HSI check on line-up ("Heading indicator checked — RWY XX identified")</li>
+            <li>Not calling "Final clear" before entering RWY</li>
+            <li>Rotating too slowly — aircraft floats instead of climbing positively</li>
+            <li>Forgetting speed call before flap retraction at 400 ft AGL</li>
+            <li>Drifting off extended centreline on climb-out — not tracking reference point</li>
+            <li>Forgetting to set MCP 2250 RPM after flap retraction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FI REFERENCES -->
+    <div class="ov-card references no-break">
+      <div class="ov-card-header">
+        <div class="ov-card-icon">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="3" y="1.5" width="10" height="13" rx="1.5" stroke="white" stroke-width="1.5"/><path d="M6 5H10M6 7.5H10M6 10H9" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="ov-card-label">07 · FI References</span>
+      </div>
+      <div class="ov-card-body" style="padding:7px 12px;">
+        <div class="ref-list">
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Line-Up</span>
+            <span class="ref-section">§ 1.10</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Normal Take-Off</span>
+            <span class="ref-section">§ 1.11.1</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Departure Briefing</span>
+            <span class="ref-section">§ 1.9.1</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Climb</span>
+            <span class="ref-section">§ 1.12</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag lesson">LESSON</span>
+            <span class="ref-text">ATP INT. Lesson Prep — DGH 03 Student Notes</span>
+            <span class="ref-section">NOV20/FRI</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">The Flight Instructor's Manual — Take-Off &amp; Climb Instruction</span>
+            <span class="ref-section">Kershner</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 03 — LINE-UP &amp; TAKE-OFF</span>
+    <span class="footer-right">Page 1 · OVERVIEW</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — SECTIONS 01 + 02: ENVIRONMENT & SETUP -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · LINE-UP &amp; TAKE-OFF</span>
+    <span class="page-num">Page 2</span>
+  </div>
+  <div class="page-body">
+
+    <!-- SECTION 01: ENVIRONMENT -->
+    <div class="section-banner" data-num="01">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Environment</div>
+        <div class="section-subtitle">Operating conditions · circuit area · weather minima · ATC</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Operating Environment &amp; Conditions</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <ul class="brief-list">
+              <li>Location: EKRK circuit — stay within CTR for circuit exercises</li>
+              <li>Altitude: Circuit at 1000 ft AGL / 1150 ft MSL (EKRK elevation 150 ft)</li>
+              <li>Weather minima: VMC, cloudbase min 1500 ft, vis min 5 km</li>
+              <li>Wind: Calm to light preferred. XWC max 5 kt for initial t/o training</li>
+              <li>Turbulence: Light or less. If gusty: add ½ gust factor to VR (max +10 kt)</li>
+              <li>EFB: Student min 70% battery, VFG updated (§ 0.6.1)</li>
+            </ul>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">Avionic Set-Up &amp; ATIS — COM/NAV/Squawk setup before line-up</span>
+              <span class="sop-section">§ 1.7</span>
+            </div>
+          </div>
+          <div>
+            <ul class="brief-list">
+              <li>Freq: Roskilde TWR 118.905 (COM 1) / 119.655 (standby)</li>
+              <li>ATIS: COM 2 standby — receive before start, set QNH</li>
+              <li>Squawk: 7000 VFR</li>
+              <li>QNH: Set both altimeters — verify ≤90 ft difference, elev +/−60 ft</li>
+              <li>ATIS considerations: RWY in use, XWC, SVFR conditions</li>
+            </ul>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">Checklist Handling — BEFORE TAKE-OFF must be READ &amp; DO</span>
+              <span class="sop-section">§ 1.5</span>
+            </div>
+          </div>
+        </div>
+        <div class="warn-strip">
+          <span class="warn-icon">⛔</span>
+          <div>
+            <div class="warn-title">No-Go Criteria</div>
+            <div class="warn-text">Do not commence take-off if: ceiling &lt;1000 ft AGL · XWC exceeds lesson limit · ATC clearance not received · Departure briefing incomplete · Engine instruments not checked after power application.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 02: SETUP -->
+    <div class="section-banner" data-num="02" style="margin-top:4px;">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">Setup</div>
+        <div class="section-subtitle">Departure briefing · run-up area · line-up checklist · pre-take-off</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Procedure</span>
+        <span class="block-title">Departure Briefing &amp; Line-Up Sequence</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Never report ready for departure unless mentally prepared, checklists complete, and engine failure plan fully briefed. The departure briefing is a hard requirement — not optional.</div>
+        </div>
+
+        <div class="manoeuvre-layout">
+          <div>
+            <div class="phase-label">▸ Run-Up Area — Departure Briefing (§ 1.9.1)</div>
+            <ol class="procedure-list">
+              <li>Complete BEFORE TAKE-OFF checklist (READ &amp; DO). Complete LINE-UP checklist.</li>
+              <li>Set HDG bug to Wind Corrected Heading (WCH) to track extended centreline.</li>
+              <li>Set altitude warning to planned level-off altitude (e.g. 1300 ft MSL).</li>
+              <li>Deliver departure briefing aloud: <em>"VFR departure RWY [XX], Roskilde. Normal take-off. After departure climb straight ahead 650 ft MSL (500 ft AGL), expect [turn direction] climbing [altitude]. HDG bug and altitude warning set. Before VR — WE STOP. After VR below 650 ft — nose down, 70 KIAS, throttle idle, land straight ahead within 45°, preferably to [direction]. Above 650 ft — standard emergency."</em></li>
+              <li>Verify Pitch Trim Selector set to LH (student side).</li>
+            </ol>
+
+            <div class="phase-label">▸ Line-Up (§ 1.10)</div>
+            <ol class="procedure-list" start="6">
+              <li>Check ATC clearance received. Scan final for traffic.</li>
+              <li>Call out: <span class="callout-tag">"Final clear — Lining up RWY [XX]"</span></li>
+              <li>Enter RWY. On uncontrolled: scan base and final before entering.</li>
+              <li>Check HSI — verify on correct RWY heading. Call out: <span class="callout-tag">"Heading indicator checked — RWY [XX] identified"</span></li>
+              <li>Select reference point on extended centreline for climb-out tracking.</li>
+            </ol>
+
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">Wake turbulence: start timer at rotation of preceding traffic. Twin Otter = medium — wait ~90 sec</span>
+              <span class="sop-section">§ 1.10</span>
+            </div>
+          </div>
+
+          <!-- RUNWAY DIAGRAM -->
+          <div class="manoeuvre-diagram">
+            <svg viewBox="0 0 210 280" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="280" fill="#0D1B2A"/>
+              <defs>
+                <marker id="arrowUp" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
+                  <path d="M0,6 L3,0 L6,6 Z" fill="#E8A020"/>
+                </marker>
+                <marker id="arrowUpSky" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
+                  <path d="M0,6 L3,0 L6,6 Z" fill="#3A8FC8"/>
+                </marker>
+              </defs>
+
+              <!-- Ground / runway -->
+              <rect x="0" y="150" width="210" height="130" fill="#1A2E10"/>
+              <!-- Runway -->
+              <rect x="75" y="145" width="60" height="135" fill="#2A2A2A" rx="2"/>
+              <!-- Runway centreline -->
+              <line x1="105" y1="148" x2="105" y2="278" stroke="white" stroke-width="1" stroke-dasharray="8,5" opacity="0.5"/>
+              <!-- Runway threshold markings -->
+              <rect x="78" y="148" width="10" height="4" fill="white" opacity="0.7"/>
+              <rect x="91" y="148" width="10" height="4" fill="white" opacity="0.7"/>
+              <rect x="111" y="148" width="10" height="4" fill="white" opacity="0.7"/>
+              <rect x="124" y="148" width="10" height="4" fill="white" opacity="0.7"/>
+
+              <!-- Sky -->
+              <rect x="0" y="0" width="210" height="150" fill="#1A3A5C"/>
+
+              <!-- Extended centreline in sky -->
+              <line x1="105" y1="0" x2="105" y2="148" stroke="#E8A020" stroke-width="0.8" stroke-dasharray="5,4" opacity="0.4"/>
+
+              <!-- Aircraft on runway -->
+              <g transform="translate(105, 240)">
+                <path d="M0,-7 L3.5,3 L0,1.5 L-3.5,3 Z" fill="#E8A020"/>
+                <path d="M-10,1 L10,1 L8,3.5 L-8,3.5 Z" fill="#E8A020" opacity="0.7"/>
+                <path d="M-4,3.5 L4,3.5 L3,7 L-3,7 Z" fill="#E8A020" opacity="0.5"/>
+              </g>
+
+              <!-- Altitude markers -->
+              <line x1="10" y1="148" x2="25" y2="148" stroke="#8A9BB0" stroke-width="0.7"/>
+              <text x="8" y="146" font-family="monospace" font-size="6" fill="#8A9BB0" text-anchor="end">GND</text>
+
+              <!-- 400 ft AGL line (approx) -->
+              <line x1="10" y1="110" x2="25" y2="110" stroke="#E8A020" stroke-width="0.7" stroke-dasharray="3,2"/>
+              <text x="8" y="108" font-family="monospace" font-size="6" fill="#E8A020" text-anchor="end">400ft</text>
+              <!-- Flaps annotation -->
+              <text x="115" y="108" font-family="monospace" font-size="6" fill="#E8A020">"Safe speed</text>
+              <text x="115" y="116" font-family="monospace" font-size="6" fill="#E8A020"> Flaps UP"</text>
+              <!-- Arrow from flaps callout -->
+              <line x1="113" y1="110" x2="108" y2="110" stroke="#E8A020" stroke-width="0.6"/>
+
+              <!-- 500 ft AGL / turn -->
+              <line x1="10" y1="100" x2="25" y2="100" stroke="#3A8FC8" stroke-width="0.7" stroke-dasharray="3,2"/>
+              <text x="8" y="98" font-family="monospace" font-size="6" fill="#3A8FC8" text-anchor="end">500ft</text>
+              <text x="115" y="98" font-family="monospace" font-size="6" fill="#3A8FC8">Commence</text>
+              <text x="115" y="106" font-family="monospace" font-size="6" fill="#3A8FC8">briefed turn</text>
+
+              <!-- VR marker -->
+              <line x1="75" y1="195" x2="135" y2="195" stroke="#27AE60" stroke-width="0.8" stroke-dasharray="2,2" opacity="0.5"/>
+              <text x="137" y="198" font-family="monospace" font-size="6" fill="#27AE60">VR 53 kt</text>
+
+              <!-- Climb path -->
+              <path d="M105,195 L105,50" stroke="#E8A020" stroke-width="2" marker-end="url(#arrowUp)" stroke-dasharray="none"/>
+              <!-- Aircraft in climb -->
+              <g transform="translate(105, 70)">
+                <path d="M0,-7 L3.5,3 L0,1.5 L-3.5,3 Z" fill="#E8A020" opacity="0.6"/>
+                <path d="M-10,1 L10,1 L8,3.5 L-8,3.5 Z" fill="#3A8FC8" opacity="0.5"/>
+              </g>
+
+              <!-- VY label -->
+              <text x="110" y="72" font-family="monospace" font-size="6" fill="#5AAEE0">VY 70 kt</text>
+
+              <!-- Labels -->
+              <text x="105" y="270" text-anchor="middle" font-family="monospace" font-size="7" fill="#8A9BB0">RWY [XX]</text>
+              <text x="105" y="12" text-anchor="middle" font-family="monospace" font-size="6" fill="#4A5568">Extended Centreline</text>
+            </svg>
+            <div class="diagram-caption">Take-off Profile · P-Mentor · EKRK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 03 — LINE-UP &amp; TAKE-OFF</span>
+    <span class="footer-right">Page 2 · ENV / SETUP</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — SECTION 03: EXECUTION -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · LINE-UP &amp; TAKE-OFF</span>
+    <span class="page-num">Page 3</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-banner" data-num="03">
+      <div class="section-num">03</div>
+      <div class="section-text">
+        <div class="section-title">Execution</div>
+        <div class="section-subtitle">Normal take-off roll · rotation · climb-out · flap retraction · MCP</div>
+      </div>
+    </div>
+
+    <!-- THEORY -->
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Take-Off Aerodynamics &amp; Control</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <ul class="brief-list">
+            <li>Engine torque and P-factor yaw the nose left on full power — right rudder required throughout the roll</li>
+            <li>Slight forward pressure on control wheel prevents premature rotation and keeps nose wheel on surface for directional control</li>
+            <li>At VR the wings generate sufficient lift to fly — rotation must be prompt and positive to 70 KIAS attitude</li>
+          </ul>
+          <ul class="brief-list">
+            <li>Flap 1 provides extra lift for shorter ground roll and lower VR</li>
+            <li>VX 56 KIAS = best angle (obstacle clearance) · VY 70 KIAS = best rate (normal climb)</li>
+            <li>MCP 2250 RPM set after flap retraction — engine protection and efficient climb</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANOEUVRE: NORMAL TAKE-OFF -->
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Manoeuvre</span>
+        <span class="block-title">Normal Take-Off — P-Mentor (SOP § 1.11.1)</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Power on — directional control with rudder — let the aircraft fly itself off. Rotate promptly at 53 KIAS. Think attitude and aircraft movement, never control input.</div>
+        </div>
+
+        <div class="manoeuvre-layout">
+          <div>
+            <div class="step-phase">Phase 1 · Take-Off Roll</div>
+            <ol class="procedure-list">
+              <li>ATC cleared for take-off: switch LANDING light ON, maintain/select TAXI light ON.</li>
+              <li>Hold brakes. Advance throttle smoothly to MAP 20". Call out: <span class="callout-tag">"Engine instruments checked — Timing started"</span></li>
+              <li>Release brakes. Advance throttle smoothly to full power.</li>
+              <li>Call out: <span class="callout-tag">"Full power"</span> — verify RPM and MAP at full power.</li>
+              <li>Apply right rudder — maintain centreline. Slight forward pressure on control wheel. Track reference point.</li>
+            </ol>
+
+            <div class="step-phase">Phase 2 · Rotation &amp; Initial Climb</div>
+            <ol class="procedure-list" start="6">
+              <li>At 53 KIAS: Call out <span class="callout-tag">"53 — Rotate"</span> — release forward pressure and let aircraft accelerate to 70 KIAS.</li>
+              <li>Establish and hold VY 70 KIAS climb attitude. Trim to relieve pressure.</li>
+              <li>Track extended centreline — use reference point selected at line-up.</li>
+            </ol>
+
+            <div class="step-phase">Phase 3 · Flap Retraction &amp; Climb-Out</div>
+            <ol class="procedure-list" start="9">
+              <li>At 400 ft AGL: check positive ROC, verify safe speed (min VX 56 KIAS). Call out: <span class="callout-tag">"Safe speed — Flaps up"</span></li>
+              <li>Select flaps UP. Raise nose slightly to maintain VY 70 KIAS. Retard propeller to 2250 RPM (MCP). Call out: <span class="callout-tag">"Max continuous power"</span>. Re-trim.</li>
+              <li>At 500 ft AGL: lookout, commence turn as briefed.</li>
+              <li>Passing 1000 ft AGL: lower pitch slightly, trim for cruise climb 80 KIAS. Select TAXI light OFF. Complete AFTER TAKE-OFF checklist from memory.</li>
+            </ol>
+
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">No checklist reading below 1000 ft AGL except memory items (flaps)</span>
+              <span class="sop-section">§ 1.11.1</span>
+            </div>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">Turbulence / gusts: delay VR by 5 kt (or ½ gust factor). Climb at 70 KIAS flaps 1, then VY+5 after flap retraction</span>
+              <span class="sop-section">§ 1.11.1 NOTE</span>
+            </div>
+          </div>
+
+          <!-- SPEED/ALTITUDE PROFILE DIAGRAM -->
+          <div class="manoeuvre-diagram">
+            <svg viewBox="0 0 210 310" xmlns="http://www.w3.org/2000/svg">
+              <rect width="210" height="310" fill="#0D1B2A"/>
+              <defs>
+                <marker id="arrAmb3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 Z" fill="#E8A020"/>
+                </marker>
+                <marker id="arrSky3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 Z" fill="#3A8FC8"/>
+                </marker>
+                <marker id="arrGrn3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 Z" fill="#1E8A4C"/>
+                </marker>
+              </defs>
+
+              <!-- Background zones -->
+              <rect x="0" y="0" width="210" height="210" fill="#162030"/>
+              <rect x="0" y="210" width="210" height="100" fill="#1A2E10"/>
+
+              <!-- Ground line -->
+              <line x1="0" y1="210" x2="210" y2="210" stroke="#4A6630" stroke-width="1.5"/>
+
+              <!-- Key altitude lines -->
+              <!-- VR ~210 (ground) -->
+              <!-- 400 ft AGL = approx y 130 -->
+              <line x1="30" y1="130" x2="210" y2="130" stroke="#E8A020" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.6"/>
+              <text x="4" y="128" font-family="monospace" font-size="6.5" fill="#E8A020">400ft</text>
+
+              <!-- 500 ft AGL = approx y 115 -->
+              <line x1="30" y1="115" x2="210" y2="115" stroke="#3A8FC8" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.6"/>
+              <text x="4" y="113" font-family="monospace" font-size="6.5" fill="#3A8FC8">500ft</text>
+
+              <!-- 1000 ft AGL = approx y 60 -->
+              <line x1="30" y1="60" x2="210" y2="60" stroke="#1E8A4C" stroke-width="0.7" stroke-dasharray="4,3" opacity="0.6"/>
+              <text x="4" y="58" font-family="monospace" font-size="6.5" fill="#1E8A4C">1000ft</text>
+
+              <!-- Flight path: ground roll horizontal -->
+              <line x1="20" y1="210" x2="80" y2="210" stroke="#E8A020" stroke-width="2"/>
+
+              <!-- Rotation point -->
+              <circle cx="80" cy="210" r="4" fill="#E8A020"/>
+              <text x="80" y="225" text-anchor="middle" font-family="monospace" font-size="6.5" fill="#E8A020">VR 53 kt</text>
+
+              <!-- Climb path with flaps -->
+              <path d="M80,210 Q90,170 100,130" stroke="#E8A020" stroke-width="2" fill="none"/>
+
+              <!-- Flap retraction marker -->
+              <circle cx="100" cy="130" r="4" fill="#E8A020" stroke="#0D1B2A" stroke-width="1"/>
+              <text x="106" y="128" font-family="monospace" font-size="6" fill="#E8A020">Flaps UP</text>
+              <text x="106" y="136" font-family="monospace" font-size="6" fill="#E8A020">MCP 2250</text>
+
+              <!-- Continued climb to 500ft turn -->
+              <path d="M100,130 L105,115" stroke="#E8A020" stroke-width="2" fill="none"/>
+              <circle cx="105" cy="115" r="3" fill="#3A8FC8"/>
+              <text x="110" y="113" font-family="monospace" font-size="6" fill="#3A8FC8">Turn (briefed)</text>
+
+              <!-- Climb to 1000ft -->
+              <path d="M105,115 Q140,85 160,60" stroke="#E8A020" stroke-width="2" fill="none" marker-end="url(#arrAmb3)"/>
+              <text x="162" y="58" font-family="monospace" font-size="6" fill="#1E8A4C">80 kt cruise</text>
+              <text x="162" y="66" font-family="monospace" font-size="6" fill="#1E8A4C">climb</text>
+
+              <!-- Aircraft symbols at key points -->
+              <g transform="translate(50, 208) rotate(-5)">
+                <path d="M0,-5 L2.5,2 L0,1 L-2.5,2 Z" fill="#E8A020" opacity="0.7"/>
+                <path d="M-8,1 L8,1 L6,2.5 L-6,2.5 Z" fill="#3A8FC8" opacity="0.5"/>
+              </g>
+              <g transform="translate(90, 173) rotate(-30)">
+                <path d="M0,-5 L2.5,2 L0,1 L-2.5,2 Z" fill="#E8A020"/>
+                <path d="M-8,1 L8,1 L6,2.5 L-6,2.5 Z" fill="#E8A020" opacity="0.6"/>
+              </g>
+
+              <!-- Speed annotations -->
+              <text x="105" y="8" text-anchor="middle" font-family="monospace" font-size="7" fill="#5AAEE0" letter-spacing="0.5">TAKE-OFF PROFILE</text>
+
+              <!-- Speed scale on right -->
+              <text x="30" y="248" font-family="monospace" font-size="6" fill="#4A5568">←Roll→</text>
+              <text x="30" y="258" font-family="monospace" font-size="6" fill="#E8A020">0→53 kt</text>
+              <text x="30" y="270" font-family="monospace" font-size="6" fill="#5AAEE0">Rudder ctrl</text>
+
+              <!-- Runway on ground -->
+              <rect x="65" y="207" width="80" height="3" fill="#333" opacity="0.5"/>
+              <line x1="105" y1="207" x2="105" y2="210" stroke="white" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.4"/>
+
+              <!-- Legend -->
+              <rect x="5" y="280" width="200" height="28" rx="3" fill="#1A2E45"/>
+              <line x1="12" y1="290" x2="25" y2="290" stroke="#E8A020" stroke-width="1.5"/>
+              <text x="28" y="293" font-family="monospace" font-size="6" fill="#8A9BB0">Flight path</text>
+              <circle cx="80" cy="290" r="3" fill="#E8A020"/>
+              <text x="86" y="293" font-family="monospace" font-size="6" fill="#8A9BB0">Key event</text>
+              <line x1="130" y1="290" x2="143" y2="290" stroke="#3A8FC8" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="147" y="293" font-family="monospace" font-size="6" fill="#8A9BB0">Alt ref</text>
+              <text x="12" y="303" font-family="monospace" font-size="6" fill="#4A5568">Fig. 3.1 — P-Mentor Normal Take-Off Profile</text>
+            </svg>
+            <div class="diagram-caption">Fig. 3.1 — Normal T/O Profile · Key Altitudes</div>
+          </div>
+        </div>
+
+        <div class="warn-strip">
+          <span class="warn-icon">⛔</span>
+          <div>
+            <div class="warn-title">Warning — Engine Failure After VR</div>
+            <div class="warn-text">Below 650 ft MSL (500 ft AGL): nose down, 70 KIAS, throttle idle, land straight ahead within 45° (into wind). Do NOT attempt to return to the field. Above 650 ft: standard emergency procedures. This must be briefed BEFORE every take-off.</div>
+          </div>
+        </div>
+
+        <div class="caution-strip" style="margin-top:6px;">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Caution — Flap Retraction</div>
+            <div class="warn-text">ALWAYS verify safe speed (min VX 56 KIAS) and call out before selecting flaps. Never retract flaps if airspeed is insufficient — aircraft will sink. If positive ROC not confirmed, do not retract.</div>
+          </div>
+        </div>
+
+        <!-- COMMON ERRORS -->
+        <div style="background:var(--red-pale);border:1px solid #F5C6C3;border-radius:var(--radius);padding:8px 11px;margin-top:8px;">
+          <div style="font-family:var(--font-mono);font-size:8.5px;color:var(--red);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;">Common Errors — Take-Off Execution</div>
+          <div class="two-col">
+            <ul class="brief-list mistakes">
+              <li>Insufficient right rudder — nose drifts left on power application</li>
+              <li>Late rotation — aircraft skips or floats on ground</li>
+              <li>Not maintaining 70 KIAS climb attitude — climbing at wrong speed</li>
+            </ul>
+            <ul class="brief-list mistakes">
+              <li>Missing speed call before flaps up at 400 ft AGL</li>
+              <li>Not tracking centreline after lift-off — drifting in circuit</li>
+              <li>Forgetting MCP 2250 RPM after flap retraction</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="instr-note">
+          <div class="instr-note-label">FI Teaching Points</div>
+          <div class="instr-note-text">Demo the full sequence on first attempt — talk through all steps aloud. Student takes over on 2nd take-off. Watch for feet on brakes during roll — common early error. Ensure student calls out each step; silence = not thinking. If student drifts off centreline, ask them to identify their reference point. Praise positive procedure language: "Rotate" not "pull back".</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 03 — LINE-UP &amp; TAKE-OFF</span>
+    <span class="footer-right">Page 3 · SECTION 03 EXECUTION</span>
+  </div>
+</div>
+
+
+<!-- PAGE 4 — SECTION 04: CHECK -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · LINE-UP &amp; TAKE-OFF</span>
+    <span class="page-num">Page 4</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-banner" data-num="04">
+      <div class="section-num">04</div>
+      <div class="section-text">
+        <div class="section-title">Check</div>
+        <div class="section-subtitle">Assessment criteria · debrief points · progression</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Assessment</span>
+        <span class="block-title">Lesson Assessment Criteria</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:8.5px;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;padding:4px 8px;background:var(--green-pale);border-radius:var(--radius);">✓ Satisfactory — Progress</div>
+            <ul class="brief-list checks">
+              <li>Departure briefing complete and operationally correct</li>
+              <li>Line-up calls made correctly at each stage</li>
+              <li>Centreline maintained during take-off roll (±5 m)</li>
+              <li>VR call-out at 53 KIAS with prompt rotation</li>
+              <li>70 KIAS climb attitude established and maintained</li>
+              <li>Correct speed call before flap retraction at 400 ft AGL</li>
+              <li>MCP set and centreline tracked on climb-out</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:8.5px;color:var(--red);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;padding:4px 8px;background:var(--red-pale);border-radius:var(--radius);">✕ Unsatisfactory — Repeat</div>
+            <ul class="brief-list mistakes">
+              <li>Departure briefing missing or engine failure plan incomplete</li>
+              <li>No "Final clear" call before RWY entry</li>
+              <li>No HSI check on line-up</li>
+              <li>Consistent directional control failures on roll</li>
+              <li>Flap retraction without speed call or at unsafe speed</li>
+              <li>No VR call-out, or late rotation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top:9px;background:var(--grey-100);border:1px solid var(--grey-200);border-radius:var(--radius);padding:8px 10px;">
+          <div style="font-family:var(--font-mono);font-size:8.5px;color:var(--navy);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">Check Tolerances — P-Mentor Normal Take-Off</div>
+          <div class="tol-panel">
+            <div class="tol-panel-item"><div class="tol-panel-value">53 kt</div><div class="tol-panel-label">VR Call</div></div>
+            <div class="tol-panel-item"><div class="tol-panel-value">70 kt</div><div class="tol-panel-label">VY Climb</div></div>
+            <div class="tol-panel-item"><div class="tol-panel-value">400 ft</div><div class="tol-panel-label">Flaps AGL</div></div>
+            <div class="tol-panel-item"><div class="tol-panel-value">±5 m</div><div class="tol-panel-label">Centreline</div></div>
+            <div class="tol-panel-item"><div class="tol-panel-value">±10°</div><div class="tol-panel-label">Climb HDG</div></div>
+            <div class="tol-panel-item"><div class="tol-panel-value">500 ft</div><div class="tol-panel-label">Turn AGL</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">Structured Debrief Points</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item"><span class="debrief-num">1</span><span>Student self-assessment first — "How did the take-off roll feel? Were you in control of direction at all times?"</span></div>
+          <div class="debrief-item"><span class="debrief-num">2</span><span>Review departure briefing quality — was the engine failure plan operationally complete?</span></div>
+          <div class="debrief-item"><span class="debrief-num">3</span><span>Line-up procedure — were all calls made? HSI checked? "Final clear" called before entry?</span></div>
+          <div class="debrief-item"><span class="debrief-num">4</span><span>Take-off roll quality — directional control, rudder use, reference point tracking. When did student notice yaw?</span></div>
+          <div class="debrief-item"><span class="debrief-num">5</span><span>Rotation and climb — was VR called at 53 KIAS? Did aircraft climb at 70 KIAS? Was trim applied?</span></div>
+          <div class="debrief-item"><span class="debrief-num">6</span><span>Flap retraction sequence — speed call made? MCP set? Centreline tracked to 500 ft AGL turn?</span></div>
+          <div class="debrief-item"><span class="debrief-num">7</span><span>Progress decision and FlightLogger entry. Study: SOP §1.11.1 and §1.9.1 for next lesson review.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="content-block block-technique no-break">
+        <div class="block-header">
+          <span class="block-type-pill">Progression</span>
+          <span class="block-title">Next Lesson</span>
+        </div>
+        <div class="block-body">
+          <div class="ref-row" style="border:none;padding:0;background:none;margin-bottom:6px;">
+            <span class="ref-tag lesson">LESSON</span>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--navy);">DGH 04 — Circuit &amp; Landing</div>
+              <div style="font-size:10px;color:var(--grey-500);">Normal circuit pattern and normal landing</div>
+            </div>
+          </div>
+          <ul class="brief-list">
+            <li>Review: SOP §1.18.1 Normal Landing</li>
+            <li>Study: Circuit procedure, PAPI, final speeds</li>
+            <li>Review: Go-around procedure §1.20</li>
+          </ul>
+        </div>
+      </div>
+      <div class="content-block block-check no-break">
+        <div class="block-header">
+          <span class="block-type-pill">Admin</span>
+          <span class="block-title">Documentation</span>
+        </div>
+        <div class="block-body">
+          <ul class="brief-list checks">
+            <li>Log outcome in FlightLogger</li>
+            <li>Record flight time and exercise codes</li>
+            <li>Mark objectives complete / incomplete</li>
+            <li>Note directional control quality for next lesson</li>
+            <li>Debrief sign-off — FI and student</li>
+          </ul>
+          <div class="sop-strip" style="margin-top:7px;">
+            <span class="sop-badge">SOP</span>
+            <span class="sop-text">EFB / FlightLogger documentation</span>
+            <span class="sop-section">§ 0.6</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-box no-break" style="margin-top:4px;">
+      <span style="font-size:14px;">✈</span>
+      <div style="font-size:10px;color:var(--grey-700);line-height:1.45;"><strong>Template Notice:</strong> This briefing follows the CAPA standard layout. Only lesson-specific content changes. SOP E2R1 is authoritative — this package supplements, does not replace, the SOP. Printed copies are not controlled. Refer to FlightLogger for current version.</div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">BRP-Rotax GmbH &amp; Co. KG. (2024). <em>ROTAX 912 iSc series operator's manual</em>. BRP-Rotax GmbH &amp; Co. KG.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 03 — LINE-UP &amp; TAKE-OFF</span>
+    <span class="footer-right">Page 4 · SECTION 04 CHECK</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DGH 00 — Aircraft Familiarisation &amp; Introduction to Flight · P-Mentor — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --purple:      #7B4FBF;
+  --purple-pale: #F0E8FF;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+/* ── PAGE SHELL ── */
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+
+/* ── HEADER / FOOTER ── */
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header.hdr-instructor{border-bottom-color:var(--sky);}
+.page-header.hdr-briefing{border-bottom-color:var(--amber);}
+.page-header.hdr-debrief{border-bottom-color:var(--purple);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 10px;border-radius:3px;}
+.page-header .page-label.lbl-instructor{background:rgba(58,143,200,0.2);color:var(--sky-light);}
+.page-header .page-label.lbl-briefing{background:rgba(232,160,32,0.2);color:var(--amber);}
+.page-header .page-label.lbl-debrief{background:rgba(123,79,191,0.2);color:#C0A0F0;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+
+/* ── PAGE BODY ── */
+.page-body{flex:1;padding:15px 20px 12px;display:flex;flex-direction:column;gap:9px;}
+
+/* ── COVER HEADER ── */
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-header::after{content:'DGH 00';position:absolute;right:18px;bottom:-12px;font-family:var(--font-display);font-size:90px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.cover-logo-block{width:36px;height:36px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-atp-badge{font-family:var(--font-mono);font-size:8px;background:rgba(232,160,32,0.15);color:var(--amber);padding:2px 8px;border-radius:3px;border:1px solid rgba(232,160,32,0.3);letter-spacing:0.07em;display:inline-block;margin-bottom:10px;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:11px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:9.5px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:11px;color:var(--grey-300);margin-bottom:13px;line-height:1.5;}
+.cover-meta-row{display:flex;gap:7px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9px;padding:3px 9px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.phase{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+
+/* ── PAGE IDENTITY BANDS ── */
+.page-band{display:flex;align-items:center;gap:12px;padding:9px 20px;border-bottom:1px solid var(--grey-200);}
+.page-band.band-intro{background:var(--grey-100);}
+.page-band.band-instructor{background:linear-gradient(90deg,rgba(58,143,200,0.08) 0%,transparent 100%);border-bottom-color:var(--sky-pale);}
+.page-band.band-briefing{background:linear-gradient(90deg,rgba(232,160,32,0.08) 0%,transparent 100%);border-bottom-color:#E8D5A0;}
+.page-band.band-debrief{background:linear-gradient(90deg,rgba(123,79,191,0.08) 0%,transparent 100%);border-bottom-color:#D5C0F0;}
+.band-icon{width:28px;height:28px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.band-icon.bi-intro{background:var(--navy);}
+.band-icon.bi-instructor{background:var(--sky);}
+.band-icon.bi-briefing{background:var(--amber);}
+.band-icon.bi-debrief{background:var(--purple);}
+.band-text{display:flex;flex-direction:column;gap:1px;}
+.band-label{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;line-height:1;}
+.band-label.bl-intro{color:var(--navy);}
+.band-label.bl-instructor{color:var(--sky);}
+.band-label.bl-briefing{color:#8B6000;}
+.band-label.bl-debrief{color:var(--purple);}
+.band-sub{font-size:9.5px;color:var(--grey-500);}
+
+/* ── OVERVIEW CARDS ── */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:5px 12px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
+.ov-card-body{padding:8px 12px;}
+.ov-card.conditions .ov-card-header{background:var(--navy);}
+.ov-card.conditions .ov-card-icon{background:var(--sky);}
+.ov-card.conditions .ov-card-label{color:var(--white);}
+.ov-card.aim .ov-card-header{background:var(--navy-light);}
+.ov-card.aim .ov-card-icon{background:var(--sky);}
+.ov-card.aim .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.tolerances .ov-card-label{color:#5A3E00;}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+
+/* ── LISTS ── */
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:3px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+
+/* ── TOLERANCES ── */
+.tol-list{display:flex;flex-direction:column;gap:4px;}
+.tol-row{display:flex;align-items:flex-start;gap:9px;background:var(--white);border:1px solid var(--grey-200);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;}
+.tol-param{font-family:var(--font-mono);font-size:8.5px;font-weight:600;color:#7A5A00;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;min-width:58px;padding-top:1px;}
+.tol-value{font-size:10px;color:var(--grey-700);line-height:1.4;}
+.tol-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:5px 6px;text-align:center;}
+.tol-tile-val{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--navy);line-height:1;}
+.tol-tile-lbl{font-family:var(--font-mono);font-size:7.5px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+
+/* ── REFERENCES ── */
+.ref-list{display:flex;flex-direction:column;gap:3px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:4px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 6px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.atp{background:var(--amber-pale);color:#7A5A00;border:1px solid #E8D5A0;}
+.ref-text{font-size:10px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:8.5px;color:var(--sky);flex-shrink:0;}
+
+/* ── SECTION BANNERS ── */
+.section-banner{border-radius:var(--radius-lg);padding:9px 15px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
+.section-banner::after{content:attr(data-label);position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:32px;font-weight:900;opacity:0.06;letter-spacing:0.02em;line-height:1;pointer-events:none;}
+.section-banner.sb-sky{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-bottom:3px solid var(--sky);}
+.section-banner.sb-amber{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-bottom:3px solid var(--amber);}
+.section-banner.sb-red{background:linear-gradient(135deg,#3A0A06 0%,#5C1008 100%);border-bottom:3px solid var(--red);}
+.section-banner.sb-green{background:linear-gradient(135deg,#0A2A18 0%,#0D3A22 100%);border-bottom:3px solid var(--green);}
+.section-banner.sb-purple{background:linear-gradient(135deg,#1A0A30 0%,#2A1448 100%);border-bottom:3px solid var(--purple);}
+.section-num{font-family:var(--font-display);font-size:28px;font-weight:800;line-height:1;flex-shrink:0;}
+.sb-sky .section-num,.sb-amber .section-num{color:var(--amber);}
+.sb-red .section-num{color:var(--red);}
+.sb-green .section-num{color:var(--green);}
+.sb-purple .section-num{color:#C0A0F0;}
+.section-text .section-title{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-text .section-subtitle{font-size:9.5px;color:var(--grey-300);}
+
+/* ── CONTENT BLOCKS ── */
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:5px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:9px 13px;}
+
+/* Block themes */
+.block-sky .block-header{background:#EBF5FF;}
+.block-sky .block-type-pill{background:var(--sky);color:var(--white);}
+.block-amber .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-amber .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-navy .block-header{background:var(--navy);}
+.block-navy .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-navy .block-title{color:var(--white);}
+.block-red .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-red .block-type-pill{background:var(--red);color:var(--white);}
+.block-red .block-title{color:var(--red);}
+.block-green .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-green .block-type-pill{background:var(--green);color:var(--white);}
+.block-purple .block-header{background:var(--purple-pale);border-bottom-color:#D5C0F0;}
+.block-purple .block-type-pill{background:var(--purple);color:var(--white);}
+
+/* ── PROSE ── */
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.6;}
+.prose strong{color:var(--navy);font-weight:600;}
+.prose + .prose{margin-top:7px;}
+
+/* ── SOP INLINE TAG ── */
+.sop-inline{font-family:var(--font-mono);font-size:7.5px;background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;padding:1px 5px;border-radius:3px;vertical-align:middle;margin-left:3px;white-space:nowrap;display:inline-block;}
+
+/* ── SOP STRIP ── */
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:7px;}
+.sop-badge{font-family:var(--font-mono);font-size:8px;font-weight:600;background:var(--green);color:var(--white);padding:2px 6px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:9.5px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:8.5px;color:var(--green);flex-shrink:0;}
+
+/* ── KEY PRINCIPLE ── */
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:7px 11px;margin-bottom:8px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.45;}
+
+/* ── INSTRUCTOR NOTE ── */
+.instr-note{background:var(--sky-pale);border:1px solid rgba(58,143,200,0.3);border-left:4px solid var(--sky);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:7px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8px;color:var(--sky);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;font-weight:600;}
+.instr-note-text{font-size:10px;color:#1A3A5A;line-height:1.5;}
+
+/* ── CAUTION STRIP ── */
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:7px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:8px;font-weight:600;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+
+/* ── ERROR LIST ── */
+.error-list{display:flex;flex-direction:column;gap:4px;}
+.error-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;padding:5px 9px;background:var(--white);border:1px solid #F5C6C3;border-left:3px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;}
+.error-icon{color:var(--red);font-size:10px;flex-shrink:0;margin-top:1px;font-family:var(--font-mono);}
+.error-item.emphasis{border-left-color:#8B1A0E;background:#FFF2F1;}
+.error-item.emphasis .error-icon{color:#8B1A0E;}
+
+/* ── DEBRIEF ITEMS ── */
+.debrief-list{display:flex;flex-direction:column;gap:5px;}
+.debrief-item{display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;padding:6px 10px;background:var(--white);border:1px solid #D5C0F0;border-radius:var(--radius);}
+.debrief-num{font-family:var(--font-mono);font-size:9px;background:var(--purple);color:var(--white);min-width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-weight:600;}
+.debrief-pass{display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;padding:5px 9px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:3px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;margin-top:4px;}
+.debrief-pass-icon{font-size:11px;flex-shrink:0;margin-top:1px;}
+
+/* ── APA REFERENCES ── */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:7px;margin-top:4px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:5px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:3px;}
+.apa-ref-entry{font-size:8.5px;color:var(--grey-700);line-height:1.5;padding-left:16px;text-indent:-16px;}
+
+/* ── UTILITIES ── */
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.spacer{height:6px;}
+
+/* ── PRINT ── */
+@media print{
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen{
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+  </style>
+  <link rel="stylesheet" href="../../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="atp-dgh-00-pmentor.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 1 — INTRODUCTION
+     ═══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <!-- COVER HEADER -->
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · P-MENTOR VFR · §1.3</div>
+      </div>
+    </div>
+    <div class="cover-atp-badge">ATP INTERNATIONAL · LESSON PREP · NOV20/FRI</div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · DGH Phase · Basic Handling</div>
+    <div class="cover-lesson-title">Aircraft Familiarisation &amp;<br>Introduction to Flight</div>
+    <div class="cover-lesson-subtitle">First experience · nose attitude concept · taxi · basic control handling · crosscheck introduction</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">P-Mentor · Tecnam P2010</span>
+      <span class="meta-chip phase">DGH 00 · Basic Handling Phase</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">SW of Roskilde CTR · 1,000–2,000 ft</span>
+    </div>
+  </div>
+
+  <!-- PAGE IDENTITY BAND -->
+  <div class="page-band band-intro">
+    <div class="band-icon bi-intro">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.4"/>
+        <path d="M8 7V11M8 5V5.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="band-text">
+      <span class="band-label bl-intro">Introduction</span>
+      <span class="band-sub">Lesson overview · Conditions · Aim · Tolerances · CAPA SOP references</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- ROW 1: CONDITIONS + AIM -->
+    <div class="overview-grid">
+
+      <!-- 01 · CONDITIONS -->
+      <div class="ov-card conditions no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2.5C9.7 2.5 11.1 3.6 11.6 5.1C12.8 5.4 13.7 6.4 13.7 7.6C13.7 9 12.6 10 11.3 10H4.7C3.2 10 2.3 9 2.3 7.6C2.3 6.5 3 5.5 4.1 5.1C4.4 3.5 6.1 2.5 8 2.5Z" stroke="white" stroke-width="1.2" fill="none"/>
+              <path d="M5 13H11M6.5 11.5V13M8 11V13M9.5 11.5V13" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="ov-card-label">01 · Conditions</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Good visibility and cloudbase</li>
+            <li>Negligible turbulence</li>
+            <li>Suggested training area: SW of Roskilde CTR</li>
+            <li>Altitude: 1,000–2,000 ft AMSL</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 02 · AIM OF THE LESSON -->
+      <div class="ov-card aim no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.4"/>
+              <circle cx="8" cy="8" r="3.5" stroke="white" stroke-width="1.1"/>
+              <circle cx="8" cy="8" r="1.2" fill="white"/>
+            </svg>
+          </div>
+          <span class="ov-card-label">02 · Aim of the Lesson</span>
+        </div>
+        <div class="ov-card-body">
+          <p class="prose" style="font-style:italic;">
+            To introduce you to taxiing the aircraft, conduct of visual flight and to familiarise you with ways to manoeuvre the aircraft.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ROW 2: TOLERANCES + SOP REFERENCES -->
+    <div class="overview-grid">
+
+      <!-- 03 · TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="3" width="12" height="10" rx="1" stroke="#5A3E00" stroke-width="1.2"/>
+              <path d="M2 8H14" stroke="#5A3E00" stroke-width="1"/>
+              <path d="M5 5.5V6.5M8 5V7M11 5.5V6.5" stroke="#5A3E00" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="ov-card-label">03 · Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-list">
+            <div class="tol-row">
+              <span class="tol-param">Control</span>
+              <span class="tol-value">Positive control of the aircraft at all times, under instructor supervision</span>
+            </div>
+            <div class="tol-row">
+              <span class="tol-param">Taxi</span>
+              <span class="tol-value">Stay on the taxi line during all ground operations</span>
+            </div>
+          </div>
+          <p class="prose" style="margin-top:6px;font-size:9px;color:var(--grey-500);font-style:italic;">No numerical tolerances — introductory lesson only.</p>
+        </div>
+      </div>
+
+      <!-- 04 · CAPA SOP REFERENCES -->
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+              <path d="M3 2H13C13.6 2 14 2.4 14 3V13C14 13.6 13.6 14 13 14H3C2.4 14 2 13.6 2 13V3C2 2.4 2.4 2 3 2Z" stroke="white" stroke-width="1.2"/>
+              <path d="M5 5H11M5 8H11M5 11H9" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="ov-card-label">04 · CAPA SOP References</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Aircraft Information &amp; Cockpit Layout</span>
+              <span class="ref-section">§1.3–§1.3.1</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Aircraft Limitations</span>
+              <span class="ref-section">§1.3.2</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Pre-Flight &amp; External Inspection</span>
+              <span class="ref-section">§1.4–§1.4.1</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Checklist Handling</span>
+              <span class="ref-section">§1.5</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Taxi</span>
+              <span class="ref-section">§1.8</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Line-Up &amp; Normal Take-Off</span>
+              <span class="ref-section">§1.10–§1.11.1</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">Level Flight &amp; Crosscheck</span>
+              <span class="ref-section">§1.13</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag atp">ATP INT</span>
+              <span class="ref-text">Student Notes: DGH 00 · P-Mentor</span>
+              <span class="ref-section">NOV20/FRI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 00 — Aircraft Familiarisation &amp; Introduction to Flight</span>
+    <span class="page-num">Page 1 of 4</span>
+  </div>
+</div><!-- /page 1 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 2 — INSTRUCTOR SELF-BRIEFING
+     ═══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="page-header hdr-instructor">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 00 · Intro to Flight</span>
+    <span class="page-label lbl-instructor">Instructor Self-Briefing</span>
+    <span class="page-num">Page 2 of 4</span>
+  </div>
+
+  <!-- PAGE IDENTITY BAND -->
+  <div class="page-band band-instructor">
+    <div class="band-icon bi-instructor">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <circle cx="6" cy="5" r="2.5" stroke="white" stroke-width="1.3"/>
+        <path d="M2 13C2 11 3.8 9.5 6 9.5C8.2 9.5 10 11 10 13" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M11 7L13 9L15 6" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="band-text">
+      <span class="band-label bl-instructor">Instructor Self-Briefing</span>
+      <span class="band-sub">Flight execution · key teaching points · common errors to anticipate</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- SECTION 1: HOW TO CONDUCT THE FLIGHT -->
+    <div class="section-banner sb-sky" data-label="FLIGHT">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Flight</div>
+        <div class="section-subtitle">How to conduct this lesson in the air</div>
+      </div>
+    </div>
+
+    <div class="content-block block-navy no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Flight</span>
+        <span class="block-title">Ground Operations, Controls &amp; Concept of Attitude</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">
+          The student will be expected to taxi the aircraft <span class="sop-inline">SOP §1.8</span> and perform checklist handling <span class="sop-inline">SOP §1.5</span> already at this lesson. Hand over control when airborne. The student must manoeuvre the aircraft to understand the primary function of all controls — encourage full, free control inputs. Introduce straight and level flight <span class="sop-inline">SOP §1.13</span>, then introduce the concept of <strong>crosscheck</strong>: a rapid switch of focus from nose attitude (95% of focus) to the altimeter, then back.
+        </p>
+        <p class="prose" style="margin-top:7px;">
+          Correct any tendency to think in terms of control movement rather than aircraft manoeuvre. The objective is for the student to internalise <strong>positive aircraft control</strong> as a concept — thinking "lift the nose" rather than "pull back on the elevator". This distinction is foundational to all future handling. Do not over-correct; let the student discover the aircraft's responses.
+        </p>
+        <div class="prose" style="margin-top:7px;font-size:9.5px;background:var(--sky-pale);border:1px solid rgba(58,143,200,0.3);border-left:4px solid var(--sky);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;">
+          <strong>P-Mentor Performance Notes:</strong> VR 53 KIAS · Climb speed 80 KIAS · Normal cruise MAP 24" / 2100 RPM
+        </div>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">All operations to be conducted under instructor supervision; line-up and take-off per SOP</span>
+          <span class="sop-section">§1.10–§1.11.1</span>
+        </div>
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text"><strong>ESP (Electronic Stability Protection)</strong> is active on the P-Mentor by default — remind the student it does not replace correct technique. This lesson is primarily an <strong>experience</strong>, not a structured learning exercise. Resist the urge to over-teach. The student must feel free to explore the aircraft's responses without fear.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: COMMON ERRORS -->
+    <div class="section-banner sb-red" data-label="ERRORS">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Common Errors</div>
+        <div class="section-subtitle">Anticipate and address these during DGH 00</div>
+      </div>
+    </div>
+
+    <div class="content-block block-red no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Errors</span>
+        <span class="block-title">Common Mistakes — DGH 00</span>
+      </div>
+      <div class="block-body">
+        <div class="error-list">
+          <div class="error-item">
+            <span class="error-icon">✕</span>
+            <span>Forgetting look-out and planning ahead during taxi</span>
+          </div>
+          <div class="error-item">
+            <span class="error-icon">✕</span>
+            <span>Losing control during the taxi check</span>
+          </div>
+          <div class="error-item">
+            <span class="error-icon">✕</span>
+            <span>Forgetting to use the rudder during flight</span>
+          </div>
+          <div class="error-item emphasis">
+            <span class="error-icon">✕</span>
+            <span>Being apprehensive and not using the controls freely when allowed to manoeuvre the aircraft to any desired attitude — student must make <strong>full control deflection manoeuvres</strong> without concern for consequences (at this stage)</span>
+          </div>
+          <div class="error-item">
+            <span class="error-icon">✕</span>
+            <span>Not understanding the meaning of aircraft attitude as the nose–horizon relationship</span>
+          </div>
+          <div class="error-item emphasis">
+            <span class="error-icon">✕</span>
+            <span>Being seated incorrectly — cannot reach or use all controls freely, or cannot see the nose. <strong>Check and correct seating position before engine start.</strong> The nose vs. horizon picture changes with movement — student must sit in the same position every time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 00 — Aircraft Familiarisation &amp; Introduction to Flight</span>
+    <span class="page-num">Page 2 of 4</span>
+  </div>
+</div><!-- /page 2 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 3 — THE BRIEFING
+     ═══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="page-header hdr-briefing">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 00 · Intro to Flight</span>
+    <span class="page-label lbl-briefing">The Briefing</span>
+    <span class="page-num">Page 3 of 4</span>
+  </div>
+
+  <!-- PAGE IDENTITY BAND -->
+  <div class="page-band band-briefing">
+    <div class="band-icon bi-briefing">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M2 3H14V11H9L6 14V11H2V3Z" stroke="#0D1B2A" stroke-width="1.3" fill="none"/>
+        <path d="M5 6H11M5 8.5H9" stroke="#0D1B2A" stroke-width="1.1" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="band-text">
+      <span class="band-label bl-briefing">The Briefing</span>
+      <span class="band-sub">Ground preparation content to deliver to the student before the flight</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- SECTION 1: BRIEFING CONTENT -->
+    <div class="section-banner sb-amber" data-label="BRIEFING">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Briefing</div>
+        <div class="section-subtitle">What to cover during the ground brief</div>
+      </div>
+    </div>
+
+    <div class="content-block block-amber no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Briefing</span>
+        <span class="block-title">Pre-Flight Ground Preparation</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">
+          This is (probably) your first introduction to flight and is thought of more as an experience than a direct learning tool. You will be briefed on flight preparation, external and internal inspection of the aircraft, and on basic handling of controls. <span class="sop-inline">SOP §1.4–§1.5</span>
+        </p>
+        <p class="prose" style="margin-top:7px;">
+          You will also learn the term <strong>nose attitude</strong> — or plainly <strong>attitude</strong> — of the aircraft: the distance between the cowling and the horizon. This is the fundamental reference for all flying.
+        </p>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">Walk the student through cockpit layout and external inspection before boarding</span>
+          <span class="sop-section">§1.3.1 / §1.4.1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY CONCEPTS TO INTRODUCE -->
+    <div class="section-banner sb-amber" data-label="CONCEPTS">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Key Concepts</div>
+        <div class="section-subtitle">Core ideas to introduce and reinforce during this lesson</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sky no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Concept</span>
+        <span class="block-title">Nose Attitude &amp; Positive Aircraft Control</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Positive Aircraft Control</div>
+          <div class="key-principle-text">We do not "pull back on the elevator" — we "lift the nose". Think in aircraft manoeuvre, not control movement. This is the concept of positive aircraft control.</div>
+        </div>
+        <ul class="brief-list" style="margin-top:4px;">
+          <li>Nose attitude = the distance between the cowling and the horizon — this is what you control</li>
+          <li><strong>Crosscheck</strong>: a rapid switch of focus from nose attitude (95% of focus) to e.g. the altimeter, then immediately back to nose attitude</li>
+          <li>Deviations detected on instruments are corrected by adjusting nose attitude — not by chasing the instrument</li>
+          <li>Correct seating position is essential — the nose picture changes if you move</li>
+        </ul>
+        <div class="caution-strip">
+          <div>
+            <div class="warn-title">⚠ Key Point</div>
+            <div class="warn-text">If you think control movement, you will only be able to control the aircraft. If you think aircraft manoeuvre, you will be able to <strong>fly</strong> the aircraft.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT TO COVER: CHECKLIST -->
+    <div class="content-block block-green no-break" style="margin-top:2px;">
+      <div class="block-header">
+        <span class="block-type-pill">Checklist</span>
+        <span class="block-title">Briefing Coverage Checklist</span>
+      </div>
+      <div class="block-body">
+        <ul class="brief-list checks">
+          <li>Pre-flight documentation and planning <span class="sop-inline">SOP §1.4</span></li>
+          <li>External inspection walkthrough at the aircraft <span class="sop-inline">SOP §1.4.1</span></li>
+          <li>Cockpit familiarisation — key instruments and controls <span class="sop-inline">SOP §1.3.1</span></li>
+          <li>Checklist philosophy: "singing the song" <span class="sop-inline">SOP §1.5</span></li>
+          <li>Concept of nose attitude (cowling–horizon relationship)</li>
+          <li>Concept of crosscheck (nose attitude → instrument → back)</li>
+          <li>Positive aircraft control: manoeuvre thinking vs. control input thinking</li>
+          <li>Seating position and its effect on the nose picture</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 00 — Aircraft Familiarisation &amp; Introduction to Flight</span>
+    <span class="page-num">Page 3 of 4</span>
+  </div>
+</div><!-- /page 3 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 4 — DE-BRIEFING
+     ═══════════════════════════════════════════════════════ -->
+<div class="page">
+
+  <div class="page-header hdr-debrief">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 00 · Intro to Flight</span>
+    <span class="page-label lbl-debrief">De-Briefing</span>
+    <span class="page-num">Page 4 of 4</span>
+  </div>
+
+  <!-- PAGE IDENTITY BAND -->
+  <div class="page-band band-debrief">
+    <div class="band-icon bi-debrief">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M3 12L2 14L4 13.5L3 12Z" fill="white"/>
+        <path d="M3 12C5 8 9 6 13 7" stroke="white" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        <path d="M8 4L10 6M10 4L8 6" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="12" cy="5" r="2" stroke="white" stroke-width="1.2" fill="none"/>
+      </svg>
+    </div>
+    <div class="band-text">
+      <span class="band-label bl-debrief">De-Briefing</span>
+      <span class="band-sub">Post-flight review · assessment questions · progression criteria</span>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- SECTION 1: DEBRIEF QUESTIONS -->
+    <div class="section-banner sb-purple" data-label="REVIEW">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Post-Flight Review</div>
+        <div class="section-subtitle">Questions to guide the de-brief discussion</div>
+      </div>
+    </div>
+
+    <div class="content-block block-purple no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">De-Brief Discussion Points</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <span class="debrief-num">1</span>
+            <span><strong>Attitude concept:</strong> Can the student describe what nose attitude means and how to set and read it? Did they demonstrate understanding in the air?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">2</span>
+            <span><strong>Crosscheck:</strong> Was the concept of crosscheck (nose attitude → altimeter → back) understood and attempted during the flight?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">3</span>
+            <span><strong>Control use:</strong> Was the student willing to use controls freely and explore the aircraft's responses, or did apprehension limit input?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">4</span>
+            <span><strong>Rudder awareness:</strong> Did the student use rudder during flight, or was there a tendency to rely solely on aileron?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">5</span>
+            <span><strong>Taxi:</strong> Was the taxi conducted on the centreline with appropriate look-out and planning ahead?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">6</span>
+            <span><strong>Positive control:</strong> Did the student demonstrate positive control at all times, understanding that they are flying the aircraft — not just operating its controls?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">7</span>
+            <span><strong>Seating:</strong> Was the seating position established correctly before departure? Note for subsequent lessons.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: PROGRESSION CRITERIA -->
+    <div class="section-banner sb-green" data-label="PROGRESS">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Progression</div>
+        <div class="section-subtitle">Criteria to progress to DGH 01</div>
+      </div>
+    </div>
+
+    <div class="content-block block-green no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Progress</span>
+        <span class="block-title">Ready for DGH 01 — Basic Handling &amp; Trim</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-pass">
+          <span class="debrief-pass-icon">✓</span>
+          <span>Student maintained positive control of the aircraft at all times (with instructor supervision)</span>
+        </div>
+        <div class="debrief-pass">
+          <span class="debrief-pass-icon">✓</span>
+          <span>Student demonstrated understanding of the nose–horizon attitude concept</span>
+        </div>
+        <div class="debrief-pass">
+          <span class="debrief-pass-icon">✓</span>
+          <span>Taxi conducted on the centreline with adequate look-out</span>
+        </div>
+        <div class="debrief-pass">
+          <span class="debrief-pass-icon">✓</span>
+          <span>Student was not excessively apprehensive — used controls with some confidence</span>
+        </div>
+        <div class="caution-strip" style="margin-top:8px;">
+          <div>
+            <div class="warn-title">Note</div>
+            <div class="warn-text">DGH 00 is an experience lesson. Do not withhold progression on the basis of technique alone — the aim is introduction, not mastery. Proceed to DGH 01 as long as the student demonstrated positive control and engaged willingly with the aircraft.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APA REFERENCES -->
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation: DGH 00</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Tecnam. (2020). <em>P2010 airplane flight manual</em>. Tecnam S.p.A.</div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 00 — Aircraft Familiarisation &amp; Introduction to Flight</span>
+    <span class="page-num">Page 4 of 4</span>
+  </div>
+</div><!-- /page 4 -->
+
+
+</body>
+</html>

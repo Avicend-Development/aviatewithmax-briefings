@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 09 — Circuit Consolidation — CAPA Briefing Package</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.spoken{font-family:var(--font-mono);font-size:9px;background:rgba(232,160,32,0.15);color:#7A5A00;border:1px solid rgba(232,160,32,0.45);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px 2px;white-space:nowrap;}
+.speed-band{display:flex;height:18px;border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+.speed-seg{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:500;color:var(--white);}
+.speed-seg.white{background:#9ECAE1;flex:1.2;}
+.speed-seg.green{background:var(--green);flex:1.5;}
+.speed-seg.sf-zone{background:var(--amber);flex:0.4;}
+.speed-seg.stall{background:var(--red);flex:0.25;}
+.speed-labels{display:flex;font-family:var(--font-mono);font-size:8px;color:var(--grey-500);gap:0;margin-bottom:6px;}
+.recovery-flow{display:flex;align-items:stretch;gap:0;margin:8px 0;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--amber);}
+.flow-connector{flex:1;height:2px;background:var(--grey-200);align-self:center;margin-top:0;}
+.flow-label{font-family:var(--font-mono);font-size:7.5px;color:var(--navy);text-align:center;line-height:1.2;font-weight:500;}
+.flow-spoken{font-size:7px;color:var(--grey-500);text-align:center;line-height:1.2;}
+.flow-row{display:flex;align-items:center;}
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0;}
+.acsel-cell{background:var(--navy);border-radius:var(--radius);padding:7px 5px;text-align:center;}
+.acsel-letter{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--amber);line-height:1;}
+.acsel-word{font-family:var(--font-mono);font-size:7.5px;color:var(--sky-light);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+.acsel-detail{font-size:7.5px;color:var(--grey-300);margin-top:3px;line-height:1.3;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — COVER / OVERVIEW -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 09 · Circuit Consolidation</div>
+    <div class="page-num">1 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+            <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+            <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cover-org-name">Center Air · CAPA</div>
+          <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Circuit Flying</div>
+      <div class="cover-lesson-title">Circuit Consolidation</div>
+      <div class="cover-lesson-subtitle">Consolidation of landing technique · flapless approach · increased situational awareness · instructor support reduced</div>
+      <div class="cover-meta-row">
+        <div class="meta-chip aircraft">Piper PA-28-161 Cherokee Warrior II (OY-BTV)</div>
+        <div class="meta-chip stage">DGH 09 · Basic Training</div>
+        <div class="meta-chip env">VMC · Day · EKRK Circuit</div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Timing</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Good visibility. EKRK landing circuit. Instructor increasingly hands-off approach. Multiple approaches including flapless.</div>
+        </div>
+      </div>
+
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Learning Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Consolidate circuit procedures &amp; landing techniques to high standard</li>
+            <li>Perform flapless approaches due to flap failure</li>
+            <li>Maintain situational awareness with reduced instructor input</li>
+            <li>Execute go-around at own initiative when approach not stabilised</li>
+            <li>Demonstrate independence &amp; airmanship toward solo standard</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">◎</div>
+          <div class="ov-card-label">Tolerances (SOP §1.26)</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">±100 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±15°</div>
+              <div class="tol-param">Heading</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">+10/−5 kt</div>
+              <div class="tol-param">Airspeed</div>
+            </div>
+          </div>
+          <div class="tol-grid" style="margin-top:6px;">
+            <div class="tol-tile" style="grid-column:span 3;">
+              <div class="tol-value">±4 m</div>
+              <div class="tol-param">Landing Distance from Centreline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Why This Exercise Matters</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>All previously learned techniques must be thorough &amp; reliable before solo</li>
+            <li>Flapless approach is a valid emergency procedure if flaps fail mechanically</li>
+            <li>Increasing autonomy = building confidence &amp; independence for solo</li>
+            <li>This is the final consolidation before the solo check</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">!</div>
+          <div class="ov-card-label">Common Errors (ATP INT / SOP)</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Not adjusting for being high already on base (correct early, not late)</li>
+            <li>Stretching glide by raising nose in power-off approaches (stall risk)</li>
+            <li>Forgetting final check — especially during power-off approaches</li>
+            <li>Forgetting flap retraction after go-around before climbing away</li>
+            <li>Forgetting flap retraction &amp; re-trimming before power application in touch-and-go</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">📚</div>
+          <div class="ov-card-label">Key References</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">§1.26 Standard circuit procedures; flapless approach technique; go-around</span>
+              <span class="ref-section">E2R1</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag manual">POH</span>
+              <span class="ref-text">Flapless approach speed 65 KIAS (1.3 VS1); increased landing distance requirement</span>
+              <span class="ref-section">VB-880</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag lesson">ATP</span>
+              <span class="ref-text">Circuit consolidation; flapless approach; transition to solo</span>
+              <span class="ref-section">NOV20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.26</span>
+    <span class="footer-mid">CIRCUIT CONSOLIDATION · DGH 09</span>
+    <span>Center Air APS · Roskilde · Page 1 of 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — CONSOLIDATION & MENTAL ATTITUDE -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 09 · Circuit Consolidation</div>
+    <div class="page-num">2 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="1">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Consolidation Framework</div>
+        <div class="section-subtitle">All previously learned skills · flapless approach · mental attitude toward autonomy</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Consolidation Is Not New Learning</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">By DGH 09, all circuit procedures must be thoroughly consolidated. <strong>No new items are introduced except the flapless approach.</strong> The focus shifts from learning to demonstrating reliable execution. The instructor will be less involved, giving you more responsibility for decisions.</p>
+        <div class="key-principle">
+          <div class="key-principle-label">Mental Shift</div>
+          <div class="key-principle-text">You already know what to do. Now you must do it reliably and independently.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Flapless Approach (Flap Failure Procedure)</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">If flaps are inoperative (mechanical failure), the flapless approach is performed:</p>
+        <ul class="procedure-list">
+          <li><strong>Minimum approach speed:</strong> 1.3 × VS1 clean = 1.3 × 50 = <strong>65 KIAS</strong></li>
+          <li><strong>Critical check:</strong> Ensure runway available is sufficient. Flapless landing distance is significantly longer than normal.</li>
+          <li><strong>Attitude:</strong> Flapless approach attitude is slightly more nose-up than normal approach</li>
+          <li><strong>Touch-down speed:</strong> Higher than normal (65 KIAS vs. typical 50 KIAS)</li>
+          <li><strong>Landing roll:</strong> Expect longer landing distance. Do not attempt flapless on short runways.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Mindset</span>
+        <span class="block-title">Increasing Autonomy — Instructor Role Changes</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Mental Attitude:</strong> Be aggressive and stay in command. The instructor will NOT support unless genuinely needed. Do not expect the instructor to catch your errors — this is your flight now.</p>
+        <ul class="brief-list">
+          <li><strong>Making own decisions</strong> and implementing them is the goal</li>
+          <li><strong>Go-around at own initiative</strong> when approach is unstable or does not look right</li>
+          <li><strong>Pitch and power corrections</strong> applied confidently without prompting</li>
+          <li><strong>Circuit management:</strong> Your responsibility to manage altitude, heading, speed</li>
+          <li><strong>The instructor is evaluating,</strong> not teaching. Talking uses mental capacity.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.26</span>
+    <span class="footer-mid">CIRCUIT CONSOLIDATION · DGH 09</span>
+    <span>Center Air APS · Roskilde · Page 2 of 3</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — KEY SOP ITEMS & COMMON ERRORS -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 09 · Circuit Consolidation</div>
+    <div class="page-num">3 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="2">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">SOP Callouts & Critical Procedures</div>
+        <div class="section-subtitle">Standard callouts · flap management · touch-and-go coordination</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Procedure</span>
+        <span class="block-title">Standard Circuit Callouts (CAPA SOP §1.26)</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Callouts are mandatory and must be practiced:</strong></p>
+        <ul class="procedure-list">
+          <li><span class="spoken">"My controls - my trim"</span> / <span class="spoken">"Your controls - your trim"</span> — at handover</li>
+          <li><span class="spoken">"Speed [XX] kts. Checked - Flaps [X]"</span> → <span class="spoken">"Flaps [X] Set"</span> — after flap selection</li>
+          <li><span class="spoken">"Final clear"</span> — on base, checking traffic on final</li>
+          <li><span class="spoken">"Final Clear - Lining up RWY [XX]"</span> → <span class="spoken">"Heading Indicator Checked - RWY [XX] Identified"</span> — on final approach</li>
+          <li><span class="spoken">"Final check: Flaps full set"</span> — before landing (PA28 has no propeller fine)</li>
+          <li><span class="spoken">"Going around - Full power - Flaps 1 or less - G/A attitude - Positive ROC - Safe speed - Flaps up"</span> — standard go-around</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block block-warning no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Critical</span>
+        <span class="block-title">Flap Management — Touch-and-Go Landing</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>After landing in a touch-and-go:</strong></p>
+        <ul class="procedure-list">
+          <li><strong>Retract flaps to take-off position (0° or partial)</strong> — flaps up for climb-out</li>
+          <li><strong>RETRIM immediately</strong> — the aircraft will pitch down as flaps are retracted</li>
+          <li><strong>BEFORE advancing power for take-off roll,</strong> ensure trim is set for take-off configuration</li>
+          <li>Many student errors occur because trim is not reset before applying power</li>
+        </ul>
+        <div class="warn-strip">
+          <div class="warn-icon">⚠</div>
+          <div>
+            <div class="warn-title">Trim Before Power</div>
+            <div class="warn-text">The aircraft will want to pitch down when you retract flaps. If you do not retrim, applying power will cause a sudden pitch-down as the trim takes effect during the take-off roll.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Summary</span>
+        <span class="block-title">Reinforcement of Previously Learned Procedures</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>DGH 09 consolidates all techniques from DGH 01 through DGH 08:</strong></p>
+        <ul class="brief-list">
+          <li>Standard circuit procedures &amp; callouts</li>
+          <li>Approach techniques (power-on &amp; power-off)</li>
+          <li>Go-around drills &amp; execution at own initiative</li>
+          <li>Flare &amp; landing technique</li>
+          <li>Touch-and-go flap management &amp; trim coordination</li>
+          <li>Situational awareness &amp; traffic scanning</li>
+        </ul>
+        <p class="prose" style="margin-top:8px;">All common errors from previous lessons must be corrected. This is the final check before solo assessment.</p>
+        <div class="apa-references">
+          <div class="apa-ref-heading">References (APA7)</div>
+          <div class="apa-ref-list">
+            <div class="apa-ref-entry">Center Air Pilot Academy. (2025). <em>CAPA standard operating procedures</em> (Edition 2, Rev. 1). Center Air Pilot Academy.</div>
+            <div class="apa-ref-entry">Center Air Pilot Academy. (2020). <em>ATP integrated flight training: Lesson preparation notes</em> (NOV20/FRI). Center Air Pilot Academy.</div>
+            <div class="apa-ref-entry">Piper Aircraft. (n.d.). <em>Pilot's operating handbook: PA-28-161 Cherokee Warrior II</em> (Report No. VB-880). Piper Aircraft.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.26</span>
+    <span class="footer-mid">CIRCUIT CONSOLIDATION · DGH 09</span>
+    <span>Center Air APS · Roskilde · Page 3 of 3</span>
+  </div>
+</div>
+
+</body>
+</html>

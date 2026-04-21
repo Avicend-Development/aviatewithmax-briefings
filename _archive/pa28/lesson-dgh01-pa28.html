@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 01 — Taxiing & Basic Handling — CAPA Briefing Package</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.spoken{font-family:var(--font-mono);font-size:9px;background:rgba(232,160,32,0.15);color:#7A5A00;border:1px solid rgba(232,160,32,0.45);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px 2px;white-space:nowrap;}
+.speed-band{display:flex;height:18px;border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+.speed-seg{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:500;color:var(--white);}
+.speed-seg.white{background:#9ECAE1;flex:1.2;}
+.speed-seg.green{background:var(--green);flex:1.5;}
+.speed-seg.sf-zone{background:var(--amber);flex:0.4;}
+.speed-seg.stall{background:var(--red);flex:0.25;}
+.speed-labels{display:flex;font-family:var(--font-mono);font-size:8px;color:var(--grey-500);gap:0;margin-bottom:6px;}
+.recovery-flow{display:flex;align-items:stretch;gap:0;margin:8px 0;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--amber);}
+.flow-connector{flex:1;height:2px;background:var(--grey-200);align-self:center;margin-top:0;}
+.flow-label{font-family:var(--font-mono);font-size:7.5px;color:var(--navy);text-align:center;line-height:1.2;font-weight:500;}
+.flow-spoken{font-size:7px;color:var(--grey-500);text-align:center;line-height:1.2;}
+.flow-row{display:flex;align-items:center;}
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0;}
+.acsel-cell{background:var(--navy);border-radius:var(--radius);padding:7px 5px;text-align:center;}
+.acsel-letter{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--amber);line-height:1;}
+.acsel-word{font-family:var(--font-mono);font-size:7.5px;color:var(--sky-light);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+.acsel-detail{font-size:7.5px;color:var(--grey-300);margin-top:3px;line-height:1.3;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER / OVERVIEW -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 01 · Taxiing & Basic Handling</div>
+    <div class="page-num">1 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+            <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+            <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cover-org-name">Center Air · CAPA</div>
+          <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Basic Handling</div>
+      <div class="cover-lesson-title">Taxiing & Basic Handling</div>
+      <div class="cover-lesson-subtitle">Cockpit layout · checklist procedures · trim technique · attitude flying · crosscheck</div>
+      <div class="cover-meta-row">
+        <div class="meta-chip aircraft">Piper PA-28-161 Cherokee Warrior II (OY-BTV)</div>
+        <div class="meta-chip stage">DGH 01 · Basic Training Phase</div>
+        <div class="meta-chip env">VMC Only · Day · S Roskilde CTR · 1000–2000 ft AGL</div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Timing</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">20</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Good visibility and cloudbase · training area south of Roskilde CTR</div>
+        </div>
+      </div>
+
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>DGH 00 completed and assessed</li>
+            <li>Understands nose attitude control principle</li>
+            <li>Can perform basic crosscheck</li>
+            <li>Comfortable with controls transfer callout</li>
+            <li>ACSEL check completed</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Learning Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Master trim technique (1/½/¼ notch doses)</li>
+            <li>Consolidate attitude flying principle</li>
+            <li>Improve crosscheck speed and discipline</li>
+            <li>Understand rudder as primary roll control</li>
+            <li>Achieve tolerances in straight and level</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⟳</div>
+          <div class="ov-card-label">Tolerances</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">±2°</div>
+              <div class="tol-param">Pitch</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±5°</div>
+              <div class="tol-param">Roll</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±200 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±30°</div>
+              <div class="tol-param">Heading</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10 kt</div>
+              <div class="tol-param">Airspeed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⚠</div>
+          <div class="ov-card-label">Common Errors</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Focusing on instruments instead of attitude</li>
+            <li>Concentrating on attitude without crosschecking</li>
+            <li>Not holding attitude steady during trim input</li>
+            <li>Using aileron as primary roll control (rudder is primary)</li>
+            <li>Applying trim in large, unmeasured doses</li>
+            <li>Changing attitude while trimming — negates trim purpose</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">📚</div>
+          <div class="ov-card-label">References</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="apa-references">
+            <div class="apa-ref-list">
+              <div class="apa-ref-entry">Center Air Pilot Academy. (2025). <i>CAPA standard operating procedures</i> (Edition 2, Rev. 1). Center Air Pilot Academy.</div>
+              <div class="apa-ref-entry">Center Air Pilot Academy. (2020). <i>ATP integrated flight training: Lesson preparation notes</i> (NOV20/FRI). Center Air Pilot Academy.</div>
+              <div class="apa-ref-entry">Piper Aircraft. (n.d.). <i>Pilot's operating handbook: PA-28-161 Cherokee Warrior II</i> (Report No. VB-880). Piper Aircraft.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · NOV 2025</span>
+    <span class="footer-mid">BRIEFING PACKAGE</span>
+    <span>ATP INT NOV20</span>
+  </div>
+</div>
+
+<!-- PAGE 2: TRIM & ATTITUDE -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 01 · Taxiing & Basic Handling</div>
+    <div class="page-num">2 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Trim Technique</div>
+        <div class="section-subtitle">The most critical skill — incorrect trim creates a cascade of errors</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">Technique</div>
+        <div class="block-title">How Trim Works</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">Trim relieves elevator and rudder pressure. Apply trim in measured doses of <strong>1 notch, ½ notch, ¼ notch</strong>. The critical rule: <strong>Hold attitude rock steady while trimming. The ONLY thing changing is stick force, not attitude.</strong></p>
+        <div class="key-principle">
+          <div class="key-principle-label">Critical Error</div>
+          <div class="key-principle-text">Many students re-trim the aircraft by allowing attitude to change during trim input. This negates the purpose of trim. Lock the attitude and let trim take the load.</div>
+        </div>
+        <p class="prose" style="margin-top:8px;"><strong>Procedure:</strong> You are flying level at 80 kt. There is a pull force on the control column. Apply 1 notch of trim. Check the stick force — is it reduced? If yes, apply another ½ notch. Check again. When the stick is neutralised, stop trimming. The aircraft is now flying hands-off.</p>
+      </div>
+    </div>
+
+    <div class="content-block block-check">
+      <div class="block-header">
+        <div class="block-type-pill">Demonstration</div>
+        <div class="block-title">Ground Demonstration — Feel the Difference</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">Before flight, demonstrate stick force on the ground:</p>
+        <ul class="procedure-list">
+          <li>Controls in neutral, find the amount of force needed to move the control column</li>
+          <li>Understand the feel of free stick movement</li>
+          <li>Trim the elevator fully nose-up, feel the pressure required to hold the column forward</li>
+          <li>Trim the elevator fully nose-down, feel the heavy pull required</li>
+          <li>Return trim to neutral and understand the relationship between trim and stick force</li>
+        </ul>
+        <p class="prose" style="margin-top:8px;">This ground demonstration builds intuition for stick force management in flight.</p>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Attitude Flying Principle</div>
+        <div class="section-subtitle">Nose attitude controls speed · Power controls vertical speed</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <div class="block-type-pill">Theory</div>
+        <div class="block-title">Fundamental Relationship</div>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Nose attitude determines airspeed.</strong> If you want to fly faster, lower the nose. If you want to fly slower, raise the nose. Power determines vertical speed (climb or descent rate).</p>
+        <div class="two-col">
+          <div>
+            <div class="key-principle">
+              <div class="key-principle-label">Attitude Control</div>
+              <div class="key-principle-text">Set nose attitude → measure airspeed on ASI → maintain attitude with crosscheck</div>
+            </div>
+          </div>
+          <div>
+            <div class="key-principle">
+              <div class="key-principle-label">Power Control</div>
+              <div class="key-principle-text">Set power → measure vertical speed on VSI → maintain power setting</div>
+            </div>
+          </div>
+        </div>
+        <p class="prose" style="margin-top:8px;"><strong>Example:</strong> Maintain 80 kt altitude 2000 ft. Attitude is slightly nose-down for 80 kt. Airspeed drops to 75 kt — lower the nose further. Airspeed climbs to 85 kt — raise the nose. The power is set for level flight (no climb or descent). Do not change power to correct speed.</p>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Rudder — Primary Directional Control</div>
+        <div class="section-subtitle">Aileron is auxiliary — this is opposite to what many students assume</div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning">
+      <div class="block-header">
+        <div class="block-type-pill">Critical</div>
+        <div class="block-title">Role of Aileron vs. Rudder</div>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Rudder is the PRIMARY directional control.</strong> Aileron ASSISTS rudder but is not the primary roll input. Many students instinctively use aileron to turn, which is incorrect.</p>
+        <div class="warn-strip">
+          <div class="warn-icon">✈</div>
+          <div>
+            <div class="warn-title">Correct Turn Technique</div>
+            <div class="warn-text">To turn left: Apply left rudder (primary). Aileron assists by banking the aircraft. Opposite rudder is applied on the opposite pedal to prevent slip/skid. Power and altitude maintain via attitude.</div>
+          </div>
+        </div>
+        <p class="prose" style="margin-top:8px;"><strong>Why this matters:</strong> If you use aileron alone without rudder, the aircraft will slip (nose points outside the turn). Passengers feel uncomfortable, and fuel flow is inefficient. Rudder must lead the turn.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · NOV 2025</span>
+    <span class="footer-mid">BRIEFING PACKAGE</span>
+    <span>ATP INT NOV20</span>
+  </div>
+</div>
+
+<!-- PAGE 3: CROSSCHECK & CONTROL -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 01 · Taxiing & Basic Handling</div>
+    <div class="page-num">3 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">The Crosscheck Refined</div>
+        <div class="section-subtitle">Drill this technique until it is automatic</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">Technique</div>
+        <div class="block-title">Scanning Discipline</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">The crosscheck is disciplined visual scanning:</p>
+        <ul class="procedure-list">
+          <li>Primary focus (95%) on nose attitude — the nose–horizon relationship</li>
+          <li>Brief glance (½ second max) at ONE instrument — altimeter, heading indicator, or airspeed indicator</li>
+          <li>Immediately return focus to nose attitude</li>
+          <li>Process the instrument data and apply corrective inputs to attitude</li>
+          <li>Repeat the cycle every 5–10 seconds</li>
+        </ul>
+        <p class="prose" style="margin-top:8px;"><strong>What you are NOT doing:</strong> You are not scanning all instruments continuously. You are not staring at the altimeter. You are not making control inputs based on instruments without checking attitude first.</p>
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">If you see the student fixating on instruments, close the hood over the bottom instruments and force them to fly on attitude. Rebuild scanning discipline.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">Technique</div>
+        <div class="block-title">Positive Aircraft Control</div>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Positive control means you set an attitude and MAINTAIN it.</strong> Do not allow the aircraft to wander. Once you establish a 2000 ft level attitude, lock that attitude and hold it. Any deviation is corrected immediately with a small nose input.</p>
+        <p class="prose" style="margin-top:8px;"><strong>Technique:</strong> Set the nose attitude. Check the altimeter — are you at 2000 ft? If so, maintain that attitude. If altitude is drifting, adjust nose attitude slightly and re-check. Do not wait for large deviations to correct.</p>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Grip & Feel</div>
+        <div class="section-subtitle">How to hold the control column</div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning">
+      <div class="block-header">
+        <div class="block-type-pill">Technique</div>
+        <div class="block-title">Control Inputs — Light Hand</div>
+      </div>
+      <div class="block-body">
+        <div class="warn-strip">
+          <div class="warn-icon">✋</div>
+          <div>
+            <div class="warn-title">Grip Rule</div>
+            <div class="warn-text">Hold the control column with 2–3 fingers only when feeling aircraft responses. A white-knuckle grip masks control feel and prevents you from sensing how the aircraft responds to inputs. Use thumb and two fingers, with a light but deliberate touch.</div>
+          </div>
+        </div>
+        <p class="prose" style="margin-top:8px;"><strong>Why:</strong> With a light grip, you can feel when the aircraft is approaching a stall (back pressure increases). You can feel speed changes through elevator trim. A tight grip numbs all this feedback.</p>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="6">
+      <div class="section-num">6</div>
+      <div class="section-text">
+        <div class="section-title">Common Errors & Recovery</div>
+        <div class="section-subtitle">Mistakes and how to correct them</div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning">
+      <div class="block-header">
+        <div class="block-type-pill">Common Errors</div>
+        <div class="block-title">Mistakes on This Lesson</div>
+      </div>
+      <div class="block-body">
+        <div class="caution-strip">
+          <div class="warn-icon">⚠</div>
+          <div>
+            <div class="warn-title">Overcontrolling</div>
+            <div class="warn-text">If altitude drifts 50 ft up, do not make large nose-down inputs. Make small, measured inputs (a few degrees of pitch). Overcontrolling causes altitude to oscillate.</div>
+          </div>
+        </div>
+        <div class="caution-strip">
+          <div class="warn-icon">⚠</div>
+          <div>
+            <div class="warn-title">Not Anticipating Level-Off</div>
+            <div class="warn-text">If climbing at +500 ft/min from 1500 ft to 2000 ft, begin levelling off around 1950 ft. Do not climb to 2000 ft and then discover you are climbing through. Crosscheck continuously to anticipate deviations.</div>
+          </div>
+        </div>
+        <div class="caution-strip">
+          <div class="warn-icon">⚠</div>
+          <div>
+            <div class="warn-title">Not Understanding Trim</div>
+            <div class="warn-text">Trim is not control input. Trim is pressure relief. If you are holding back pressure on the stick, apply trim to remove that pressure. Do not increase back pressure to trim.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop">
+      <div class="block-header">
+        <div class="block-type-pill">SOP</div>
+        <div class="block-title">Summary of Key Callouts</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">Key CAPA callouts for this lesson:</p>
+        <div class="sop-strip">
+          <div class="sop-badge">Control Transfer</div>
+          <div class="sop-text"><span class="spoken">Your controls / My controls</span></div>
+        </div>
+        <p class="prose" style="font-size:9px;margin-top:6px;color:var(--grey-700);">Mandatory callout when passing control between pilot and instructor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · NOV 2025</span>
+    <span class="footer-mid">BRIEFING PACKAGE</span>
+    <span>ATP INT NOV20</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flight Briefing · Landing Circuit — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+  </style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-landing-circuit.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1 — COVER & OVERVIEW -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 06 · Landing Circuit</span>
+    <span class="page-num">Page 1</span>
+  </div>
+
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Circuit & Landing</div>
+    <div class="cover-lesson-title">Landing Circuit</div>
+    <div class="cover-lesson-subtitle">Normal landing · power-off approach · circuit procedure · roundout · flare</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</span>
+      <span class="meta-chip stage">Circuit Training</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">Controlled or Uncontrolled Aerodrome</span>
+      <span class="meta-chip env">Briefing: 20 min</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <!-- DURATION -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">20</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">HR</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">20</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">VFR day conditions, wind less than 15 kt, controlled or uncontrolled aerodrome. Minimum 1000 ft circuit altitude. Visibility 5 km or better.</div>
+        </div>
+      </div>
+      <!-- PREREQUISITES -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">02 · Student Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Mastered straight and level flight — altitude hold ±50 ft, heading ±10°</li>
+            <li>Completed turns up to 30° bank confidently, coordinated flight demonstrated</li>
+            <li>Climb and level off procedures: understands climb attitudes, power settings, trim</li>
+            <li>Radio communications competent — able to transmit/receive ATC and blind calls</li>
+            <li>Familiar with SOP §1.17 standard circuit procedures, terminology, leg definitions</li>
+            <li>Understands flap usage: positions 0, 1, 2 and associated speed changes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- OBJECTIVES -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg>
+          </div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Fly a consistent standard circuit at 1000 ft AAL, maintaining circuit shape</li>
+            <li>Maintain correct speed at each leg: 90 kt downwind, 70 kt final</li>
+            <li>Perform a normal landing to smooth touchdown with mains-first contact</li>
+            <li>Understand and demonstrate a power-off approach from downwind abeam position</li>
+            <li>Execute a go-around on command or if approach unstabilised below 200 ft</li>
+            <li>Manage flap selections and power transitions smoothly on approach and landing</li>
+            <li>Maintain centreline control and awareness of aim point throughout descent</li>
+          </ul>
+        </div>
+      </div>
+      <!-- TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">1000 ft ±100</div>
+              <div class="tol-param">Circuit Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">90 kt</div>
+              <div class="tol-param">Downwind Speed</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">70 kt</div>
+              <div class="tol-param">Final Approach</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">63 kt</div>
+              <div class="tol-param">Threshold Speed</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">150–200 m</div>
+              <div class="tol-param">Aim Point</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">&lt; 200 ft</div>
+              <div class="tol-param">Go-Around Limit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- MOTIVATION -->
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6H14L10.5 8.5L12 13L8 10.5L4 13L5.5 8.5L2 6H6.5L8 2Z" stroke="white" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="ov-card-label">05 · Motivation</span>
+        </div>
+        <div class="ov-card-body">
+          <p class="prose">The landing circuit is the first true test of your ability to manage an aircraft in a multi-phase sequence. Unlike straight climbs or level turns, the circuit demands continuous control input, speed management, and navigation while descending towards a fixed point. Mastering a stable, properly-shaped circuit is the foundation for safe landing technique. Students who fly sloppy circuits often develop poor landing habits: high and fast approaches lead to ballooning, late flare, and hard touchdowns. A disciplined approach to circuit discipline builds the muscle memory and scan patterns essential for safe operations at any aerodrome.</p>
+        </div>
+      </div>
+      <!-- COMMON MISTAKES -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">06 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>High and fast on final — airspeed not reduced to target, causing long float on landing</li>
+            <li>Late flap selection — holding flap 1 until base turn, forcing rushed transitions</li>
+            <li>Ballooning in the roundout — pulling back too hard or not managing power smoothly</li>
+            <li>Power not fully off in flare — aircraft sinks with residual power, hard touchdown</li>
+            <li>Not recognising unstabilised approach — continuing descent below 200 ft when criteria not met</li>
+            <li>Poor circuit shape — crosswind leg drifting downwind, widening turns late in circuit</li>
+            <li>Aim point drift — not monitoring position relative to threshold, landing long or short</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FI REFERENCES -->
+    <div class="ov-card references no-break">
+      <div class="ov-card-header">
+        <div class="ov-card-icon">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="3" y="1.5" width="10" height="13" rx="1.5" stroke="white" stroke-width="1.5"/><path d="M6 5H10M6 7.5H10M6 10H9" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="ov-card-label">07 · Flight Instructor References</span>
+      </div>
+      <div class="ov-card-body">
+        <div class="ref-list">
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">E2R1 §1.17 — Standard Circuit Procedures & Positioning</span>
+            <span class="ref-section">§1.17</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">E2R1 §1.19 — Normal Landing Technique</span>
+            <span class="ref-section">§1.19</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">E2R1 §1.20 — Go-Around Procedure & Decision Criteria</span>
+            <span class="ref-section">§1.20</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">P2002-JF POH — Landing distance, flap settings, approach speeds</span>
+            <span class="ref-section">Section 5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Briefing Package</span>
+    <span class="footer-mid">Landing Circuit · DGH 06</span>
+    <span>Tecnam P2002-JF Sierra</span>
+  </div>
+</div>
+
+<!-- PAGE 2 — CIRCUIT PROCEDURE & TECHNIQUE -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 06 · Landing Circuit</span>
+    <span class="page-num">Page 2</span>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+    <!-- SECTION 1 — STANDARD CIRCUIT -->
+    <div class="section-banner no-break" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Standard Circuit</div>
+        <div class="section-subtitle">Procedure from initial climb to final approach alignment</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header">
+        <span class="block-type-pill">SOP PROCEDURE</span>
+        <span class="block-title">Circuit Execution</span>
+      </div>
+      <div class="block-body">
+        <ul class="procedure-list">
+          <div class="phase-label">UPWIND / INITIAL CLIMB</div>
+          <li>Rotate at 53 KIAS, establish positive rate of climb</li>
+          <li>Retract flap at 56 kt — DO NOT retract above this speed (risk of sink)</li>
+          <li>Climb at 70 kt (VY best climb speed) — MCP 2250 RPM</li>
+          <li>Turn crosswind at circuit height minus 200 ft, or at field boundary (whichever first)</li>
+
+          <div class="phase-label">CROSSWIND</div>
+          <li>Turn smoothly to crosswind heading, maintaining positive ROC</li>
+          <li>Continue climb to 1000 ft AAL — aim to level off by halfway across crosswind leg</li>
+          <li>Level off at 1000 ft — transition to 90 kt cruise configuration</li>
+          <li>Set MAP 22–23" for cruise descent on downwind</li>
+          <li>BUMFICH check abeam airfield: carb heat, fuel pump, mixture, flap trim, ignition, controls, harness</li>
+
+          <div class="phase-label">DOWNWIND</div>
+          <li>Maintain 90 kt, MAP 22–23", 1000 ft AAL — steady descent not required yet</li>
+          <li>Report "downwind" on radio (controlled) or blind call (uncontrolled)</li>
+          <li>Abeam runway threshold: reduce MAP to 12", select Flap 1, begin smooth deceleration to 70 kt</li>
+          <li>Descent commences: aim for gentle descent ~500 ft/min, maintain circuit altitude until base turn</li>
+
+          <div class="phase-label">BASE</div>
+          <li>Turn base when approximately 45° past runway threshold (adjust for wind)</li>
+          <li>Select Flap 2 on base turn — DO NOT make large MAP changes on base</li>
+          <li>Maintain 70 kt, adjust MAP to maintain steady 500 ft/min descent to intercept final</li>
+          <li>Aim to intercept final glidepath at approximately 600 ft AAL</li>
+
+          <div class="phase-label">FINAL APPROACH</div>
+          <li>Call "final" once runway in sight, aircraft aligned, approach stabilising</li>
+          <li>Stable approach criteria: 70 kt, Flap 2, descent ~500 ft/min, aligned within 10° heading</li>
+          <li>Aim point: 150–200 m down runway from threshold — monitor drift continuously</li>
+          <li>Reduce power smoothly as entering ground effect (~500 ft AAL) — DO NOT go fully idle until flare</li>
+
+          <div class="phase-label">ROUNDOUT & FLARE</div>
+          <li>At 20 ft: begin roundout — raise nose progressively, allow descent to slow</li>
+          <li>At 5 ft: close throttle fully — hold attitude, resist pull pressure as aircraft sinks</li>
+          <li>Touchdown: main wheels first — slight tail-low attitude is correct</li>
+          <li>After touchdown: apply brakes gently, maintain centreline with rudder and nosewheel steering</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 2 — NORMAL LANDING TECHNIQUE -->
+    <div class="section-banner no-break" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Normal Landing Technique</div>
+        <div class="section-subtitle">Rounding out, flare, and managing the descent</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">Landing Approach & Touchdown</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">GOLDEN RULE</div>
+          <div class="key-principle-text">Stable approach = constant speed, constant angle, aligned. If any element is wrong, GO AROUND.</div>
+        </div>
+
+        <p class="prose"><strong>Roundout:</strong> The roundout is a progressive increase in pitch attitude that slows the descent rate as you approach the runway. Apply back pressure smoothly — never abruptly. Your descent should reduce from ~500 ft/min to ~100 ft/min by 5 ft AGL. The horizon line should rise steadily; watch the runway move down the windscreen rather than fixating on a point.</p>
+
+        <p class="prose"><strong>Flare:</strong> As the aircraft reaches ~5 ft, begin to hold the attitude you've established rather than pulling more. The aircraft will settle towards the runway as airspeed decreases. Resist the urge to "keep pulling" — this often causes ballooning (see below). Allow gravity to work; your job is to manage the rate of descent with pitch attitude and, if needed, small power adjustments.</p>
+
+        <p class="prose"><strong>Ballooning:</strong> If the aircraft suddenly rises unexpectedly in the flare, DO NOT push the nose down (risk of hard landing). Instead: add a small amount of power (slight throttle advance), then gently ease back to your landing attitude. This allows you to regain descent without forcing the aircraft down.</p>
+
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">If in doubt about any approach — go around. A go-around is ALWAYS the right decision. Attempting to salvage a poor approach below 200 ft risks loss of control and hard landing.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Briefing Package</span>
+    <span class="footer-mid">Landing Circuit · DGH 06</span>
+    <span>Tecnam P2002-JF Sierra</span>
+  </div>
+</div>
+
+<!-- PAGE 3 — POWER-OFF APPROACH & GO-AROUND -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 06 · Landing Circuit</span>
+    <span class="page-num">Page 3</span>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+    <!-- SECTION 3 — POWER-OFF APPROACH -->
+    <div class="section-banner no-break" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Power-Off Approach</div>
+        <div class="section-subtitle">Simulated engine failure and glide management from downwind</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">THEORY</span>
+        <span class="block-title">Power-Off Approach Concept</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">A power-off approach simulates an engine failure in circuit, forcing you to manage descent and glide without power. The procedure starts when you're downwind abeam the runway threshold at 1000 ft AAL. On command from the instructor (or as a continuous exercise), you will close the throttle to idle, establish best glide speed (70 kt — the same as your normal approach speed), and manage flaps carefully to avoid undershooting or overshooting the runway.</p>
+
+        <p class="prose"><strong>Best Glide:</strong> The P2002 best glide speed is 70 kt — conveniently the same as your normal approach speed. This simplifies your workload. At idle, your descent rate will be approximately 500–600 ft/min, which is slightly steeper than a normal descent but very manageable if you plan ahead.</p>
+
+        <p class="prose"><strong>Flap Management:</strong> Flaps act as airbrakes in a power-off descent. You have no engine power to trade for lift, so flap usage is critical. If you're low on the glide path and at risk of undershooting, REDUCE flap (e.g., from Flap 2 to Flap 1) to decrease descent rate. If you're high and overshooting, INCREASE flap slowly to increase descent. If you misjudge badly and cannot reach the runway, you have one more tool: the forward slip (covered separately).</p>
+
+        <p class="prose"><strong>Aim Point:</strong> Aim to land in the first third of the runway — approximately 400–600 m from threshold. This gives you margin if you're slightly high on the glide path.</p>
+
+        <p class="prose"><strong>Circuit Modification:</strong> Depending on your starting altitude and wind, you may need to tighten your circuit (smaller turns, steeper descent). Discuss the planned modifications with the instructor before entering downwind.</p>
+
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">E2R1 §1.20 — GO-AROUND criteria: unstabilised below 200 ft; runway not clear; crosswind exceeds limits; aircraft not configured.</span>
+          <span class="sop-section">§1.20</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 4 — GO-AROUND TECHNIQUE -->
+    <div class="section-banner no-break" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Go-Around Procedure</div>
+        <div class="section-subtitle">Abort approach and climb away safely</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check no-break">
+      <div class="block-header">
+        <span class="block-type-pill">PROCEDURE</span>
+        <span class="block-title">Go-Around Execution</span>
+      </div>
+      <div class="block-body">
+        <p class="prose" style="margin-bottom:8px;">CAPA callout sequence per SOP §1.20 — spoken aloud as each action is performed. Power application: prop full forward first, then throttle (right to left, smooth and gentle).</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:10px;color:var(--grey-700);">
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Going around - Full power"</span><span style="padding-top:2px;"> – Initial combined call. Prop full forward → throttle full forward. Begin rotating nose toward G/A attitude.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Flaps 1 or less"</span><span style="padding-top:2px;"> – Select Flap 1. Never retract directly 2 → 0 at low speed and altitude.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"G/A attitude"</span><span style="padding-top:2px;"> – Set and verify go-around pitch attitude. Accelerate through Vx 56 KIAS maintaining positive ROC.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Positive ROC"</span><span style="padding-top:2px;"> – VSI confirms climb. Aircraft ascending, not descending.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Safe speed"</span><span style="padding-top:2px;"> – Above Vx (56 KIAS). Safe to retract flaps — do not let nose drop.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Flaps UP"</span><span style="padding-top:2px;"> – Retract flaps fully. Trim back. Accelerate to Vy 70 KIAS.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="callout-tag">"Max continuous power"</span><span style="padding-top:2px;"> – At 400 ft AGL, set 2250 RPM MCP. Advise ATC; maintain sequence and re-join circuit.</span></div>
+        </div>
+
+        <div class="warn-strip">
+          <div class="warn-icon">!</div>
+          <div style="flex:1;">
+            <div class="warn-title">CRITICAL — Go-Around Rules</div>
+            <div class="warn-text">Never attempt to land after the aim point has been missed at low altitude. If the runway remaining is insufficient to land safely after the numbers, a go-around is mandatory. A safe go-around beats a crash landing every time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Briefing Package</span>
+    <span class="footer-mid">Landing Circuit · DGH 06</span>
+    <span>Tecnam P2002-JF Sierra</span>
+  </div>
+</div>
+
+<!-- PAGE 4 — DEBRIEF CRITERIA -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 06 · Landing Circuit</span>
+    <span class="page-num">Page 4</span>
+  </div>
+
+  <div class="page-body" style="gap:9px;">
+    <!-- SECTION 5 — DEBRIEF CRITERIA -->
+    <div class="section-banner no-break" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Debrief & Assessment</div>
+        <div class="section-subtitle">Key criteria to review after flight</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header">
+        <span class="block-type-pill">DEBRIEF</span>
+        <span class="block-title">Post-Flight Review Checklist</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <div class="debrief-num">1</div>
+            <div>
+              <strong>Circuit Shape:</strong> Was each leg at the correct altitude and position? Was the circuit symmetrical, or did you drift downwind on crosswind? Were turns coordinated and at appropriate rates?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">2</div>
+            <div>
+              <strong>Speed Control:</strong> Did you achieve and maintain 90 kt on downwind, 70 kt on final? Did you reach 63 kt by threshold? Were power and flap changes smooth?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">3</div>
+            <div>
+              <strong>Approach Stability:</strong> By 200 ft AAL, was the approach stable (speed, descent, alignment)? If not, did you recognise it early and go around, or continue and attempt a salvage?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">4</div>
+            <div>
+              <strong>Roundout Height & Quality:</strong> Did you begin the roundout at approximately 20 ft? Was it progressive and smooth, or abrupt and jerky? Did the descent rate reduce smoothly?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">5</div>
+            <div>
+              <strong>Touchdown Quality:</strong> Did the main wheels touch down first (correct), or was the landing flat three-point? Was the landing smooth or hard? Did you maintain centreline?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">6</div>
+            <div>
+              <strong>Power-Off Approach (if practised):</strong> Did you manage the glide path correctly? Was your descent rate appropriate? Did you use flap changes correctly to adjust descent? Did you land in the target zone?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">7</div>
+            <div>
+              <strong>Go-Around (if practised):</strong> Was power applied promptly and smoothly? Did you transition to climb attitude correctly? Was flap retraction timed appropriately?
+            </div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">8</div>
+            <div>
+              <strong>Debrief Separation:</strong> Normal approach and power-off approach should be debriefed separately, with clear discussion of what worked and what needs improvement in each scenario.
+            </div>
+          </div>
+        </div>
+
+        <div class="caution-strip" style="margin-top:12px;">
+          <div class="warn-icon">⚠</div>
+          <div style="flex:1;">
+            <div class="warn-title">Debrief Focus Areas</div>
+            <div class="warn-text">Emphasise consistency over perfection. A slightly high landing with smooth roundout is better than a low, hard landing with good touch-down alignment. Discuss recurring errors and patterns — if you consistently land long, examine why (high and fast entry, late flare management, etc.) rather than treating each landing as isolated.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- NOTES FOR NEXT LESSON -->
+    <div class="content-block block-technique no-break">
+      <div class="block-header">
+        <span class="block-type-pill">NEXT STEPS</span>
+        <span class="block-title">Progression & Consolidation</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">Once you have completed a minimum of 3 consistent circuits and demonstrated a normal landing within tolerances, the next lesson will introduce crosswind landings and wind correction during approach and landing. If you struggled with any of today's circuits, consolidate the current lesson with a second flight focused on circuit repetition before moving forward.</p>
+
+        <p class="prose">Key areas for independent study before the next flight: review radio phraseology for circuit calls, study the wind correction principle (crab angle), and practise visual estimation of descent rate (aim for gentle, steady descent, not steep dives or level-offs).</p>
+      </div>
+    </div>
+  </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">European Aviation Safety Agency. (n.d.). <em>Safety promotion leaflet GA1: Collision avoidance</em> (EGAST GA1). EASA.</div>
+      </div>
+    </div>
+
+  <div class="page-footer">
+    <span>Flight Briefing Package</span>
+    <span class="footer-mid">Landing Circuit · DGH 06</span>
+    <span>Tecnam P2002-JF Sierra</span>
+  </div>
+</div>
+
+</body>
+</html>

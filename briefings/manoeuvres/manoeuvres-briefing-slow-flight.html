@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 04 — Slow Flight — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.spoken{font-family:var(--font-mono);font-size:9px;background:rgba(232,160,32,0.15);color:#7A5A00;border:1px solid rgba(232,160,32,0.45);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px 2px;white-space:nowrap;}
+/* Speed band visualiser */
+.speed-band{display:flex;height:18px;border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+.speed-seg{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:500;color:var(--white);}
+.speed-seg.white{background:#9ECAE1;flex:1.2;}
+.speed-seg.green{background:var(--green);flex:1.5;}
+.speed-seg.sf-zone{background:var(--amber);flex:0.4;}
+.speed-seg.stall{background:var(--red);flex:0.25;}
+.speed-labels{display:flex;font-family:var(--font-mono);font-size:8px;color:var(--grey-500);gap:0;margin-bottom:6px;}
+/* Recovery flow */
+.recovery-flow{display:flex;align-items:stretch;gap:0;margin:8px 0;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--amber);}
+.flow-connector{flex:1;height:2px;background:var(--grey-200);align-self:center;margin-top:0;}
+.flow-label{font-family:var(--font-mono);font-size:7.5px;color:var(--navy);text-align:center;line-height:1.2;font-weight:500;}
+.flow-spoken{font-size:7px;color:var(--grey-500);text-align:center;line-height:1.2;}
+.flow-row{display:flex;align-items:center;}
+/* ACSEL grid */
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0;}
+.acsel-cell{background:var(--navy);border-radius:var(--radius);padding:7px 5px;text-align:center;}
+.acsel-letter{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--amber);line-height:1;}
+.acsel-word{font-family:var(--font-mono);font-size:7.5px;color:var(--sky-light);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+.acsel-detail{font-size:7.5px;color:var(--grey-300);margin-top:3px;line-height:1.3;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-slow-flight.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 1 — COVER / OVERVIEW
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 04 · Slow Flight</div>
+    <div class="page-num">1 / 4</div>
+  </div>
+
+  <div class="page-body">
+    <!-- Cover banner -->
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+            <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+            <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cover-org-name">Center Air · CAPA</div>
+          <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Basic Airwork</div>
+      <div class="cover-lesson-title">Slow Flight</div>
+      <div class="cover-lesson-subtitle">Flight at critically low airspeed · stall awareness · pitch governs speed · power governs altitude</div>
+      <div class="cover-meta-row">
+        <div class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</div>
+        <div class="meta-chip stage">DGH 04 · Basic Handling</div>
+        <div class="meta-chip env">VMC Only · Day · SW Roskilde CTR</div>
+      </div>
+    </div>
+
+    <!-- Overview grid -->
+    <div class="overview-grid">
+
+      <!-- Timing -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Timing</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">VMC · clearly defined natural horizon · non-gusty conditions · 1000–2500 ft AGL training area</div>
+        </div>
+      </div>
+
+      <!-- Prerequisites -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Straight &amp; level flight completed to tolerance</li>
+            <li>Climbs, descents and speed changes briefed</li>
+            <li>Understands attitude → speed, power → altitude</li>
+            <li>Effective trim technique established</li>
+            <li>ACSEL check completed independently</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objectives -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Learning Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Establish and maintain flight at minimum controllable airspeed</li>
+            <li>Perform slow-flight at traffic pattern speeds (flap configurations)</li>
+            <li>Execute minimum-speed climbs, glides and turns</li>
+            <li>Recognise pre-stall buffet and impending stall symptoms</li>
+            <li>Recover correctly with the CAPA slow-flight recovery callout</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tolerances -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">◎</div>
+          <div class="ov-card-label">Tolerances (SOP §1.22.2)</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">±100 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10°</div>
+              <div class="tol-param">Heading</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">+10/−5 kt</div>
+              <div class="tol-param">Airspeed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motivation -->
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Why This Exercise Matters</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Every landing approach is slow-flight — mastering it transfers directly to circuit safety</li>
+            <li>Builds feel for the aircraft near its aerodynamic limits — the foundation of stall awareness</li>
+            <li>Large rudder inputs at low speed build coordinated flight habits that prevent incipient spins</li>
+            <li>Heightened sensitivity to trim discipline reduces workload in the landing flare</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Common mistakes -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">!</div>
+          <div class="ov-card-label">Common Errors (ATP INT / SOP)</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Attempting to control airspeed with power instead of pitch attitude</li>
+            <li>Attempting to control altitude with pitch instead of power</li>
+            <li>Concentrating on the ASI — course drifts unnoticed</li>
+            <li>Insufficient rudder — uncoordinated ball, incipient yaw</li>
+            <li>Inaccurate trimming — excessive and continuous stick force</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /overview-grid -->
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.22.2</span>
+    <span class="footer-mid">SLOW FLIGHT · DGH 04</span>
+    <span>Center Air APS · Roskilde · Page 1 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 2 — THEORY: AERODYNAMICS & SAFETY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 04 · Slow Flight</div>
+    <div class="page-num">2 / 4</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="1">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Aerodynamics &amp; the Slow-Flight Regime</div>
+        <div class="section-subtitle">What slow flight is, why it matters and the P-Mentor speed picture</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-theory no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Theory</span>
+            <span class="block-title">What Is Slow Flight?</span>
+          </div>
+          <div class="block-body">
+            <p class="prose">Slow flight is controlled flight at or near the aircraft's minimum controllable airspeed — approximately <strong>5 kts above the stall speed</strong>. If power were suddenly removed, stall indications would appear immediately.</p>
+            <p class="prose" style="margin-top:6px;">The SOP defines <strong>two distinct training situations</strong>:</p>
+            <ul class="brief-list" style="margin-top:5px;">
+              <li>Establishment and maintenance of <strong>traffic pattern airspeed</strong> (simulates the approach environment)</li>
+              <li>Flight at the <strong>minimum controllable airspeed</strong> — just above the stall, with stall indications audible but no departure from controlled flight</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="content-block block-theory no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Theory</span>
+            <span class="block-title">The Governing Principle</span>
+          </div>
+          <div class="block-body">
+            <div class="key-principle">
+              <div class="key-principle-label">Core Rule — Slow Flight</div>
+              <div class="key-principle-text">Pitch attitude governs airspeed.<br>Power setting governs altitude.</div>
+            </div>
+            <p class="prose">At normal cruise speeds the relationship is intuitive — add power and you climb. In slow flight, the aircraft is operating on the <strong>back side of the power curve</strong>. The drag is so high that maintaining altitude requires significant power, and small pitch changes produce large speed responses. This reversal of normal feel is why slow flight demands accurate trimming and active power management.</p>
+          </div>
+        </div>
+
+        <div class="content-block block-warning no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Limitation</span>
+            <span class="block-title">VMC Only</span>
+          </div>
+          <div class="block-body">
+            <p class="prose">All slow flight and stall exercises are <strong>PROHIBITED during IMC</strong>. They shall <strong>only</strong> be performed during VMC with a clearly defined natural horizon.</p>
+            <div class="warn-strip" style="margin-top:6px;">
+              <div>
+                <div class="warn-title">⚠ No Horizon — No Exercise</div>
+                <div class="warn-text">If the natural horizon is obscured by haze, cloud or restricted visibility at any point during the exercise, recover immediately and return to clear conditions.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-check no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Safety Check</span>
+            <span class="block-title">ACSEL Before Slow Flight</span>
+          </div>
+          <div class="block-body">
+            <div class="acsel-grid">
+              <div class="acsel-cell">
+                <div class="acsel-letter">A</div>
+                <div class="acsel-word">Altitude</div>
+                <div class="acsel-detail">≥3000 ft AGL min. Sufficient for recovery.</div>
+              </div>
+              <div class="acsel-cell">
+                <div class="acsel-letter">C</div>
+                <div class="acsel-word">Config</div>
+                <div class="acsel-detail">Flaps as required for exercise. Check speed vs. VFE.</div>
+              </div>
+              <div class="acsel-cell">
+                <div class="acsel-letter">S</div>
+                <div class="acsel-word">Safety</div>
+                <div class="acsel-detail">VMC. Clear horizon. Non-gusty. Area clear of traffic.</div>
+              </div>
+              <div class="acsel-cell">
+                <div class="acsel-letter">E</div>
+                <div class="acsel-word">Engine</div>
+                <div class="acsel-detail">Temps &amp; pressures green. No abnormal indications.</div>
+              </div>
+              <div class="acsel-cell">
+                <div class="acsel-letter">L</div>
+                <div class="acsel-word">Location</div>
+                <div class="acsel-detail">Training area. Not over town, water or unsuitable terrain.</div>
+              </div>
+            </div>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">ACSEL check must be verbalised before commencing every slow-flight exercise.</span>
+              <span class="sop-section">§1.22</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block block-theory no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Theory</span>
+            <span class="block-title">P-Mentor Speed Picture</span>
+          </div>
+          <div class="block-body">
+            <p class="prose" style="margin-bottom:7px;">Understanding where slow flight sits on the ASI:</p>
+            <div class="speed-band">
+              <div class="speed-seg stall" style="font-size:7px;">STALL</div>
+              <div class="speed-seg white">WHITE ARC</div>
+              <div class="speed-seg sf-zone" style="font-size:7.5px;">SF</div>
+              <div class="speed-seg green">GREEN ARC</div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:9.5px;margin-top:6px;">
+              <thead>
+                <tr style="background:var(--navy);color:var(--white);">
+                  <th style="padding:4px 7px;text-align:left;font-family:var(--font-mono);font-weight:500;font-size:9px;">Speed</th>
+                  <th style="padding:4px 7px;text-align:center;font-family:var(--font-mono);font-weight:500;font-size:9px;">KIAS</th>
+                  <th style="padding:4px 7px;text-align:left;font-family:var(--font-mono);font-weight:500;font-size:9px;">Meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background:var(--red-pale);">
+                  <td style="padding:3px 7px;font-weight:600;color:var(--red);">V<sub>SO</sub></td>
+                  <td style="padding:3px 7px;text-align:center;font-family:var(--font-mono);">45</td>
+                  <td style="padding:3px 7px;">Stall speed — flaps extended (landing)</td>
+                </tr>
+                <tr style="background:var(--amber-pale);">
+                  <td style="padding:3px 7px;font-weight:600;color:#7A5A00;">SF min (flaps)</td>
+                  <td style="padding:3px 7px;text-align:center;font-family:var(--font-mono);">~50</td>
+                  <td style="padding:3px 7px;">Minimum controllable — Flap 2 config</td>
+                </tr>
+                <tr style="background:var(--grey-100);">
+                  <td style="padding:3px 7px;font-weight:600;">V<sub>S1</sub></td>
+                  <td style="padding:3px 7px;text-align:center;font-family:var(--font-mono);">50</td>
+                  <td style="padding:3px 7px;">Stall speed — clean (flaps up)</td>
+                </tr>
+                <tr style="background:var(--amber-pale);">
+                  <td style="padding:3px 7px;font-weight:600;color:#7A5A00;">SF min (clean)</td>
+                  <td style="padding:3px 7px;text-align:center;font-family:var(--font-mono);">~55</td>
+                  <td style="padding:3px 7px;">Minimum controllable — clean config</td>
+                </tr>
+                <tr style="background:var(--grey-100);">
+                  <td style="padding:3px 7px;">Traffic pattern</td>
+                  <td style="padding:3px 7px;text-align:center;font-family:var(--font-mono);">~70</td>
+                  <td style="padding:3px 7px;">Downwind/base approach speed</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="caution-strip" style="margin-top:7px;">
+              <div class="warn-icon">⚠</div>
+              <div>
+                <div class="warn-title">Flap Speed Limits</div>
+                <div class="warn-text">V<sub>FE</sub> Flap 1 (TO) = 106 KIAS · V<sub>FE</sub> Flap 2 (LAND) = 96 KIAS. Check speed before selecting flaps. Call out <span class="spoken">"Speed checked — Flap 1 set"</span>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /two-col -->
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.22.2</span>
+    <span class="footer-mid">SLOW FLIGHT · DGH 04</span>
+    <span>Center Air APS · Roskilde · Page 2 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 3 — PROCEDURE: ENTRY, IN-FLIGHT, RECOVERY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 04 · Slow Flight</div>
+    <div class="page-num">3 / 4</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="2">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">Procedure — Entry, In-Flight &amp; Recovery</div>
+        <div class="section-subtitle">SOP §1.22.2 · step-by-step technique and CAPA recovery callout sequence</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-manoeuvre no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Procedure</span>
+            <span class="block-title">Entry — Establishing Slow Flight</span>
+          </div>
+          <div class="block-body">
+            <div class="phase-label">Setup</div>
+            <ol class="procedure-list">
+              <li>Complete <strong>ACSEL check</strong> verbally before commencing</li>
+              <li>Ease throttle back from cruise power — correct heading with rudder as power reduces</li>
+              <li>As speed decreases, <strong>raise the nose progressively</strong> to maintain altitude — do not let the aircraft descend</li>
+              <li>Trim continuously as pitch changes — use 1, ½, ¼ notch doses</li>
+              <li>Select flap as required for the exercise. Check speed first: <span class="spoken">"Speed [X] kts — Flaps 1 set"</span></li>
+              <li>Adjust power to maintain target altitude — the nose attitude sets the target speed</li>
+              <li>When established: steady altitude, target airspeed, trimmed hands-free</li>
+            </ol>
+            <div class="instr-note" style="margin-top:7px;">
+              <div class="instr-note-label">Instructor Note</div>
+              <div class="instr-note-text">Demonstrate with DG and AI covered: student must fly attitude and use rudder — not fixate on the ASI. Once established, freeze the instruments briefly to reinforce attitude flying.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block block-technique no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Technique</span>
+            <span class="block-title">In-Flight — Maintaining Slow Flight</span>
+          </div>
+          <div class="block-body">
+            <p class="prose" style="margin-bottom:6px;">Once established, perform the following exercises in sequence:</p>
+            <div class="phase-label">Exercises</div>
+            <ul class="brief-list">
+              <li><strong>Straight &amp; level</strong> — hold altitude ±100 ft, heading ±10° at minimum controllable airspeed</li>
+              <li><strong>Turns</strong> — gentle bank (~15°) at slow flight speed. Note large rudder demand. The ball must stay centred — use <em>top rudder</em> to prevent slip/skid. Altitude loss is common; anticipate with power</li>
+              <li><strong>Minimum-speed climb</strong> — from slow flight, increase power to MCP while holding attitude — note slow ROC and sluggish controls</li>
+              <li><strong>Minimum-speed glide</strong> — reduce to idle and establish glide at minimum speed. Controls become very heavy; large backpressure needed</li>
+              <li><strong>Configuration changes</strong> — observe effect of adding/removing flap on speed and trim requirement</li>
+            </ul>
+            <div class="caution-strip" style="margin-top:7px;">
+              <div class="warn-icon">⚠</div>
+              <div>
+                <div class="warn-title">ESP During Airwork</div>
+                <div class="warn-text">The Electronic Stability &amp; Protection system must be selected <strong>OFF</strong> before airwork and <strong>ON again</strong> after recovery, before using any checklist (SOP §1.22).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-sop no-break">
+          <div class="block-header">
+            <span class="block-type-pill">SOP</span>
+            <span class="block-title">Recovery from Slow Flight</span>
+          </div>
+          <div class="block-body">
+            <p class="prose" style="margin-bottom:7px;">Recovery is performed as a <strong>Go-Around using MCP</strong> while maintaining altitude. The <em>"G/A attitude"</em> and <em>"Positive ROC"</em> callouts are <strong>omitted</strong> — the aircraft does not climb during recovery.</p>
+
+            <!-- Recovery flow -->
+            <div class="recovery-flow">
+              <div class="flow-step">
+                <div class="flow-dot">1</div>
+                <div class="flow-label">Going around<br>Max cont. pwr</div>
+                <div class="flow-spoken">Prop fwd → throttle fwd<br>Level pitch — maintain alt</div>
+              </div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">
+                <div class="flow-dot">2</div>
+                <div class="flow-label">Flaps 1<br>or less</div>
+                <div class="flow-spoken">Check speed.<br>Never 2→0 direct</div>
+              </div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">
+                <div class="flow-dot">3</div>
+                <div class="flow-label">Safe speed</div>
+                <div class="flow-spoken">Above V<sub>x</sub><br>(56 KIAS)</div>
+              </div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">
+                <div class="flow-dot">4</div>
+                <div class="flow-label">Flaps UP</div>
+                <div class="flow-spoken">Retract fully.<br>Trim. Accelerate.</div>
+              </div>
+            </div>
+
+            <!-- Callout sequence -->
+            <p class="prose" style="margin:8px 0 5px;font-weight:600;color:var(--navy);">CAPA Callout Sequence (SOP §1.22.2):</p>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span class="spoken">"Going around - Max continuous power"</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span class="spoken">"Flaps 1 or less"</span>
+                <span style="font-size:9.5px;color:var(--grey-700);">Select Flap 1 — confirm speed</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span class="spoken">"Safe speed"</span>
+                <span style="font-size:9.5px;color:var(--grey-700);">Above 56 KIAS (V<sub>x</sub>)</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:8px;">
+                <span class="spoken">"Flaps UP"</span>
+                <span style="font-size:9.5px;color:var(--grey-700);">Retract fully — trim — accelerate to 70 KIAS</span>
+              </div>
+            </div>
+            <div class="sop-strip" style="margin-top:8px;">
+              <span class="sop-badge">SOP §1.22.2</span>
+              <span class="sop-text">Recovery maintains altitude. Omit "G/A attitude" and "Positive ROC" callouts. Use MCP throughout — not go-around power (full throttle).</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block block-technique no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Technique</span>
+            <span class="block-title">Trim Discipline &amp; Rudder Use</span>
+          </div>
+          <div class="block-body">
+            <ul class="brief-list">
+              <li><strong>Trim in doses:</strong> 1, ½, ¼ notch — never spin the wheel. Assess, trim, assess</li>
+              <li><strong>Rudder is primary yaw control</strong> in slow flight — ailerons produce pronounced adverse yaw at low speed and must be assisted by rudder at all times</li>
+              <li>In turns at low speed: apply <em>inside rudder</em> during roll-in, then <em>top (outside) rudder</em> to hold bank and prevent slip. The ball is your reference</li>
+              <li>Slipping (ball out) = not enough inside rudder. Skidding (ball in) = too much rudder. Either condition increases stall speed</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="content-block block-technique no-break">
+          <div class="block-header">
+            <span class="block-type-pill">After Airwork</span>
+            <span class="block-title">Returning to Normal Flight</span>
+          </div>
+          <div class="block-body">
+            <p class="prose">After completing slow-flight exercises, perform <strong>recovery from slow flight first</strong> before carrying out any checklist. Once accelerated and flaps retracted, select ESP ON, then carry out the AFTER TAKE-OFF checklist and set cruise power.</p>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /two-col -->
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.22.2</span>
+    <span class="footer-mid">SLOW FLIGHT · DGH 04</span>
+    <span>Center Air APS · Roskilde · Page 3 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 4 — EXERCISES, DEBRIEF & REFERENCES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 04 · Slow Flight</div>
+    <div class="page-num">4 / 4</div>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="3">
+      <div class="section-num">03</div>
+      <div class="section-text">
+        <div class="section-title">Exercise Sequence, Debrief &amp; References</div>
+        <div class="section-subtitle">Planned exercise flow · debrief questions · study material</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-manoeuvre no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Exercise</span>
+            <span class="block-title">Planned Exercise Sequence</span>
+          </div>
+          <div class="block-body">
+            <div class="phase-label">Demonstration (Instructor)</div>
+            <ol class="procedure-list">
+              <li>ACSEL check — verbalised in full</li>
+              <li>Entry to slow flight — clean, flaps up. Show nose position on horizon vs. cruise</li>
+              <li>Straight and level at minimum controllable airspeed — trimmed hands-free</li>
+              <li>Add Flap 1, then Flap 2 — observe effect on trim and required power. Call each flap change with speed check</li>
+              <li>Gentle turn left and right at Flap 1 speed — demonstrate rudder workload and ball discipline</li>
+              <li>Recovery demonstration: full CAPA callout sequence</li>
+            </ol>
+            <div class="phase-label">Student Practice</div>
+            <ol class="procedure-list">
+              <li>Independent ACSEL check and entry to slow flight — clean configuration</li>
+              <li>Maintain heading ±10°, altitude ±100 ft — instructor may cover DG/AI</li>
+              <li>Add flaps to landing configuration — student calls speed check for each</li>
+              <li>Slow-flight turns: 15° bank, 180° arc minimum — ball centred throughout</li>
+              <li>Minimum-speed climb: MCP — hold attitude — note ROC and sluggish controls</li>
+              <li>Minimum-speed glide: idle — hold minimum speed attitude — note backpressure required</li>
+              <li>Student-initiated recovery: full CAPA callout sequence from memory</li>
+            </ol>
+            <div class="instr-note" style="margin-top:7px;">
+              <div class="instr-note-label">Note</div>
+              <div class="instr-note-text">Slow flight immediately precedes stall exercises in the syllabus. If the student displays good feel and control, the instructor may progress directly to incipient stall awareness within this lesson.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:9px;">
+
+        <div class="content-block block-debrief no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Debrief</span>
+            <span class="block-title">Debrief Questions</span>
+          </div>
+          <div class="block-body">
+            <div class="debrief-list">
+              <div class="debrief-item">
+                <div class="debrief-num">1</div>
+                <div>What controls airspeed in slow flight — pitch or power? What happens if you try to use power to correct speed?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">2</div>
+                <div>Define the five elements of the ACSEL check. What is the minimum altitude for slow-flight exercises and why?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">3</div>
+                <div>Why is rudder more critical in slow flight than at cruise speed? What does an uncentred ball indicate at low speed?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">4</div>
+                <div>Recite the CAPA slow-flight recovery callout sequence. Why are "G/A attitude" and "Positive ROC" omitted?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">5</div>
+                <div>What is V<sub>SO</sub> on the P-Mentor? At what speed were you flying slow flight — how many knots above stall?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">6</div>
+                <div>Why must slow flight and stall exercises only be performed in VMC with a clearly defined natural horizon?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">7</div>
+                <div>How did adding flap affect trim requirements and the power needed to maintain altitude?</div>
+              </div>
+              <div class="debrief-item">
+                <div class="debrief-num">8</div>
+                <div>Describe how you should trim in slow flight. Why does spinning the trim wheel in large doses cause problems?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-block block-check no-break">
+          <div class="block-header">
+            <span class="block-type-pill">Standard</span>
+            <span class="block-title">Release Standard</span>
+          </div>
+          <div class="block-body">
+            <ul class="brief-list checks">
+              <li>Performs ACSEL check correctly and independently</li>
+              <li>Establishes and maintains slow flight within ±100 ft / ±10° heading</li>
+              <li>Controls speed primarily through pitch, altitude through power</li>
+              <li>Ball centred in all phases — active rudder use demonstrated</li>
+              <li>Correctly executes slow-flight recovery with CAPA callout from memory</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- APA7 References -->
+        <div class="apa-references">
+          <div class="apa-ref-heading">References</div>
+          <div class="apa-ref-list">
+            <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+            <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+            <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+            <div class="apa-ref-entry">European General Aviation Safety Team. (2013). <em>Loss of control: Stall and spin awareness</em> (EGAST GA8). EASA.</div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /two-col -->
+  </div><!-- /page-body -->
+
+  <div class="page-footer">
+    <span>CAPA SOP E2R1 · §1.22.2</span>
+    <span class="footer-mid">SLOW FLIGHT · DGH 04</span>
+    <span>Center Air APS · Roskilde · Page 4 of 4</span>
+  </div>
+</div>
+
+</body>
+</html>

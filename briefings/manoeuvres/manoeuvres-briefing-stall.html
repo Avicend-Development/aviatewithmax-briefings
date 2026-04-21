@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 08 — Stall Recognition and Recovery — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+/* spoken callout — amber, for pilot verbalised calls */
+.spoken{font-family:var(--font-mono);font-size:9.5px;background:rgba(232,160,32,0.18);color:#7A5000;border:1px solid rgba(232,160,32,0.5);padding:2px 9px;border-radius:3px;display:inline-block;margin:1px 0;font-weight:600;}
+/* ACSEL letter boxes */
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px;}
+.acsel-item{border-radius:var(--radius);overflow:hidden;border:1px solid var(--grey-200);}
+.acsel-letter{background:var(--navy);color:var(--amber);font-family:var(--font-display);font-size:22px;font-weight:800;text-align:center;padding:6px 0 4px;line-height:1;}
+.acsel-word{background:var(--navy-light);color:var(--sky-light);font-family:var(--font-mono);font-size:7.5px;text-align:center;padding:2px 3px;letter-spacing:0.04em;}
+.acsel-body{background:var(--grey-100);padding:5px 7px;font-size:9px;color:var(--grey-700);line-height:1.4;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-stall.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══ PAGE 1 — COVER ═══ -->
+<div class="page">
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Stall Training</div>
+    <div class="cover-lesson-title">Stall Recognition and Recovery</div>
+    <div class="cover-lesson-subtitle">Stall warning · ACSEL check · approach to stall · full stall · incipient stall · CAPA recovery callouts</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</span>
+      <span class="meta-chip stage">Stage: Stall Training</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">Min 3000 ft AGL</span>
+      <span class="meta-chip env">Briefing: 20 min</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item"><div class="dur-value">20</div><div class="dur-unit">MIN</div><div class="dur-label">Briefing</div></div>
+            <div class="dur-item"><div class="dur-value">1.0</div><div class="dur-unit">HR</div><div class="dur-label">Flight</div></div>
+            <div class="dur-item"><div class="dur-value">20</div><div class="dur-unit">MIN</div><div class="dur-label">Debrief</div></div>
+          </div>
+          <div class="dur-condition">Practice area — minimum 3000 ft AGL throughout. Incipient stalls: minimum 2000 ft AGL.</div>
+        </div>
+      </div>
+
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">02 · Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Straight and level, turns 30°, speed changes all completed</li>
+            <li>Understands power + attitude = performance; can trim correctly</li>
+            <li>Understands angle of attack and how it relates to lift and the stall</li>
+            <li>Reviewed SOP E2R1 §1.22.4 Stall procedures and ACSEL check</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg></div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Complete the ACSEL check correctly before all stall exercises</li>
+            <li>Identify pre-stall buffet and stall warning — recognise approach to stall</li>
+            <li>Apply CAPA stall recovery with correct verbal callouts in sequence</li>
+            <li>Recover from clean stall, approach config stall, and landing config stall</li>
+            <li>Recover from incipient stall at first indication — operationally most critical</li>
+            <li>Understand accelerated stall and increased stall speed in turning flight</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile"><div class="tol-value">≥3000 ft</div><div class="tol-param">Min Height AGL</div></div>
+            <div class="tol-tile"><div class="tol-value">50 kt</div><div class="tol-param">VS1 — Clean</div></div>
+            <div class="tol-tile"><div class="tol-value">45 kt</div><div class="tol-param">VS0 — Ldg Config</div></div>
+            <div class="tol-tile"><div class="tol-value">Wings level</div><div class="tol-param">Entry & Recovery</div></div>
+            <div class="tol-tile"><div class="tol-value">±½ turn</div><div class="tol-param">Spin Recovery Tol.</div></div>
+            <div class="tol-tile"><div class="tol-value">No trim</div><div class="tol-param">During Entry</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">05 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Forgetting the ACSEL check — or confusing QNH altitude with AGL height</li>
+            <li>Trimming during stall entry — prohibited per SOP</li>
+            <li>Pulling back during recovery — deepens stall and risks spin</li>
+            <li>Rolling wings level before nose down — stalls the lower wing, can cause spin</li>
+            <li>Not applying full power on recovery — insufficient energy to climb</li>
+            <li>Lowering nose too far (below horizon for clean stall) — wastes altitude</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 2h8a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="white" stroke-width="1.3"/><path d="M6 6h4M6 9h4M6 12h2" stroke="white" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">06 · References</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row"><span class="ref-tag sop">SOP</span><span class="ref-text">CAPA SOP E2R1 — Stall training &amp; ACSEL check</span><span class="ref-section">§1.22.4</span></div>
+            <div class="ref-row"><span class="ref-tag sop">SOP</span><span class="ref-text">CAPA SOP E2R1 — Spin recognition &amp; recovery</span><span class="ref-section">§1.22.7</span></div>
+            <div class="ref-row"><span class="ref-tag lesson">ATP</span><span class="ref-text">ATP INT. Lesson Prep — DGH 05 Stalls</span><span class="ref-section">DGH 05</span></div>
+            <div class="ref-row"><span class="ref-tag manual">AFM</span><span class="ref-text">Tecnam P-Mentor AFM — VS1 50 kt · VS0 45 kt</span><span class="ref-section">§2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 08 — Stall Recognition and Recovery</span>
+    <span>Page 1 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 2 — THEORY ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 08 · Stall Recognition and Recovery</span>
+    <span class="page-num">Page 2 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="01">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Aerodynamics of the Stall</div>
+        <div class="section-subtitle">Angle of attack · critical AOA · stall speed · load factor</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header"><span class="block-type-pill">Theory</span><span class="block-title">What Causes a Stall</span></div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">A stall is caused by exceeding the critical angle of attack — not by a minimum speed alone. A stall can occur at any speed if the AOA is high enough.</div>
+        </div>
+        <ul class="brief-list">
+          <li>When AOA exceeds ~15–18°: airflow over the upper wing surface separates → lift collapses suddenly</li>
+          <li>VS1 = <strong>50 KIAS</strong> (clean configuration, MTOW) — stall speed in straight and level flight</li>
+          <li>VS0 = <strong>45 KIAS</strong> (landing configuration — Flap 2, power off, MTOW)</li>
+          <li>Load factor increases stall speed: VS (in turn) = VS1 × √(load factor) — stall occurs at higher IAS in turning flight</li>
+          <li>At 30° bank: load factor 1.15g → stall speed ~54 kt · At 45° bank: 1.41g → stall speed ~59 kt</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header"><span class="block-type-pill">Theory</span><span class="block-title">Stall Warning Signs — Recognition</span></div>
+      <div class="block-body">
+        <p class="prose" style="margin-bottom:7px;">Stall warnings appear in order of severity. The earlier the recognition, the less altitude is lost in recovery.</p>
+        <ul class="brief-list">
+          <li><strong>Buffet:</strong> airframe vibration transmitted through controls — earliest physical warning, 5–10 kt above stall</li>
+          <li><strong>Stall horn:</strong> activates 5–10 kt above stall speed — brief configuration and expected warnings during ACSEL check</li>
+          <li><strong>Controls feel mushy:</strong> large inputs produce small effect — poor control response</li>
+          <li><strong>High pitch attitude:</strong> visible on AI — nose well above horizon as speed decays</li>
+          <li><strong>Nose drop:</strong> at full stall — may be accompanied by wing drop; autorotation can begin if yaw is present</li>
+        </ul>
+        <div class="instr-note" style="margin-top:8px;">
+          <div class="instr-note-label">SOP Note</div>
+          <div class="instr-note-text">Brief students that the stall horn will sound during the approach to stall entry and should be <em>expected and ignored</em> — state this explicitly during the ACSEL Configuration brief: <em>"Expect stall warning — ignore."</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="02">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">ACSEL Check</div>
+        <div class="section-subtitle">CAPA SOP E2R1 §1.22.4 — Required before all stall training exercises</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check no-break">
+      <div class="block-header"><span class="block-type-pill">Check</span><span class="block-title">ACSEL — Pre-Stall Check (CAPA SOP)</span></div>
+      <div class="block-body">
+        <div class="acsel-grid">
+          <div class="acsel-item">
+            <div class="acsel-letter">A</div>
+            <div class="acsel-word">Altitude</div>
+            <div class="acsel-body">State: <em>"Altitude [x] ft."</em> Stall not less than 3000 ft AGL. Incipient stalls: min 2000 ft AGL.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">C</div>
+            <div class="acsel-word">Configuration</div>
+            <div class="acsel-body">Brief intended config and expected warnings: e.g. <em>"Clean config, expect stall warning."</em></div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">S</div>
+            <div class="acsel-word">Safety</div>
+            <div class="acsel-body">Loose objects stowed. Seat belts fastened and locked.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">E</div>
+            <div class="acsel-word">Engine</div>
+            <div class="acsel-body">Instruments in the green. Set up for airwork. Oil temp and pressure normal.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">L</div>
+            <div class="acsel-word">Location</div>
+            <div class="acsel-body">Clear of populated areas · clear of cloud · clearing turns completed. Instructor responsible for area.</div>
+          </div>
+        </div>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP E2R1</span>
+          <span class="sop-text">After completing all five items, call out: <strong>"ACSEL check completed"</strong> — then proceed with the exercise as briefed.</span>
+          <span class="sop-section">§1.22.4</span>
+        </div>
+        <div class="warn-strip" style="margin-top:8px;">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Never Trim During Stall Entry</div>
+            <div class="warn-text">SOP E2R1 prohibits trimming during any stall entry procedure. Back pressure must be held manually throughout the entry so the student can feel the increasing force required as the stall is approached.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 08 — Stall Recognition and Recovery</span>
+    <span>Page 2 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 3 — ENTRY & RECOVERY PROCEDURES ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 08 · Stall Recognition and Recovery</span>
+    <span class="page-num">Page 3 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="03">
+      <div class="section-num">03</div>
+      <div class="section-text">
+        <div class="section-title">Stall Entry Procedures</div>
+        <div class="section-subtitle">SOP E2R1 §1.22.4 — Select a point on the horizon · set HDG bug · no trim during entry</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header"><span class="block-type-pill">Manoeuvre</span><span class="block-title">Entry Sequence — By Configuration</span></div>
+      <div class="block-body">
+        <div class="phase-label">Before Every Entry</div>
+        <ul class="brief-list" style="margin-bottom:8px;">
+          <li>Select a prominent point on the horizon ahead — maintain heading throughout entry and recovery using this reference</li>
+          <li>Set HDG bug on the heading indicator to the selected heading</li>
+        </ul>
+
+        <div class="phase-label">Clean Configuration Entry</div>
+        <ol class="procedure-list">
+          <li>Power to idle — maintain heading and wings level with rudder as needed</li>
+          <li>Raise nose to maintain altitude — allow speed to decay naturally</li>
+          <li>Do <strong>not</strong> trim — hold back pressure manually throughout</li>
+          <li>At first indication (buffet) or at full stall as briefed — apply recovery</li>
+        </ol>
+
+        <div class="phase-label">Approach / Landing Configuration Entry</div>
+        <ol class="procedure-list">
+          <li>Power to MAP 12" — maintain heading and wings level</li>
+          <li>Select Flap 1 (approach) or Flap 2 (landing) — adjust pitch to maintain altitude</li>
+          <li>Power to idle — maintain heading and wings level</li>
+          <li>Raise nose to maintain altitude — hold back pressure, do not trim</li>
+          <li>At first indication or full stall as briefed — apply recovery</li>
+        </ol>
+
+        <div class="phase-label">Turning Stall (15° Bank)</div>
+        <ol class="procedure-list">
+          <li>Configure as above (clean or flapped) but before setting power idle:</li>
+          <li>Establish aircraft in 15° bank — then proceed with respective entry procedure</li>
+          <li>Maintain the 15° bank throughout approach — do not increase bank further</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="04">
+      <div class="section-num">04</div>
+      <div class="section-text">
+        <div class="section-title">CAPA Stall Recovery — Callouts</div>
+        <div class="section-subtitle">SOP E2R1 §1.22.4 — Exact sequence with verbal callouts · applies to all stall types</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header"><span class="block-type-pill">SOP</span><span class="block-title">Recovery Sequence — Verbatim CAPA Callouts</span></div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Critical Sequence</div>
+          <div class="key-principle-text">"Nose down" and "Roll wings level" are initiated simultaneously — without any pause between them. Nose must stay down while rolling or the lower wing may stall, causing a spin.</div>
+        </div>
+
+        <div class="phase-label">At Stall Recognition</div>
+        <ol class="procedure-list">
+          <li>Announce: <span class="spoken">"STALL"</span> — announcement only, no control input yet</li>
+          <li>Call: <span class="spoken">"Autopilot disengage"</span> — confirm manual control (habit pattern for all aircraft types)</li>
+          <li>Call: <span class="spoken">"Nose down"</span> — push forward to reduce AOA. Clean config: slightly below horizon. More flap = further below horizon.</li>
+          <li>Call simultaneously: <span class="spoken">"Roll wings level"</span> — use aileron to level wings, coordinating rudder. These two actions happen in direct continuation without pause.</li>
+        </ol>
+
+        <div class="phase-label">Once No Longer Stalled (airspeed increasing · no buffet · no horn)</div>
+        <ol class="procedure-list">
+          <li>Call: <span class="spoken">"Adjust power"</span> — apply full MCP (2250 RPM) smoothly</li>
+          <li>Call: <span class="spoken">"G/A attitude"</span> — raise nose smoothly to go-around attitude. Must achieve VX or above, but not above VY.</li>
+          <li>If flaps extended: maintain minimum VX and when positive ROC established, call: <span class="spoken">"Positive ROC — safe speed — flaps up"</span></li>
+          <li>Call: <span class="spoken">"Recover"</span> — climb using VY, throttle full forward, 2250 RPM, level off at initial altitude</li>
+        </ol>
+
+        <div class="caution-strip">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Wing Drop at Stall</div>
+            <div class="warn-text">If a wing drops at the stall: DO NOT use aileron alone to pick it up. This increases the AOA on the dropping wing and can trigger a spin. The nose-down input must be maintained while rolling. If autorotation has begun, go directly to the spin recovery procedure.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 08 — Stall Recognition and Recovery</span>
+    <span>Page 3 of 4</span>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 4 — ADVANCED & DEBRIEF ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 08 · Stall Recognition and Recovery</span>
+    <span class="page-num">Page 4 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="05">
+      <div class="section-num">05</div>
+      <div class="section-text">
+        <div class="section-title">Incipient Stall &amp; Accelerated Stall</div>
+        <div class="section-subtitle">Most operationally relevant recovery · turning flight stall speed increase</div>
+      </div>
+    </div>
+
+    <div class="two-col no-break">
+      <div class="content-block block-technique">
+        <div class="block-header"><span class="block-type-pill">Technique</span><span class="block-title">Incipient Stall Recovery</span></div>
+        <div class="block-body">
+          <ul class="brief-list">
+            <li>Recovery initiated at <strong>first indication</strong> — buffet or horn — before full stall develops</li>
+            <li>Same callout sequence applies: <span class="spoken">"STALL"</span> → <span class="spoken">"Autopilot disengage"</span> → <span class="spoken">"Nose down"</span> + <span class="spoken">"Roll wings level"</span></li>
+            <li>Minimum altitude loss — most operationally realistic technique</li>
+            <li>ATP note: students should learn to SET an attitude (level flight), not simply lower the nose arbitrarily</li>
+          </ul>
+          <div class="instr-note" style="margin-top:8px;">
+            <div class="instr-note-label">Instructor Note — ATP</div>
+            <div class="instr-note-text">"Positive aircraft control is paramount. Students must learn that recovery is setting an attitude — not wheel movement for its own sake."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-block block-theory">
+        <div class="block-header"><span class="block-type-pill">Theory</span><span class="block-title">Accelerated Stall in Turning Flight</span></div>
+        <div class="block-body">
+          <ul class="brief-list">
+            <li>At <strong>15° bank</strong>: load factor 1.04g → stall speed ~51 kt (entry bank for turning stall)</li>
+            <li>At <strong>30° bank</strong>: load factor 1.15g → stall speed ~54 kt (mid-turn awareness)</li>
+            <li>At <strong>45° bank</strong>: load factor 1.41g → stall speed ~59 kt</li>
+            <li>Recognition: same as straight stall — buffet, horn, mushy controls</li>
+            <li>Recovery: identical callout sequence — <span class="spoken">"Nose down"</span> + <span class="spoken">"Roll wings level"</span> simultaneously</li>
+            <li>Unloading (releasing back pressure) is the first priority — reduces AOA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning no-break">
+      <div class="block-header"><span class="block-type-pill">Warning</span><span class="block-title">Stall Below 1000 ft AGL</span></div>
+      <div class="block-body">
+        <div class="warn-strip" style="margin-top:0;">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Unrecoverable Altitude — Stall Near Ground</div>
+            <div class="warn-text">An unrecovered stall below 1000 ft AGL may not leave sufficient height for recovery. The ACSEL check (minimum 3000 ft AGL) exists precisely to ensure adequate safety margin. Stall awareness training — recognising the approach to stall — is the operational goal. Never practise stalls in the circuit or below circuit height.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="06">
+      <div class="section-num">06</div>
+      <div class="section-text">
+        <div class="section-title">Debrief Criteria</div>
+        <div class="section-subtitle">SOP E2R1 — Assess each stall exercise individually</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header"><span class="block-type-pill">Debrief</span><span class="block-title">Post-Flight Assessment Points</span></div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item"><div class="debrief-num">1</div><span>Was the ACSEL check completed correctly? Were height, configuration, and expected warnings all briefed verbally?</span></div>
+          <div class="debrief-item"><div class="debrief-num">2</div><span>Was trimming avoided during stall entry? Could the student feel the increasing back pressure through the controls?</span></div>
+          <div class="debrief-item"><div class="debrief-num">3</div><span>Were CAPA recovery callouts used in correct sequence: <span class="spoken">"STALL"</span> → <span class="spoken">"Autopilot disengage"</span> → <span class="spoken">"Nose down"</span> + <span class="spoken">"Roll wings level"</span>?</span></div>
+          <div class="debrief-item"><div class="debrief-num">4</div><span>Were "nose down" and "roll wings level" applied simultaneously — not sequentially? Was nose held down throughout the roll?</span></div>
+          <div class="debrief-item"><div class="debrief-num">5</div><span>Was full MCP (2250 RPM) applied on <span class="spoken">"Adjust power"</span>? Was G/A attitude set before flap retraction?</span></div>
+          <div class="debrief-item"><div class="debrief-num">6</div><span>Clean stall, approach config, and landing config — were all three demonstrated correctly and to tolerances?</span></div>
+          <div class="debrief-item"><div class="debrief-num">7</div><span>Incipient recovery — was the student acting on the buffet warning, or waiting for the nose to drop? Buffet recognition is the goal.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">European Aviation Safety Agency. (n.d.). <em>Safety promotion leaflet GA8: Stall and spin — loss of control</em> (EGAST GA8). EASA.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">DGH 08 — Stall Recognition and Recovery</span>
+    <span>Page 4 of 4</span>
+  </div>
+</div>
+
+</body>
+</html>

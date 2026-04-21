@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 10 · Gliding Descent — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-gliding-descent.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1 — OVERVIEW -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 10 · Gliding Descent</span>
+    <span class="page-num">Page 1</span>
+  </div>
+
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Emergency Procedures</div>
+    <div class="cover-lesson-title">Gliding Descent</div>
+    <div class="cover-lesson-subtitle">Engine failure drill · best glide · idle descent · glide range · engine restart</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra · ROTAX 912 iSc</span>
+      <span class="meta-chip stage">Stage: Emergency Handling</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">Local Area</span>
+      <span class="meta-chip env">Min 3000 ft AGL</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <!-- DURATION -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">HR</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Practice area — clear of cloud and controlled airspace. Minimum 3000 ft AGL for practice descents. Light turbulence or less.</div>
+        </div>
+      </div>
+      <!-- PREREQUISITES -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">02 · Student Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Completed straight and level flight and climbs with confidence</li>
+            <li>Practiced speed changes and understands power/attitude relationship</li>
+            <li>Comfortable with trim and hands-off flight at stable speeds</li>
+            <li>Familiar with fuel management and engine systems overview</li>
+            <li>Reviewed SOP E2R1 engine failure procedures prior to briefing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- OBJECTIVES -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg>
+          </div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Establish best glide speed (70 kt) promptly after simulated engine failure</li>
+            <li>Apply ABCDE engine failure drill completely within 30 seconds</li>
+            <li>Calculate and estimate glide range from current altitude</li>
+            <li>Perform idle descent at best glide speed (70 kt) with stable attitude</li>
+            <li>Attempt engine restart above 1000 ft AGL (simulated); abandon below 1000 ft</li>
+            <li>Understand effect of turns and configuration (flap) on glide performance</li>
+          </ul>
+        </div>
+      </div>
+      <!-- TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">70±5 kt</div>
+              <div class="tol-param">Best Glide</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">≥1000 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">Centred</div>
+              <div class="tol-param">Ball</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">&lt;30 sec</div>
+              <div class="tol-param">ABCDE Drill</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">Clean</div>
+              <div class="tol-param">Config</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">No Flap</div>
+              <div class="tol-param">Descent</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- MOTIVATION -->
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6H14L10.5 8.5L12 13L8 10.5L4 13L5.5 8.5L2 6H6.5L8 2Z" stroke="white" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="ov-card-label">05 · Motivation</span>
+        </div>
+        <div class="ov-card-body">
+          <p class="prose">Engine failure is a critical emergency that every pilot must manage with calm, systematic action. The gliding descent is not a panic manoeuvre — it is a controlled, practiced response that preserves altitude, distance, and options. Pilots who have not trained for gliding descent often fixate on restarting the engine at the expense of selecting a landing field; those who do not know best glide speed may sacrifice range through poor speed control. Mastery of this skill builds the confidence and procedure-focused discipline essential to survive an engine failure at altitude.</p>
+        </div>
+      </div>
+      <!-- COMMON MISTAKES -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">06 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Not maintaining 70 kt — faster descent feels "safer" but reduces range drastically</li>
+            <li>Forgetting to trim for glide — control pressure builds and altitude control degrades</li>
+            <li>Delaying ABCDE drill — wasting altitude while fumbling with procedures</li>
+            <li>Attempting restart below 1000 ft AGL — insufficient altitude to recover from failure</li>
+            <li>Fixating on engine restart — neglecting field selection and descent planning</li>
+            <li>Adding flap too early — increases drag and reduces range before field is assured</li>
+            <li>Not calculating remaining glide range — misjudging reachability to field</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FI REFERENCES -->
+    <div class="ov-card references no-break">
+      <div class="ov-card-header">
+        <div class="ov-card-icon">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="3" y="1.5" width="10" height="13" rx="1.5" stroke="white" stroke-width="1.5"/><path d="M6 5H10M6 7.5H10M6 10H9" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="ov-card-label">07 · FI References</span>
+      </div>
+      <div class="ov-card-body" style="padding:7px 12px;">
+        <div class="ref-list">
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Engine Failure Procedure</span>
+            <span class="ref-section">§ 1.23.1</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">AFM Emergency Procedures — Gliding Descent</span>
+            <span class="ref-section">AFM §5</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">ROTAX 912 iSc Operator Manual — Engine Systems</span>
+            <span class="ref-section">ROTAX §3</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag lesson">LESSON</span>
+            <span class="ref-text">ATP Lesson Prep — Emergency Handling Student Notes</span>
+            <span class="ref-section">Engine Failure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">GLIDING DESCENT — EMERGENCY PROCEDURES</span>
+    <span class="footer-right">Page 1 · OVERVIEW</span>
+  </div>
+</div>
+
+<!-- PAGE 2 — THEORY & TECHNIQUE -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 10 · Gliding Descent</span>
+    <span class="page-num">Page 2</span>
+  </div>
+
+  <div class="page-body" style="gap:7px;">
+
+    <!-- SECTION 1: GLIDE PERFORMANCE -->
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Glide Performance</div>
+        <div class="section-subtitle">Best glide speed, glide ratio, altitude and range calculations</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Best Glide Speed &amp; Glide Ratio</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Best glide speed (P-Mentor): 70 KIAS</strong> — This speed gives the maximum distance forward for every foot of altitude lost. At this speed, the ratio of lift to drag is optimized.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Glide ratio:</strong> Approximately 10:1 (10 feet forward per 1 foot down). Check the AFM for exact figure and any altitude corrections.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Worked example:</strong> From 3000 ft AGL, maintaining 70 kt, no wind — glide range ≈ 5 NM. At 2000 ft AGL → ≈ 3.3 NM range.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Headwind impact:</strong> Glide range decreases significantly. If facing a 15 kt headwind at 70 kt ground speed, aim for a closer field.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Tailwind impact:</strong> Glide range increases, but do not be tempted to venture too far — turn-back risk increases if engine restart fails.</p>
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">At best glide speed (70 kt), the P-Mentor covers maximum ground. Any deviation above or below 70 kt REDUCES range.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: ENGINE FAILURE DRILL — ABCDE -->
+    <div class="section-banner" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Engine Failure Drill — ABCDE</div>
+        <div class="section-subtitle">Immediate action, systematic checks, restart procedure</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check">
+      <div class="block-header">
+        <span class="block-type-pill">Check</span>
+        <span class="block-title">ABCDE Procedure</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li class="phase-label">IMMEDIATE ACTION (<10 sec)</li>
+          <li><strong>A — Airspeed:</strong> Lower nose promptly to establish glide attitude. Target 70 KIAS. Trim as nose comes down to relieve control pressure.</li>
+          <li><strong>B — Best glide:</strong> Trim and maintain 70 kt, wings level. Do not exceed 70 kt (faster reduces range).</li>
+
+          <li class="phase-label">SYSTEMATIC CHECK (within 30 sec)</li>
+          <li><strong>C — Cockpit checks:</strong> Fuel selector ON correct tank · Fuel valve ON · Throttle full (may already be) · LANE A + LANE B both ON · Primer in and locked · Ignition switch ON</li>
+          <li><strong>D — Declare:</strong> If restart unsuccessful by 1000 ft AGL, transmit PAN PAN or MAYDAY on 121.5 MHz. State position, altitude, field selected, and your intentions (straight-in approach).</li>
+          <li><strong>E — Emergency landing site:</strong> Select suitable field NOW. Begin planning descent profile and circuit approach. Consider wind, terrain, and obstructions.</li>
+        </ol>
+
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">Teach students to execute A and B within seconds (before running out of airspeed), then C within 20 seconds. D and E are ongoing but prioritize field selection — relight attempts are secondary.</div>
+        </div>
+
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">SOP E2R1 §1.23.1 — Below 1000 ft AGL: no further restart attempts. Full attention to forced landing approach.</span>
+          <span class="sop-section">§ 1.23.1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: IDLE DESCENT vs TRUE GLIDE -->
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Idle Descent vs Glide Descent</div>
+        <div class="section-subtitle">Training reality and simulated engine failure</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Idle Descent</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Idle descent (engine at idle, ~1400 RPM):</strong> Engine remains windmilling with propeller drag providing marginal benefit for restart. Engine is "warm" and ready for go-around if field approach is aborted.</p>
+        <p class="prose" style="margin-top:6px;"><strong>True engine failure (power completely off):</strong> Propeller windmilling only — slightly more drag than idle descent, marginally worse glide performance (negligible difference in training).</p>
+        <p class="prose" style="margin-top:6px;"><strong>Training practice:</strong> Use idle descent (power to idle, not off). Teach best glide speed (70 kt) and ABCDE drill. Engine restart is <strong>simulated</strong> only above 1000 ft AGL.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 4: EFFECT OF CONFIGURATION -->
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Effect of Configuration on Glide</div>
+        <div class="section-subtitle">Flap management, descent rate, range trade-off</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Flap and Configuration</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Clean (no flap):</strong> Best glide — maximum range. Maintain clean configuration until field is definitely reachable.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Flap 1:</strong> Increases drag → shorter glide range. Use only to steepen approach if overshooting field.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Flap 2:</strong> Dramatically increases drag → very steep descent. Use when very close to field and overshoot is certain.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Guideline:</strong> Keep clean until field is definitely reachable. Extend flaps to fine-tune glide path only after confirming landing is assured.</p>
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">Extend flaps only when you are certain of reaching the field. Retracted flaps cannot be used to extend a glide once extended.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: GLIDE TURNS -->
+    <div class="section-banner" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Glide Turns</div>
+        <div class="section-subtitle">Navigation, altitude cost, bank angle, speed</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Turning During Descent</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Necessary turns:</strong> Turn toward selected field or maintain position within landing area. Plan turns to minimize altitude loss.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Bank angle:</strong> Use ≤30° bank. Higher bank increases angle of attack, increases drag, and costs more height. A 360° turn at best glide loses 300–500 ft.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Speed in turns:</strong> May need a small increase (+5 kt) in bank to maintain effective glide speed and prevent stall. Monitor airspeed carefully.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Altitude awareness:</strong> Constantly monitor altitude. If turns consume more altitude than expected, abandon turns and proceed directly to field.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">GLIDING DESCENT — THEORY &amp; TECHNIQUE</span>
+    <span class="footer-right">Page 2 · FLIGHT TECHNIQUE</span>
+  </div>
+</div>
+
+<!-- PAGE 3 — DEBRIEF -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH 10 · Gliding Descent</span>
+    <span class="page-num">Page 3</span>
+  </div>
+
+  <div class="page-body" style="gap:7px;">
+
+    <!-- DEBRIEF SECTION -->
+    <div class="section-banner" data-num="6">
+      <div class="section-num">6</div>
+      <div class="section-text">
+        <div class="section-title">Debrief &amp; Assessment</div>
+        <div class="section-subtitle">Evaluation criteria and critical learning points</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">Debrief Criteria</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <span class="debrief-num">1</span>
+            <span>Was 70 kt established promptly after simulated engine failure (within 5 seconds)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">2</span>
+            <span>Was trim set correctly for hands-off glide at 70 kt, reducing control pressure?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">3</span>
+            <span>Was ABCDE drill completed in full, within 30 seconds?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">4</span>
+            <span>Was field selection initiated immediately and revised as descent continued?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">5</span>
+            <span>Was position awareness maintained throughout (altitude, glide range, field heading)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">6</span>
+            <span>Was the 1000 ft AGL restart-abandonment boundary respected?</span>
+          </div>
+        </div>
+
+        <div class="warn-strip">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">CRITICAL SAFETY BRIEF</div>
+            <div class="warn-text"><strong>Engine failure below 500 ft AGL:</strong> If engine fails during initial climb (below 500 ft): DO NOT TURN BACK. Maintain best glide straight ahead or gentle turn into wind. A turn-back below 500 ft typically results in a stall/spin at low altitude — statistically fatal. Brief this rule explicitly before every flight.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <h4 style="font-family:var(--font-display);font-size:11px;color:var(--navy);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Learning Points to Reinforce</h4>
+          <ul class="brief-list" style="gap:3px;">
+            <li><strong>Best glide is a speed, not a manoeuvre.</strong> Faster <em>feels</em> better; it reduces range. Teach the counterintuitive principle early.</li>
+            <li><strong>Trim is essential.</strong> Untrimmed flight degrades stick force perception and altitude control. Trim immediately after establishing 70 kt.</li>
+            <li><strong>ABCDE is muscle memory.</strong> Practice it on every descent, even in normal operations, so it runs automatically in stress.</li>
+            <li><strong>Field selection is step E, not a thought.</strong> Teach students to point at the field within 20 seconds and refine continuously.</li>
+            <li><strong>Restart attempts are secondary.</strong> Engine failure drills prioritize landing; restart is a bonus, not the objective.</li>
+            <li><strong>Turns cost altitude.</strong> Demonstrate a 360° turn and show the height loss. Teach students to plan descents avoiding unnecessary manoeuvers.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REMEDIAL FOCUS -->
+    <div class="content-block block-technique" style="margin-top:8px;">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Remedial Focus Areas</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>If speed is not stable at 70 kt:</strong> Emphasize pitch control and trim. Review the power/attitude relationship. Perform slow-speed descents to 50 kt then accelerate back to 70 kt to show the natural glide attitude.</p>
+        <p class="prose" style="margin-top:6px;"><strong>If ABCDE takes longer than 30 sec:</strong> Simplify checks. Use a flow card. Practice briefing the ABCDE sequence before flight. Consider removing "D" (declare) from the first run if comprehension is borderline; integrate it later once A–B–C–E are automatic.</p>
+        <p class="prose" style="margin-top:6px;"><strong>If field selection is delayed or vague:</strong> Conduct a pre-flight "forced landing field" exercise on the map. Identify 3–4 candidate fields within the training area. During descent, ask the student to call out the field name (not just "that one"). Build decision confidence.</p>
+        <p class="prose" style="margin-top:6px;"><strong>If turns consume unexpected altitude:</strong> Reduce turn angles and bank. Demonstrate slow turns at 15° bank. Show the difference in sink rate. Discuss risk of stalling in a steep-banked glide turn at low altitude.</p>
+      </div>
+    </div>
+
+    <!-- PROGRESSION & FOLLOW-UP -->
+    <div class="content-block block-theory" style="margin-top:8px;">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Progression &amp; Follow-Up Lessons</span>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Subsequent flights:</strong> Repeat gliding descent practice every 4–6 weeks. Add variation: night operations (if approved), different fields, light winds vs. stronger headwinds, different initial altitudes (5000 ft, 2000 ft).</p>
+        <p class="prose" style="margin-top:6px;"><strong>Integration into other manoeuvres:</strong> During stall recovery and spiral dives, call out best glide speed. During instrument approaches, brief the glide descent procedure if engine failure occurs during descent.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Advanced skill:</strong> Once basic gliding descent is solid, introduce slip manoeuvres (forward slip, side slip) to increase descent rate without adding speed — valuable for overshooting prevention.</p>
+        <p class="prose" style="margin-top:6px;"><strong>Check rides and assessment:</strong> Gliding descent is a required element of the emergency procedures check. Ensure student can execute A–B–C–E within 30 seconds and estimate glide range accurately.</p>
+      </div>
+    </div>
+
+  </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">BRP-Rotax GmbH &amp; Co. KG. (2024). <em>ROTAX 912 iSc series operator's manual</em>. BRP-Rotax GmbH &amp; Co. KG.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">European Aviation Safety Agency. (n.d.). <em>Safety promotion leaflet GA2: Decision making</em> (EGAST GA2). EASA.</div>
+      </div>
+    </div>
+
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">GLIDING DESCENT — DEBRIEF &amp; ASSESSMENT</span>
+    <span class="footer-right">Page 3 · DEBRIEF</span>
+  </div>
+</div>
+
+</body>
+</html>

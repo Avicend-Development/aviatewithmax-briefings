@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH UPRT — Spin Awareness and Recovery — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.meta-chip.warning{background:rgba(192,57,43,0.25);color:#FF8A7A;border:1px solid rgba(192,57,43,0.4);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+/* spoken callout — amber, for pilot verbalised calls */
+.spoken{font-family:var(--font-mono);font-size:9.5px;background:rgba(232,160,32,0.18);color:#7A5000;border:1px solid rgba(232,160,32,0.5);padding:2px 9px;border-radius:3px;display:inline-block;margin:1px 0;font-weight:600;}
+/* ACSEL letter boxes */
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px;}
+.acsel-item{border-radius:var(--radius);overflow:hidden;border:1px solid var(--grey-200);}
+.acsel-letter{background:var(--navy);color:var(--amber);font-family:var(--font-display);font-size:22px;font-weight:800;text-align:center;padding:6px 0 4px;line-height:1;}
+.acsel-word{background:var(--navy-light);color:var(--sky-light);font-family:var(--font-mono);font-size:7.5px;text-align:center;padding:2px 3px;letter-spacing:0.04em;}
+.acsel-body{background:var(--grey-100);padding:5px 7px;font-size:9px;color:var(--grey-700);line-height:1.4;}
+/* PARE reference grid */
+.pare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px;}
+.pare-item{border-radius:var(--radius);overflow:hidden;border:1px solid var(--grey-200);}
+.pare-letter{background:var(--navy-light);color:var(--sky-light);font-family:var(--font-display);font-size:22px;font-weight:800;text-align:center;padding:6px 0 4px;line-height:1;}
+.pare-word{background:#1A3A55;color:var(--grey-300);font-family:var(--font-mono);font-size:7.5px;text-align:center;padding:2px 3px;letter-spacing:0.04em;}
+.pare-body{background:var(--grey-100);padding:5px 7px;font-size:9px;color:var(--grey-700);line-height:1.4;}
+/* Recovery sequence flow */
+.recovery-flow{display:flex;flex-direction:column;gap:0;}
+.recovery-step{display:flex;align-items:stretch;gap:0;}
+.recovery-step-line{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0;}
+.step-dot{width:14px;height:14px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);flex-shrink:0;margin-top:4px;}
+.step-dot.start{background:var(--red);border-color:var(--red);}
+.step-dot.end{background:var(--green);border-color:var(--green);}
+.step-dot.dual{background:var(--sky);border-color:var(--sky);}
+.step-connector{flex:1;width:2px;background:var(--grey-200);margin:2px 0;}
+.recovery-step-content{padding:3px 0 10px 4px;flex:1;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-spin.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══ PAGE 1 — COVER ═══ -->
+<div class="page">
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Upset Prevention &amp; Recovery Training</div>
+    <div class="cover-lesson-title">Spin Awareness and Recovery</div>
+    <div class="cover-lesson-subtitle">Spin causes · recognition · incipient phase · PARE principles · CAPA recovery callouts · awareness only on P-Mentor</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</span>
+      <span class="meta-chip stage">Stage: UPRT · DGH UPRT</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">Min 4500 ft AGL</span>
+      <span class="meta-chip env">Briefing: 15 min</span>
+      <span class="meta-chip warning">Awareness only — no intentional spin on P-Mentor</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+
+    <div class="warn-strip" style="margin-top:0;">
+      <span class="warn-icon">⛔</span>
+      <div>
+        <div class="warn-title">Intentional Spin Prohibited — Tecnam P-Mentor</div>
+        <div class="warn-text">Per CAPA SOP E2R1: intentional spins are prohibited on all CAPA aircraft except the BL-8 Super Decathlon. This lesson covers spin <strong>awareness</strong> — recognition of and recovery from <strong>unintentional</strong> spins only. No deliberate spin entry will be performed on the P-Mentor at any time.</div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item"><div class="dur-value">15</div><div class="dur-unit">MIN</div><div class="dur-label">Briefing</div></div>
+            <div class="dur-item"><div class="dur-value">1.0</div><div class="dur-unit">HR</div><div class="dur-label">Flight</div></div>
+            <div class="dur-item"><div class="dur-value">20</div><div class="dur-unit">MIN</div><div class="dur-label">Debrief</div></div>
+          </div>
+          <div class="dur-condition">Practice area — minimum 4500 ft AGL for all spin awareness exercises. Recovery must be complete before 3000 ft AGL.</div>
+        </div>
+      </div>
+
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">02 · Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Stall recognition and recovery (DGH 08) — completed and signed off</li>
+            <li>Incipient stalls — confident recovery demonstrated</li>
+            <li>ACSEL check — student can complete without prompting</li>
+            <li>Understanding of stall-spin relationship and critical angle of attack</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card objectives no-break" style="grid-column:1/-1;">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" fill="white"/><circle cx="8" cy="8" r="5.5" stroke="white" stroke-width="1.5"/></svg></div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Explain how an unintentional spin develops from an aggravated stall — the role of yaw, sideslip and asymmetric lift</li>
+            <li>Identify the four phases of a spin: incipient, developed, flat, and inverted</li>
+            <li>Recognise the visual, aerodynamic and instrument cues of a developing spin</li>
+            <li>Understand the standard PARE recovery mnemonic and why each step matters</li>
+            <li>Apply the CAPA spin recovery callout sequence from SOP E2R1 §1.22.7</li>
+            <li>Demonstrate recovery from incipient spin-like conditions (aggravated cross-controlled stalls) before full rotation develops</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 3L14 13H2L8 3Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 7V9.5M8 11V11.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <span class="ov-card-label">04 · Common Errors</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Applying aileron against the roll — increases yaw asymmetry and deepens the spin</li>
+            <li>Target fascination — fixating on the ground instead of instrument cross-check</li>
+            <li>Spatial disorientation — misjudging rotation direction; always use instruments</li>
+            <li>Not releasing opposite rudder once rotation stops — delays dive recovery</li>
+            <li>Pulling back sharply before rotation stops — can tighten the spin or cause secondary</li>
+            <li>Failing to complete ACSEL before spin awareness exercises</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 2H12V14L8 11.5L4 14V2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+          <span class="ov-card-label">05 · References</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row"><span class="ref-tag sop">SOP</span><span class="ref-text">CAPA SOP E2R1 — Spin awareness and recovery</span><span class="ref-section">§1.22.7</span></div>
+            <div class="ref-row"><span class="ref-tag lesson">LESSON</span><span class="ref-text">ATP International — DGH UPRT Lesson Preparation</span><span class="ref-section">UPRT</span></div>
+            <div class="ref-row"><span class="ref-tag manual">AFM</span><span class="ref-text">Tecnam P-Mentor Limitations — Intentional Spin Prohibition</span><span class="ref-section">§5</span></div>
+            <div class="ref-row"><span class="ref-tag reg">REG</span><span class="ref-text">EASA FCL — UPRT requirements for PPL/CPL/IR</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA — SOP E2R1</span>
+    <span class="footer-mid">DGH UPRT · Spin Awareness and Recovery</span>
+    <span>Page 1 / 4</span>
+  </div>
+</div><!-- end page 1 -->
+
+
+<!-- ═══ PAGE 2 — AERODYNAMICS + ACSEL ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH UPRT · Spin Awareness</span>
+    <span class="page-num">2 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Aerodynamics of the Spin</div>
+        <div class="section-subtitle">How an aggravated stall becomes a spin — phases, physics, and what the pilot sees</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">From Stall to Spin</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">An aircraft cannot spin unless it is stalled. A spin is an aggravated stall in which the aircraft autorotates — one wing stalls more deeply than the other due to yaw, producing asymmetric lift and drag that sustains the rotation.</div>
+        </div>
+        <p class="prose">A spin begins when a stalled aircraft is simultaneously yawed. The advancing (outside) wing moves faster through the air, generating slightly more lift — but it is already stalled, so it instead generates more drag. The retreating (inside) wing moves slower, stalls more deeply, and drops. This asymmetry creates autorotation: the nose pitches down and the aircraft rotates about its vertical axis while continuing to descend.</p>
+        <div class="spacer-sm"></div>
+        <p class="prose">The most common cause in training is an uncoordinated stall — most typically a base-to-final skidding turn with the lower wing held up by aileron. The pilot's instinctive response to a roll (applying opposite aileron) increases yaw and deepens the outside-wing stall, rapidly developing a spin.</p>
+      </div>
+    </div>
+
+    <div class="two-col no-break">
+      <div class="content-block block-theory">
+        <div class="block-header">
+          <span class="block-type-pill">Theory</span>
+          <span class="block-title">Spin Phases</span>
+        </div>
+        <div class="block-body">
+          <div class="phase-label" style="margin-top:0;">1 — Incipient</div>
+          <p class="prose">0–2 turns. Rotation is developing; control response is still partially effective. <strong>Recovery is easiest and most critical here.</strong> Pitch attitude oscillates and airspeed is low.</p>
+          <div class="phase-label">2 — Developed</div>
+          <p class="prose">2+ turns. Rotation is steady. Nose well below horizon. Airspeed stabilised at low value. Standard recovery inputs required.</p>
+          <div class="phase-label">3 — Flat</div>
+          <p class="prose">High-drag, slow-rotation variant. Nose near horizon. Harder to recover. Associated with aft CG and misuse of aileron.</p>
+          <div class="phase-label">4 — Inverted</div>
+          <p class="prose">Uncommon in training. Upright recovery rules reversed. Beyond scope of P-Mentor training.</p>
+        </div>
+      </div>
+
+      <div class="content-block block-theory">
+        <div class="block-header">
+          <span class="block-type-pill">Theory</span>
+          <span class="block-title">Recognition Cues</span>
+        </div>
+        <div class="block-body">
+          <div class="phase-label" style="margin-top:0;">Visual</div>
+          <ul class="brief-list" style="margin-bottom:6px;">
+            <li>Ground rotating below — one direction, steady rate</li>
+            <li>Nose well below horizon</li>
+            <li>Bank angle changing continuously</li>
+          </ul>
+          <div class="phase-label">Instruments</div>
+          <ul class="brief-list" style="margin-bottom:6px;">
+            <li>ASI: low and reducing (below stall speed)</li>
+            <li>AI: erratic / tumbled in developed spin</li>
+            <li>Turn coordinator: showing continuous turn</li>
+            <li>VSI: high rate of descent</li>
+            <li>Altimeter: unwinding rapidly</li>
+          </ul>
+          <div class="phase-label">Physical</div>
+          <ul class="brief-list">
+            <li>Buffet and loss of control effectiveness</li>
+            <li>Disorientation — trust instruments, not senses</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="2" style="margin-top:2px;">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">ACSEL Check</div>
+        <div class="section-subtitle">Complete before all spin awareness exercises — minimum 4500 ft AGL</div>
+      </div>
+    </div>
+
+    <div class="content-block block-check no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Check</span>
+        <span class="block-title">ACSEL — Pre-Exercise Check (SOP §1.22)</span>
+      </div>
+      <div class="block-body">
+        <div class="acsel-grid">
+          <div class="acsel-item">
+            <div class="acsel-letter">A</div>
+            <div class="acsel-word">ALTITUDE</div>
+            <div class="acsel-body">Min <strong>4500 ft AGL</strong>. Recovery must complete above 3000 ft AGL. Allow height for recognition delay.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">C</div>
+            <div class="acsel-word">CONFIGURATION</div>
+            <div class="acsel-body"><strong>Clean</strong> — flaps up, gear up (N/A P-Mentor). Fuel sufficient. No loose items in cockpit.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">S</div>
+            <div class="acsel-word">SAFETY</div>
+            <div class="acsel-body">360° lookout complete. Harnesses secure and locked. Emergency procedures reviewed.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">E</div>
+            <div class="acsel-word">ENGINE</div>
+            <div class="acsel-body">Oil temp &gt;50°C. Oil pressure green. ROTAX 912 temps normal. Fuel pump as required.</div>
+          </div>
+          <div class="acsel-item">
+            <div class="acsel-letter">L</div>
+            <div class="acsel-word">LOCATION</div>
+            <div class="acsel-body">Practice area. Clear of cloud, CAS and populated areas. Known position. Squawk set.</div>
+          </div>
+        </div>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP E2R1</span>
+          <span class="sop-text">ACSEL check must be verbally completed before every spin awareness exercise. 4500 ft AGL minimum — additional height recommended to allow for recognition delay.</span>
+          <span class="sop-section">§1.22</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA — SOP E2R1</span>
+    <span class="footer-mid">DGH UPRT · Spin Awareness and Recovery</span>
+    <span>Page 2 / 4</span>
+  </div>
+</div><!-- end page 2 -->
+
+
+<!-- ═══ PAGE 3 — RECOVERY PROCEDURE ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH UPRT · Spin Awareness</span>
+    <span class="page-num">3 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Recovery Technique</div>
+        <div class="section-subtitle">Standard PARE principles — then CAPA callout sequence from SOP §1.22.7</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Standard PARE Recovery — The Principles</span>
+      </div>
+      <div class="block-body">
+        <p class="prose" style="margin-bottom:8px;">The PARE mnemonic describes the aerodynamic purpose of each recovery action. Understanding <em>why</em> each step works is as important as memorising the sequence.</p>
+        <div class="pare-grid">
+          <div class="pare-item">
+            <div class="pare-letter">P</div>
+            <div class="pare-word">POWER — IDLE</div>
+            <div class="pare-body">Reduces torque and slipstream effects that can sustain rotation. Prevents excessive airspeed build-up during subsequent dive.</div>
+          </div>
+          <div class="pare-item">
+            <div class="pare-letter">A</div>
+            <div class="pare-word">AILERONS — NEUTRAL</div>
+            <div class="pare-body">Aileron deflection in a spin increases yaw asymmetry and can deepen or sustain the spin. Neutral reduces asymmetric drag.</div>
+          </div>
+          <div class="pare-item">
+            <div class="pare-letter">R</div>
+            <div class="pare-word">RUDDER — OPPOSITE</div>
+            <div class="pare-body">Full rudder opposite to rotation direction reduces yaw rate and allows the deeper-stalled (inside) wing to unstall.</div>
+          </div>
+          <div class="pare-item">
+            <div class="pare-letter">E</div>
+            <div class="pare-word">ELEVATOR — NOSE DOWN</div>
+            <div class="pare-body">Forward stick breaks the stall by reducing angle of attack. Applied after rudder — premature elevator input can tighten the spin.</div>
+          </div>
+        </div>
+        <div class="caution-strip" style="margin-top:2px;">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Aileron Instinct</div>
+            <div class="warn-text">The instinctive response to a roll is to apply aileron — but in a spin this is exactly wrong. Aileron against the roll increases the yaw causing the spin and deepens it. <strong>Ailerons neutral always.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">CAPA Procedure</span>
+        <span class="block-title">CAPA Spin Recovery — SOP Callout Sequence (§1.22.7)</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle" style="margin-bottom:10px;">
+          <div class="key-principle-label">SOP Rule</div>
+          <div class="key-principle-text">At CAPA, the standard recovery is performed using the verbal callout sequence below. Callouts are spoken aloud on every exercise. If in doubt about direction — use instruments, not senses.</div>
+        </div>
+
+        <div class="recovery-flow">
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot start"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">SPIN</span>
+              <span class="prose"> — Recognise the spin. State the direction: <em>"Spin — rotating left"</em> or <em>"rotating right."</em> Confirm on turn coordinator. Trust instruments over senses.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Autopilot disengage</span>
+              <span class="prose"> — Confirm autopilot is off and full manual authority is established.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Power idle</span>
+              <span class="prose"> — Throttle to idle. Reduces torque and asymmetric thrust effects. (ROTAX 912: move to idle smoothly.)</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Aileron neutral</span>
+              <span class="prose"> — Release aileron pressure and centre the stick laterally. Do not apply corrective aileron. Neutral reduces yaw asymmetry.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot dual"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Rudder opposite</span> &nbsp;<span class="spoken">Nose down</span>
+              <span class="prose"> — These two actions are applied <strong>simultaneously</strong>. Full rudder against the direction of rotation (verified on turn coordinator) to stop autorotation. Forward stick to break the stall — reduces angle of attack below critical. Hold until rotation stops.</span>
+              <div class="caution-strip" style="margin-top:5px;">
+                <span class="warn-icon">⚠</span>
+                <div>
+                  <div class="warn-title">Simultaneous — not sequential</div>
+                  <div class="warn-text">Rudder opposite and nose down must be applied at the same time. Applying nose-down before opposite rudder risks deepening the spin. Applying rudder without nose-down delays unstalling the wing.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="prose" style="font-style:italic;color:var(--grey-500);">— wait for rotation to stop —</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Rudder neutral</span>
+              <span class="prose"> — Once rotation has fully stopped, release rudder to neutral. Maintaining opposite rudder into the dive causes a secondary departure. Confirm on turn coordinator: ball and needle centred.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Raise nose</span>
+              <span class="prose"> — Smooth, positive back-pressure to recover from the ensuing dive. Do not exceed Va (manoeuvring speed). Avoid sharp pulls — G loading risk. Wings level as nose comes up through horizon.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot"></div>
+              <div class="step-connector"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Adjust power</span>
+              <span class="prose"> — Apply power as appropriate for the desired climb or level-off attitude. Check engine temps before increasing ROTAX power rapidly.</span>
+            </div>
+          </div>
+
+          <div class="recovery-step">
+            <div class="recovery-step-line">
+              <div class="step-dot end"></div>
+            </div>
+            <div class="recovery-step-content">
+              <span class="spoken">Recover</span>
+              <span class="prose"> — Establish normal cruise or climb. Complete ACSEL re-check before any further exercise. Note height lost and report to instructor.</span>
+            </div>
+          </div>
+
+        </div><!-- end recovery-flow -->
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA — SOP E2R1</span>
+    <span class="footer-mid">DGH UPRT · Spin Awareness and Recovery</span>
+    <span>Page 3 / 4</span>
+  </div>
+</div><!-- end page 3 -->
+
+
+<!-- ═══ PAGE 4 — EXERCISES + DEBRIEF ═══ -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">DGH UPRT · Spin Awareness</span>
+    <span class="page-num">4 / 4</span>
+  </div>
+
+  <div class="page-body">
+
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">In-Flight Exercises</div>
+        <div class="section-subtitle">Spin awareness practice on P-Mentor — incipient only, no developed spin</div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning no-break">
+      <div class="block-header">
+        <span class="block-type-pill">SOP Limitation</span>
+        <span class="block-title">P-Mentor Training Scope</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">Per CAPA SOP E2R1, the Tecnam P-Mentor is approved for spin <strong>awareness</strong> training only. This means the student will experience and recover from the conditions that precede a spin — not a full developed spin entry.</p>
+        <div class="sop-strip" style="margin-top:8px;">
+          <span class="sop-badge">SOP E2R1</span>
+          <span class="sop-text">Intentional spins are prohibited on all CAPA aircraft except the BL-8 Super Decathlon. All spin training on P-Mentor is limited to incipient-phase awareness.</span>
+          <span class="sop-section">§1.22.7</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Exercise</span>
+        <span class="block-title">Exercise Sequence — Spin Awareness</span>
+      </div>
+      <div class="block-body">
+        <div class="phase-label" style="margin-top:0;">Setup — Before each exercise</div>
+        <p class="prose" style="margin-bottom:6px;">ACSEL check complete. Above 4500 ft AGL. Choose a feature on horizon for heading reference. Set HDG bug.</p>
+
+        <div class="phase-label">Exercise 1 — Cross-controlled stall awareness (instructor demonstrates)</div>
+        <ol class="procedure-list" style="margin-bottom:6px;">
+          <li>Slow to approach of stall with flaps up, ball displaced (skidding turn)</li>
+          <li>At stall warning: instructor demonstrates tendency to roll/yaw toward lower wing</li>
+          <li>Immediate recovery: <span class="spoken">Rudder opposite</span> <span class="spoken">Nose down</span> simultaneously — do not use aileron against roll</li>
+          <li>Straight and level recovery, note height lost</li>
+        </ol>
+
+        <div class="phase-label">Exercise 2 — Student recovery from approaching incipient conditions</div>
+        <ol class="procedure-list" style="margin-bottom:6px;">
+          <li>Student sets up slow flight in uncoordinated condition (instructor monitoring)</li>
+          <li>At first onset of autorotation tendency, student applies full CAPA callout sequence</li>
+          <li>Verify: <span class="spoken">SPIN</span> → <span class="spoken">Autopilot disengage</span> → <span class="spoken">Power idle</span> → <span class="spoken">Aileron neutral</span> → <span class="spoken">Rudder opposite</span> <span class="spoken">Nose down</span></li>
+          <li>On rotation stop: <span class="spoken">Rudder neutral</span> → <span class="spoken">Raise nose</span> → <span class="spoken">Adjust power</span> → <span class="spoken">Recover</span></li>
+        </ol>
+
+        <div class="phase-label">Exercise 3 — Repeat with student calling rotation direction</div>
+        <ol class="procedure-list">
+          <li>Student must confirm direction of rotation from turn coordinator before applying opposite rudder</li>
+          <li>Common error: guessing direction from visual impression — always verify on instrument</li>
+          <li>Repeat until callout sequence is fluent and direction identification is immediate</li>
+        </ol>
+
+        <div class="instr-note" style="margin-top:8px;">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">Monitor altitude throughout. Intervene at any point the aircraft exceeds the incipient phase. Maintain dual control awareness. Complete re-check above 4500 ft AGL before each repeat. Student should be able to articulate what would happen if aileron were applied against the roll.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="5" style="margin-top:4px;">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Debrief Checklist</div>
+        <div class="section-subtitle">Review each item with student after the flight</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">Post-Flight Debrief — Spin Awareness</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div class="debrief-list">
+            <div class="debrief-item"><div class="debrief-num">1</div><div>Was ACSEL completed verbally above 4500 ft AGL before every exercise?</div></div>
+            <div class="debrief-item"><div class="debrief-num">2</div><div>Did the student correctly identify the direction of rotation from the turn coordinator — not from visual impression?</div></div>
+            <div class="debrief-item"><div class="debrief-num">3</div><div>Were ailerons kept neutral throughout? Any instinctive aileron application observed?</div></div>
+            <div class="debrief-item"><div class="debrief-num">4</div><div>Were <span class="spoken">Rudder opposite</span> and <span class="spoken">Nose down</span> applied simultaneously and in full?</div></div>
+          </div>
+          <div class="debrief-list">
+            <div class="debrief-item"><div class="debrief-num">5</div><div>Was opposite rudder released promptly once rotation stopped — before pulling out of the dive?</div></div>
+            <div class="debrief-item"><div class="debrief-num">6</div><div>Was the dive recovery smooth and within Va — no abrupt back-pressure?</div></div>
+            <div class="debrief-item"><div class="debrief-num">7</div><div>Could the student recite the full CAPA callout sequence from memory in correct order?</div></div>
+            <div class="debrief-item"><div class="debrief-num">8</div><div>Can the student explain why aileron against the roll is the most dangerous instinctive error?</div></div>
+          </div>
+        </div>
+        <div class="sop-strip" style="margin-top:8px;">
+          <span class="sop-badge">Sign-Off</span>
+          <span class="sop-text">Spin awareness exercise is complete when the student demonstrates: correct ACSEL check, accurate rotation identification, full CAPA callout sequence, and no aileron misuse on three consecutive exercises.</span>
+          <span class="sop-section">§1.22.7</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">European Aviation Safety Agency. (n.d.). <em>Safety promotion leaflet GA8: Stall and spin — loss of control</em> (EGAST GA8). EASA.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Center Air · CAPA — SOP E2R1</span>
+    <span class="footer-mid">DGH UPRT · Spin Awareness and Recovery</span>
+    <span>Page 4 / 4</span>
+  </div>
+</div><!-- end page 4 -->
+
+</body>
+</html>

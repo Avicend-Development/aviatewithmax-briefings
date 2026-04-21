@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Precautionary Landing — Flight Training Briefing — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* spoken callout — amber, for pilot verbalised calls */
+.spoken{font-family:var(--font-mono);font-size:9.5px;background:rgba(232,160,32,0.18);color:#7A5000;border:1px solid rgba(232,160,32,0.5);padding:2px 9px;border-radius:3px;display:inline-block;margin:1px 0;font-weight:600;}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200,#E8ECF0);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display,'Barlow Condensed',sans-serif);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy,#0D1B2A);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700,#4A5568);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body,'Inter',sans-serif);}
+  </style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-precautionary-landing.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 12 · Precautionary Landing</span>
+    <span class="page-num">1 / 3</span>
+  </div>
+
+  <div class="page-body">
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">C</div>
+        <div>
+          <div class="cover-org-name">Center Air</div>
+          <div class="cover-sop-badge">Flight Training Division</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Emergency Procedures</div>
+      <div class="cover-lesson-title">Precautionary Landing</div>
+      <div class="cover-lesson-subtitle">Planned field landing · inspection pass · low circuit · PAN PAN · field assessment</div>
+      <div class="spacer-sm"></div>
+      <div class="cover-meta-row">
+        <span class="meta-chip aircraft">Tecnam P-Mentor · P2002-JF Sierra</span>
+        <span class="meta-chip stage">Emergency Handling</span>
+        <span class="meta-chip env">VFR · Day · Cross-Country / Local Area</span>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- Duration Card -->
+      <div class="ov-card duration">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Duration</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prerequisites Card -->
+      <div class="ov-card prereq">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Gliding descent</li>
+            <li>Forced landing</li>
+            <li>Navigation basics</li>
+            <li>Circuit proficient</li>
+            <li>Radio communications</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objectives Card -->
+      <div class="ov-card objectives">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">🎯</div>
+          <div class="ov-card-label">Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Distinguish precautionary from forced landing (engine running vs failed)</li>
+            <li>Identify reasons requiring a precautionary landing</li>
+            <li>Conduct initial assessment pass at 500 ft AGL</li>
+            <li>Evaluate field suitability from assessment pass</li>
+            <li>Plan and fly a low circuit for landing</li>
+            <li>Transmit PAN PAN appropriately</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tolerances Card -->
+      <div class="ov-card tolerances">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⚙</div>
+          <div class="ov-card-label">Tolerances</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">500 ft</div>
+              <div class="tol-param">Assess pass AGL</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">70–80 kt</div>
+              <div class="tol-param">Assessment pass</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">300 ft</div>
+              <div class="tol-param">Low circuit AGL</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">63 kt</div>
+              <div class="tol-param">Landing speed</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">PAN PAN</div>
+              <div class="tol-param">Transmitted</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">300 ft</div>
+              <div class="tol-param">Commit by AGL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Mistakes Card -->
+      <div class="ov-card mistakes">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⚠</div>
+          <div class="ov-card-label">Common Mistakes</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Not flying low enough on assessment pass (can't see surface)</li>
+            <li>Misjudging field length</li>
+            <li>Committing without full assessment</li>
+            <li>Not transmitting PAN PAN when appropriate</li>
+            <li>Attempting to stretch range on low fuel (should have landed earlier)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- References Card -->
+      <div class="ov-card references">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">📚</div>
+          <div class="ov-card-label">References</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">E2R1 §1.23.6 Precautionary Landing</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag reg">ICAO</span>
+              <span class="ref-text">SARPS PAN PAN procedure</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing · DGH 12</span>
+    <span class="footer-mid">Precautionary Landing</span>
+    <span>Page 1 of 3</span>
+  </div>
+</div>
+
+<!-- PAGE 2: THEORY & TECHNIQUE -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 12 · Precautionary Landing</span>
+    <span class="page-num">2 / 3</span>
+  </div>
+
+  <div class="page-body">
+    <!-- SECTION 1: PRECAUTIONARY VS FORCED LANDING -->
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Precautionary vs Forced Landing</div>
+        <div class="section-subtitle">Understanding the critical difference</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left: Precautionary -->
+      <div class="content-block block-theory">
+        <div class="block-header">
+          <span class="block-type-pill">THEORY</span>
+          <span class="block-title">Precautionary Landing</span>
+        </div>
+        <div class="block-body">
+          <ul class="brief-list">
+            <li><strong>Engine is RUNNING</strong> — have power</li>
+            <li>Choice of when and where to land (within available range)</li>
+            <li>More time for assessment and approach planning</li>
+            <li><strong>PAN PAN call</strong> (urgent, not immediate danger)</li>
+            <li>Can go around and re-assess if approach unsatisfactory</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: Forced -->
+      <div class="content-block block-warning">
+        <div class="block-header">
+          <span class="block-type-pill">WARNING</span>
+          <span class="block-title">Forced Landing</span>
+        </div>
+        <div class="block-body">
+          <ul class="brief-list">
+            <li><strong>Engine has FAILED</strong> — no power</li>
+            <li>Must land immediately — limited options</li>
+            <li>Time-critical — field selection must be fast</li>
+            <li><strong>MAYDAY call</strong> (immediate danger to life)</li>
+            <li>No go-around unless restart attempted</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <span class="block-type-pill">THEORY</span>
+        <span class="block-title">Common Reasons for Precautionary Landing</span>
+      </div>
+      <div class="block-body">
+        <ul class="brief-list">
+          <li>Deteriorating weather ahead (lowering cloud, reduced visibility)</li>
+          <li>Fuel state — low fuel (urgency, not emergency)</li>
+          <li>Mechanical concern — engine roughness, vibration, unusual sound or smell</li>
+          <li>Medical — pilot incapacitation or passenger illness</li>
+          <li>Navigational uncertainty / lost (fuel/time critical)</li>
+          <li>Night approaching with no night rating</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 2: DECISION TO LAND -->
+    <div class="section-banner" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Decision to Land</div>
+        <div class="section-subtitle">The critical moment</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <span class="block-type-pill">THEORY</span>
+        <span class="block-title">Key Principle</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">CORE RULE</div>
+          <div class="key-principle-text">When in doubt — land. A precautionary landing on a suitable field is infinitely preferable to a forced landing in unsuitable terrain.</div>
+        </div>
+        <ul class="brief-list">
+          <li>Do not delay decision hoping situation improves — it rarely does</li>
+          <li>Once committed: stick to the decision — second-guessing at low altitude is dangerous</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 3: FIELD ASSESSMENT PASS -->
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Field Assessment Pass</div>
+        <div class="section-subtitle">The critical low-level inspection</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre">
+      <div class="block-header">
+        <span class="block-type-pill">MANOEUVRE</span>
+        <span class="block-title">Initial Assessment (from circuit height ~1000 ft)</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li>Identify potential field(s) — at least 2 candidates</li>
+          <li>Assess size, orientation (into wind), approach hazards (trees, wires, buildings)</li>
+          <li>Note surface colour and texture (crop rows visible = grass/grain; dark = ploughed)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-manoeuvre">
+      <div class="block-header">
+        <span class="block-type-pill">MANOEUVRE</span>
+        <span class="block-title">Inspection Pass (500 ft AGL, 70–80 kt)</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li>Approach as if landing — fly complete length of field</li>
+          <li>Assess: surface obstacles (boulders, logs, furrows, livestock, ditches)</li>
+          <li>Assess: slope (aim into slope if possible)</li>
+          <li>Assess: approach and overshoot hazards (power lines, fence, trees)</li>
+          <li>Note any hazards for the actual approach</li>
+          <li>Apply MCP and climb away for circuit</li>
+        </ol>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">Assessment pass must be low enough to see surface clearly. 500 ft AGL is the standard assessment height. DO NOT land on first pass.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 4: LOW CIRCUIT & LANDING -->
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Low Circuit & Landing</div>
+        <div class="section-subtitle">Approach, communication, and commitment</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre">
+      <div class="block-header">
+        <span class="block-type-pill">MANOEUVRE</span>
+        <span class="block-title">PAN PAN Call (during or after assessment)</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li>Transmit: "PAN PAN PAN PAN PAN PAN [callsign] [position] [nature of urgency] [intentions]"</li>
+          <li>Squawk 7600 (comms failure) or 7700 (emergency) as appropriate</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-manoeuvre">
+      <div class="block-header">
+        <span class="block-type-pill">MANOEUVRE</span>
+        <span class="block-title">Low Circuit (300 ft AGL circuit)</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li>Tighter than normal — field is short, approach must be accurate</li>
+          <li>Downwind at 300 ft AGL, 70–80 kt, close to field</li>
+          <li>Abeam threshold: Flap 1, reduce to 70 kt</li>
+          <li>Base: Flap 2, adjust for glidepath</li>
+          <li>Final: 70 kt, aim point identified from assessment pass</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">Committal Point — 300 ft AGL</span>
+      </div>
+      <div class="block-body">
+        <ul class="brief-list">
+          <li><strong>Below 300 ft:</strong> committed to landing — no further assessment</li>
+          <li><strong>If approach unstabilised above 300 ft:</strong> go around immediately — engine is running, full power available</li>
+          <li><strong>If approach good:</strong> continue, threshold 63 kt, flare, touchdown</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">CAPA Procedure</span>
+        <span class="block-title">Go-Around — CAPA Callout Sequence (SOP §1.20)</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle" style="margin-bottom:9px;">
+          <div class="key-principle-label">Key Difference from Forced Landing</div>
+          <div class="key-principle-text">In a precautionary landing the engine is running — a go-around is always available above the committal point (300 ft AGL). Multiple passes are normal. Use every go-around to reassess the landing area.</div>
+        </div>
+        <p class="prose" style="margin-bottom:7px;">Apply the full CAPA go-around callout sequence per SOP §1.20. Prop full forward first, then throttle (right to left — smooth and gentle).</p>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:10px;color:var(--grey-700);">
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Going around - Full power"</span><span style="padding-top:2px;"> – Combined initial call. Prop full forward → throttle full forward. Begin rotating nose toward G/A attitude.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Flaps 1 or less"</span><span style="padding-top:2px;"> – Select Flap 1 if extended. Never retract directly from Flap 2 to 0 at low speed and altitude.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"G/A attitude"</span><span style="padding-top:2px;"> – Set and verify go-around pitch attitude. Accelerate through Vx 56 KIAS maintaining positive ROC.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Positive ROC"</span><span style="padding-top:2px;"> – Confirm VSI shows climb before retracting flaps further.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Safe speed"</span><span style="padding-top:2px;"> – Above Vx (56 KIAS). Safe to retract flaps — do not let nose drop.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Flaps UP"</span><span style="padding-top:2px;"> – Retract flaps fully. Trim back. Accelerate to Vy 70 KIAS.</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;"><span class="spoken">"Max continuous power"</span><span style="padding-top:2px;"> – At 400 ft AGL, set 2250 RPM MCP. Advise ATC/radio; re-assess field for next pass or departure.</span></div>
+        </div>
+        <div class="sop-strip" style="margin-top:8px;">
+          <span class="sop-badge">SOP §1.20</span>
+          <span class="sop-text">Aviate first — communicate after. Do not advise ATC of the go-around until the procedure is complete and the aircraft is under full control.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- SECTION 5: AFTER LANDING -->
+    <div class="section-banner" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">After Landing</div>
+        <div class="section-subtitle">Ground procedures and next steps</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre">
+      <div class="block-header">
+        <span class="block-type-pill">MANOEUVRE</span>
+        <span class="block-title">Post-Landing Procedure</span>
+      </div>
+      <div class="block-body">
+        <ol class="procedure-list">
+          <li>Stop aircraft: brakes, engine to idle</li>
+          <li>Assess aircraft for damage: walk around check</li>
+          <li>Communicate: advise ATC/FIS of landing location and status</li>
+          <li>Advise passengers: remain in aircraft until assessed</li>
+          <li>Seek assistance: contact relevant authority (police/SAR if appropriate)</li>
+          <li>Do NOT attempt to take off again without engineer sign-off</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="caution-strip">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <div class="warn-title">Low Fuel</div>
+        <div class="warn-text">Never plan to arrive with minimum fuel. Minimum fuel quantity for decision to divert is 45 min final reserve (SOP E2R1). If fuel is below final reserve: you are in an emergency — MAYDAY, not PAN PAN.</div>
+      </div>
+    </div>
+
+    <div class="warn-strip">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <div class="warn-title">Overconfidence</div>
+        <div class="warn-text">Most precautionary landing accidents occur when pilots assess a field from 1000 ft as 'suitable' without conducting the low inspection pass. A field that looks clear from altitude may have ditches, furrows, livestock, or obstacles invisible from height. ALWAYS conduct the inspection pass.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing · DGH 12</span>
+    <span class="footer-mid">Precautionary Landing</span>
+    <span>Page 2 of 3</span>
+  </div>
+</div>
+
+<!-- PAGE 3: DEBRIEF -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 12 · Precautionary Landing</span>
+    <span class="page-num">3 / 3</span>
+  </div>
+
+  <div class="page-body">
+    <div class="section-banner" data-num="D">
+      <div class="section-num">D</div>
+      <div class="section-text">
+        <div class="section-title">Debrief Criteria</div>
+        <div class="section-subtitle">Post-flight assessment and feedback</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief">
+      <div class="block-header">
+        <span class="block-type-pill">DEBRIEF</span>
+        <span class="block-title">Debrief Assessment</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <div class="debrief-num">1</div>
+            <div>Was decision to land made promptly (no delay hoping for improvement)?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">2</div>
+            <div>Was PAN PAN transmitted with correct position and nature?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">3</div>
+            <div>Was assessment pass flown at 500 ft AGL at appropriate speed?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">4</div>
+            <div>Were field hazards correctly identified from the assessment pass?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">5</div>
+            <div>Was low circuit flown close enough to field?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">6</div>
+            <div>Was committal point (300 ft) respected?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">7</div>
+            <div>Was the approach stable and within tolerances?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="caution-strip">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <div class="warn-title">Low Fuel</div>
+        <div class="warn-text">Never plan to arrive with minimum fuel. Minimum fuel quantity for decision to divert is 45 min final reserve (SOP E2R1). If fuel is below final reserve: you are in an emergency — MAYDAY, not PAN PAN.</div>
+      </div>
+    </div>
+
+    <div class="warn-strip">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <div class="warn-title">Overconfidence</div>
+        <div class="warn-text">Most precautionary landing accidents occur when pilots assess a field from 1000 ft as 'suitable' without conducting the low inspection pass. A field that looks clear from altitude may have ditches, furrows, livestock, or obstacles invisible from height. ALWAYS conduct the inspection pass.</div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="content-block block-theory">
+      <div class="block-header">
+        <span class="block-type-pill">REFERENCE</span>
+        <span class="block-title">Lesson Summary</span>
+      </div>
+      <div class="block-body">
+        <p class="prose">
+          The precautionary landing is a controlled decision to land on a suitable field before circumstances escalate to an emergency. Unlike forced landings, you have the advantage of engine power, which provides flexibility in assessment and approach. The critical success factors are: (1) making the decision promptly without hope that the situation will improve, (2) conducting a thorough low-level inspection pass to identify field hazards, (3) transmitting PAN PAN at the appropriate moment, (4) flying a tight, accurate low circuit, and (5) maintaining discipline through the committal point at 300 ft AGL.
+        </p>
+        <p class="prose" style="margin-top: 8px;">
+          Always err on the side of caution. A precautionary landing in the daylight on a suitable field is infinitely preferable to a forced landing on unsuitable terrain. Do not let overconfidence or desire to reach your destination override sound judgment.
+        </p>
+      </div>
+    </div>
+  </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+        <div class="apa-ref-entry">European Aviation Safety Agency. (n.d.). <em>Safety promotion leaflet GA2: Decision making</em> (EGAST GA2). EASA.</div>
+      </div>
+    </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing · DGH 12</span>
+    <span class="footer-mid">Precautionary Landing</span>
+    <span>Page 3 of 3</span>
+  </div>
+</div>
+
+</body>
+</html>

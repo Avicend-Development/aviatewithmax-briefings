@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIF 02 – Rated Descent, VOR & Simulated GCA – PA28 — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.spoken{font-family:var(--font-mono);font-size:9px;background:rgba(232,160,32,0.15);color:#7A5A00;border:1px solid rgba(232,160,32,0.45);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px 2px;white-space:nowrap;}
+.speed-band{display:flex;height:18px;border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+.speed-seg{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:500;color:var(--white);}
+.speed-seg.white{background:#9ECAE1;flex:1.2;}
+.speed-seg.green{background:var(--green);flex:1.5;}
+.speed-seg.sf-zone{background:var(--amber);flex:0.4;}
+.speed-seg.stall{background:var(--red);flex:0.25;}
+.speed-labels{display:flex;font-family:var(--font-mono);font-size:8px;color:var(--grey-500);gap:0;margin-bottom:6px;}
+.recovery-flow{display:flex;align-items:stretch;gap:0;margin:8px 0;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--amber);}
+.flow-connector{flex:1;height:2px;background:var(--grey-200);align-self:center;margin-top:0;}
+.flow-label{font-family:var(--font-mono);font-size:7.5px;color:var(--navy);text-align:center;line-height:1.2;font-weight:500;}
+.flow-spoken{font-size:7px;color:var(--grey-500);text-align:center;line-height:1.2;}
+.flow-row{display:flex;align-items:center;}
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0;}
+.acsel-cell{background:var(--navy);border-radius:var(--radius);padding:7px 5px;text-align:center;}
+.acsel-letter{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--amber);line-height:1;}
+.acsel-word{font-family:var(--font-mono);font-size:7.5px;color:var(--sky-light);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+.acsel-detail{font-size:7.5px;color:var(--grey-300);margin-top:3px;line-height:1.3;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+  </style>
+  <link rel="stylesheet" href="../../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="lesson-dif02-pa28.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 1 — COVER / OVERVIEW
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DIF 02 · Rated Descent, VOR & Simulated GCA</div>
+    <div class="page-num">1 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <!-- Cover banner -->
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+            <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+            <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cover-org-name">Center Air · CAPA</div>
+          <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Instrument Training</div>
+      <div class="cover-lesson-title">Rated Descent, VOR & Simulated GCA</div>
+      <div class="cover-lesson-subtitle">Consolidating attitude flying · precision descent control · VOR tracking &amp; intercept · radar-vectored approach simulation</div>
+      <div class="cover-meta-row">
+        <div class="meta-chip aircraft">Piper PA-28-161 Cherokee Warrior II</div>
+        <div class="meta-chip stage">DIF 02 · Instrument Training</div>
+        <div class="meta-chip env">Foggles · KOR VOR · 1000–2000 ft AGL</div>
+      </div>
+    </div>
+
+    <!-- Overview grid -->
+    <div class="overview-grid">
+
+      <!-- Timing -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Timing</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">20</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.5</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Minor or no turbulence · Wind velocity less than 20 kt · KOR VOR available</div>
+        </div>
+      </div>
+
+      <!-- Prerequisites -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>DIF 01 completed to tolerance</li>
+            <li>Basic T scan established</li>
+            <li>180° turn capability demonstrated</li>
+            <li>VOR basics reviewed (DGH 11)</li>
+            <li>Trim discipline solid</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objectives -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Learning Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Consolidate attitude flying with tighter tolerances (±2° pitch)</li>
+            <li>Select &amp; maintain a target rate of descent</li>
+            <li>Perform VOR tracking and intercept on instruments</li>
+            <li>Execute 180° level turn ±100 ft / ±20° heading (progress check)</li>
+            <li>Practice stall exercises to first warning only</li>
+            <li>Demonstrate GCA approach capability (simulated radar vectors)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tolerances -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">◎</div>
+          <div class="ov-card-label">Tolerances (SOP § 1.22)</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">±2°</div>
+              <div class="tol-param">Pitch</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±5°</div>
+              <div class="tol-param">Roll</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±150 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±15°</div>
+              <div class="tol-param">Heading</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10 kt</div>
+              <div class="tol-param">Airspeed</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">—</div>
+              <div class="tol-param">ROD Target</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common mistakes -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">!</div>
+          <div class="ov-card-label">Common Errors</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Using 30° bank instead of Rate 1 (≈15°)</li>
+            <li>No ASI reference during unusual attitude recovery</li>
+            <li>Ignoring hard warning (stall warning)</li>
+            <li>Forgetting to read pitch attitude on AI during manoeuvres</li>
+            <li>Too large power corrections during rated descent</li>
+            <li>Chasing VSI instead of holding steady power/pitch, then observing result</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- References -->
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">📚</div>
+          <div class="ov-card-label">Key References</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="ref-list">
+            <li class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">CAPA SOP E2R1 § 1.25 — Stall Warning Hard Warning</span>
+              <span class="ref-section">§ 1.25</span>
+            </li>
+            <li class="ref-row">
+              <span class="ref-tag lesson">LESSON</span>
+              <span class="ref-text">DGH 11 — VOR Tracking & Intercept</span>
+              <span class="ref-section">DGH 11</span>
+            </li>
+          </ul>
+          <div class="apa-references">
+            <div class="apa-ref-heading">APA7 References</div>
+            <div class="apa-ref-list">
+              <div class="apa-ref-entry">Center Air Pilot Academy. (2025). <i>CAPA standard operating procedures</i> (Edition 2, Rev. 1). Center Air Pilot Academy.</div>
+              <div class="apa-ref-entry">Center Air Pilot Academy. (2020). <i>ATP integrated flight training: Lesson preparation notes</i> (NOV20/FRI). Center Air Pilot Academy.</div>
+              <div class="apa-ref-entry">Piper Aircraft. (n.d.). <i>Pilot's operating handbook: PA-28-161 Cherokee Warrior II</i> (Report No. VB-880). Piper Aircraft.</div>
+              <div class="apa-ref-entry">European Union Aviation Safety Agency. (2018). <i>Part-FCL: Flight crew licensing</i>. EASA.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div>CAPA SOP E2R1 · NOV 2025</div>
+    <div class="footer-mid">BRIEFING PACKAGE</div>
+    <div>ATP INT NOV20</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 2 — THEORY & TECHNIQUE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DIF 02 · Rated Descent, VOR & Simulated GCA</div>
+    <div class="page-num">2 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <!-- Section 1: Rated Descent -->
+    <div class="section-banner no-break" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Rated Descent Control</div>
+        <div class="section-subtitle">Establishing a target rate of descent and maintaining it with precision</div>
+      </div>
+    </div>
+
+    <div class="content-block no-break">
+      <div class="block-header">
+        <span class="block-type-pill">THEORY</span>
+        <span class="block-title">Rated Descent Principle</span>
+      </div>
+      <div class="block-body">
+        <div class="prose">
+A <strong>rated descent</strong> is intentional — you decide what rate of descent you want (e.g., 500 fpm) and hold it. Many students default to whatever descent rate the aircraft falls into naturally. That is NOT a rated descent.
+        </div>
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Power controls rate of descent. Nose attitude (pitch) controls airspeed. Set pitch for desired speed, set power for desired ROD, then wait for the aircraft to stabilise before adjusting further.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">Power Corrections &amp; Patience</span>
+      </div>
+      <div class="block-body">
+        <div class="procedure-list">
+          <li>Select target ROD: "I want to descend at 500 fpm."</li>
+          <li>Set power to achieve that rate. Make small adjustments (50 rpm at a time).</li>
+          <li>Do NOT chase the VSI. VSI lags behind actual change by 6–8 seconds.</li>
+          <li>Set attitude, set power, WAIT, observe result, fine-tune only if needed.</li>
+          <li>Over-correcting on power causes overshoot (descending too fast, then climbing too fast).</li>
+        </div>
+        <div class="caution-strip">
+          <div class="warn-icon">⚠</div>
+          <div class="warn-title">Patience is Discipline</div>
+          <div class="warn-text">The temptation to make constant small corrections is strong. Resist. One power adjustment, then observe. If still off target after 10 seconds, adjust again. Not every VSI needle twitch requires action.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: VOR Tracking & Intercept -->
+    <div class="section-banner no-break" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">VOR Exercises on Instruments</div>
+        <div class="section-subtitle">Tracking and intercept using CDI crosscheck whilst maintaining AI primary scan</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">VOR Intercept &amp; Tracking</span>
+      </div>
+      <div class="block-body">
+        <div class="procedure-list">
+          <li>TUNE frequency to ACTIVE on NAV 1.</li>
+          <li>SELECT appropriate OBS course.</li>
+          <li>IDENT aurally (morse code).</li>
+          <li>Fly intercept heading. When CDI needle begins to move smoothly, roll out with wind correction angle on the radial.</li>
+          <li>Maintain course on AI. Glance CDI briefly (½ sec) to verify. Return to AI.</li>
+          <li>Detect deviation on CDI → Correct on AI roll → Verify on CDI.</li>
+        </div>
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">Ensure student maintains 90% attention on AI even whilst tracking VOR. CDI is a supporting instrument. Never look at CDI to maintain heading — maintain wings level on AI.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: 180° Level Turn Progress Check -->
+    <div class="section-banner no-break" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">180° Level Turn: Progress Check</div>
+        <div class="section-subtitle">Demonstrating improved precision with ±100 ft / ±20° tolerance</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">Execution for Progress Check</span>
+      </div>
+      <div class="block-body">
+        <div class="prose">
+Establish 15° bank (Rate 1 turn). Monitor altitude on altimeter — must stay within ±100 ft during turn. Roll out when DI shows desired heading ±20°. This is a progress check: can you complete a turn with better control?
+        </div>
+        <div class="key-principle">
+          <div class="key-principle-label">Improvement Target</div>
+          <div class="key-principle-text">DIF 01 tolerance was ±200 ft / ±20° hdg. DIF 02 raises the bar to ±100 ft / ±20° hdg. Demonstrates tighter control on altitude during manoeuvres.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>CAPA SOP E2R1 · NOV 2025</div>
+    <div class="footer-mid">BRIEFING PACKAGE</div>
+    <div>ATP INT NOV20</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 3 — STALLS, GCA & DEBRIEF
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DIF 02 · Rated Descent, VOR & Simulated GCA</div>
+    <div class="page-num">3 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <!-- Section 4: Stall Exercises -->
+    <div class="section-banner no-break" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Stall Exercises to First Warning Only</div>
+        <div class="section-subtitle">Hard warning policy under instruments — immediate go-around</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">WARNING</span>
+        <span class="block-title">Stall Warning = Hard Warning (SOP § 1.25)</span>
+      </div>
+      <div class="block-body">
+        <div class="warn-strip">
+          <div class="warn-icon">⚠</div>
+          <div class="warn-title">HARD WARNING POLICY</div>
+          <div class="warn-text">Under foggles, any stall warning must be reacted upon immediately. Do NOT continue toward actual stall. On hearing/feeling stall warning: <span class="spoken">Going around - Full power - Flaps 1 or less - G/A attitude - Positive ROC - Safe speed - Flaps up</span> + <span class="spoken">Max continuous power</span> at 400 ft AGL.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">Pre-Stall Approach on Instruments</span>
+      </div>
+      <div class="block-body">
+        <div class="procedure-list">
+          <li>Level flight at altitude. Begin slow descent at small power reduction.</li>
+          <li>Pitch nose up gradually to increase AOA without altitude loss.</li>
+          <li>Monitor airspeed on ASI. Expect buffet or stall warning horn.</li>
+          <li>ON STALL WARNING: Immediate power + pitch correction + go-around.</li>
+          <li>Never approach actual stall (post-stall characteristics) on instruments.</li>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Simulated GCA -->
+    <div class="section-banner no-break" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Simulated GCA (Ground-Controlled Approach)</div>
+        <div class="section-subtitle">Radar-vectored approach simulation — demonstrates workload management</div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">TECHNIQUE</span>
+        <span class="block-title">GCA Execution</span>
+      </div>
+      <div class="block-body">
+        <div class="prose">
+Instructor provides ATC-style headings and descent instructions. Student must follow vectors whilst maintaining steady attitude flying. Rate 1 turns, precise altitude keeping. The challenge: manage radio communication and vector-following without degrading instrument scan.
+        </div>
+        <div class="procedure-list">
+          <li>Receive vector: "Turn right heading 200."</li>
+          <li>Acknowledge and execute on AI (15° bank).</li>
+          <li>Receive descent instruction: "Descend to 800 feet, maintain safe speed."</li>
+          <li>Set power/pitch for rated descent, maintain vector.</li>
+          <li>Crosscheck altimeter, ASI, VSI periodically.</li>
+          <li>Return to AI immediately after each glance.</li>
+        </div>
+        <div class="key-principle">
+          <div class="key-principle-label">Workload Management</div>
+          <div class="key-principle-text">GCA tests your ability to handle ATC communication and complex vectoring without losing control. The aircraft flying is ALWAYS the priority. Never let radio work distract from the 90% AI scan rule.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <div class="block-header">
+        <span class="block-type-pill">DEBRIEF</span>
+        <span class="block-title">Key Debrief Items</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <div class="debrief-num">1</div>
+            <div>Scan discipline maintained during VOR exercises?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">2</div>
+            <div>Rated descent control — patience with power adjustments?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">3</div>
+            <div>180° turn progress check — improved altitude tolerance?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">4</div>
+            <div>Stall exercise reaction — immediate response to warning?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">5</div>
+            <div>GCA workload management — maintained scan or distracted by radio?</div>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">6</div>
+            <div>Areas for improvement in next lesson (DIF 03)?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>CAPA SOP E2R1 · NOV 2025</div>
+    <div class="footer-mid">BRIEFING PACKAGE</div>
+    <div>ATP INT NOV20</div>
+  </div>
+</div>
+
+</body>
+</html>

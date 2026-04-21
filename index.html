@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviate with Max — Briefing Library</title>
+<meta name="description" content="Lesson, manoeuvre and reference briefings for P-Mentor and PA-28 flight training.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<!-- =========================================================
+     HEADER + TWO-STEP DROPDOWN
+     ========================================================= -->
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="#top" class="brand">
+      <span class="dot"></span>
+      <span>
+        Aviate with Max
+        <small>Flight Instruction · Briefing Library</small>
+      </span>
+    </a>
+
+    <nav class="nav-main">
+      <a href="#top" class="nav-link is-active">Overview</a>
+
+      <button class="nav-link" id="briefings-trigger" aria-haspopup="true" aria-expanded="false">
+        Briefings <span class="chev"></span>
+      </button>
+
+      <a href="#" class="nav-link" style="opacity:.6">About</a>
+    </nav>
+  </div>
+
+  <!-- Mega menu: step 1 = category, step 2 = specific briefing -->
+  <div class="megamenu" id="megamenu" role="menu" aria-label="Briefings">
+    <div class="megamenu-inner">
+
+      <div class="mm-cats">
+        <button class="mm-cat is-selected" data-cat="lessons">
+          Lessons <span class="count">43</span>
+        </button>
+        <button class="mm-cat" data-cat="manoeuvres">
+          Manoeuvres <span class="count">22</span>
+        </button>
+        <button class="mm-cat" data-cat="misc">
+          Misc. <span class="count">0</span>
+        </button>
+      </div>
+
+      <div class="mm-panels">
+
+        <div class="mm-panel is-active" data-panel="lessons">
+          <div class="mm-panel-head">
+            <h4>Lessons</h4>
+            <div class="mm-tabs" id="mm-lesson-tabs">
+              <button class="mm-tab is-active" data-ac="pmentor">P-Mentor</button>
+              <button class="mm-tab" data-ac="pa28">PA-28</button>
+            </div>
+          </div>
+          <div class="mm-list" data-ac-list="pmentor"></div>
+          <div class="mm-list" data-ac-list="pa28" style="display:none"></div>
+        </div>
+
+        <div class="mm-panel" data-panel="manoeuvres">
+          <div class="mm-panel-head">
+            <h4>Manoeuvres</h4>
+            <span style="font-size:12px;color:var(--mute);">Aircraft-agnostic technique briefings</span>
+          </div>
+          <div class="mm-list" data-mm-list="manoeuvres"></div>
+        </div>
+
+        <div class="mm-panel" data-panel="misc">
+          <div class="mm-panel-head">
+            <h4>Misc.</h4>
+          </div>
+          <div class="mm-empty">
+            <strong style="color:var(--navy);">Nothing here yet.</strong><br>
+            Reserved for checklists, abbreviations, weather references and other supporting material.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <span class="eyebrow">CAPA SOP Ed.2 Rev.1 · ATP INT. Lesson Prep</span>
+    <h1>Flight instruction briefings,<br>built for the <span>flight deck</span>.</h1>
+    <p class="lead">A single library for every lesson, manoeuvre and reference document used across P-Mentor and PA-28 training — aligned with CAPA SOP and the ATP INT. lesson prep.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="n">43</span><span class="l">Lesson briefings</span></div>
+      <div class="stat"><span class="n">22</span><span class="l">Manoeuvre briefings</span></div>
+      <div class="stat"><span class="n">2</span><span class="l">Aircraft types</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     MAIN — OVERVIEW
+     ========================================================= -->
+<main>
+
+  <div class="cat-overview">
+    <a class="cat-card" href="#lessons">
+      <div class="cat-top"><div class="icon">L</div><span class="cnt">43</span></div>
+      <h3>Lessons</h3>
+      <p>ATP DGH & DIF lesson briefings for P-Mentor and PA-28.</p>
+      <span class="go">Browse lessons</span>
+    </a>
+    <a class="cat-card" href="#manoeuvres">
+      <div class="cat-top"><div class="icon" style="background:var(--amber);">M</div><span class="cnt">22</span></div>
+      <h3>Manoeuvres</h3>
+      <p>Aircraft-agnostic technique briefings aligned with CAPA SOP.</p>
+      <span class="go">Browse manoeuvres</span>
+    </a>
+    <a class="cat-card" href="#misc">
+      <div class="cat-top"><div class="icon" style="background:var(--mute);">·</div><span class="cnt">0</span></div>
+      <h3>Misc.</h3>
+      <p>Checklists, references and supporting material — coming soon.</p>
+      <span class="go">View placeholder</span>
+    </a>
+  </div>
+
+  <section class="section" id="lessons">
+    <div class="section-head">
+      <div class="title-block">
+        <span class="num">01 / LESSONS</span>
+        <h2>Lesson Briefings</h2>
+      </div>
+      <p class="desc">ATP INT. lesson prep — select aircraft to filter.</p>
+    </div>
+
+    <div class="subtabs" id="lesson-subtabs">
+      <button class="subtab is-active" data-ac="pmentor">Tecnam P-Mentor</button>
+      <button class="subtab" data-ac="pa28">Piper PA-28</button>
+    </div>
+
+    <div class="grid" data-ac-grid="pmentor"></div>
+    <div class="grid" data-ac-grid="pa28" style="display:none"></div>
+  </section>
+
+  <section class="section" id="manoeuvres">
+    <div class="section-head">
+      <div class="title-block">
+        <span class="num">02 / MANOEUVRES</span>
+        <h2>Manoeuvre Briefings</h2>
+      </div>
+      <p class="desc">Technique-first briefings, aircraft-agnostic.</p>
+    </div>
+    <div class="grid" id="manoeuvres-grid"></div>
+  </section>
+
+  <section class="section" id="misc">
+    <div class="section-head">
+      <div class="title-block">
+        <span class="num">03 / MISC</span>
+        <h2>Miscellaneous</h2>
+      </div>
+      <p class="desc">Placeholder — content to be added.</p>
+    </div>
+    <div class="empty">
+      <strong>No miscellaneous briefings yet.</strong><br>
+      This category is reserved for checklists, abbreviations, weather references and other supporting material.
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="brand">Aviate with Max</span>
+    <span>aviatewithmax.com · © 2026</span>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>

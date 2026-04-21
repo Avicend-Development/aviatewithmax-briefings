@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH — Turns 45° Bank — Aviate with Max</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-turns-45-bank.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1 — OVERVIEW -->
+<div class="page">
+  <div class="cover-header">
+    <div class="cover-org-line">
+      <div class="cover-logo-block">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+          <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="cover-org-name">Center Air · CAPA</div>
+        <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-lesson-type">Flight Training Briefing Package · Steep Turns</div>
+    <div class="cover-lesson-title">Turns 45° Bank</div>
+    <div class="cover-lesson-subtitle">Steep turn entry · power management · over-banking tendency · roll-out technique · coordination</div>
+    <div class="cover-meta-row">
+      <span class="meta-chip aircraft">P-Mentor · Tecnam P2002</span>
+      <span class="meta-chip stage">Stage: Steep Turns</span>
+      <span class="meta-chip env">VFR · Day</span>
+      <span class="meta-chip env">Local Area</span>
+      <span class="meta-chip env">Briefing: 15 min</span>
+    </div>
+  </div>
+
+  <div class="page-body" style="gap:8px;">
+    <div class="overview-grid">
+      <!-- DURATION -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#0D1B2A" stroke-width="1.5"/><path d="M8 4.5V8.5L10.5 10.5" stroke="#0D1B2A" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">01 · Duration</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">HR</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">MIN</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Practice area — clear of cloud and controlled airspace. Minimum 3000 ft AGL for initial exercises. Light turbulence or less.</div>
+        </div>
+      </div>
+      <!-- PREREQUISITES -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M5 8H11M5 5.5H9M5 10.5H10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">02 · Student Prerequisites</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Completed medium turns (up to 30°) — confident in coordinated turning flight</li>
+            <li>Understands load factor: at 45° bank, load factor = 1.41 g — knows stall speed increase</li>
+            <li>Can maintain altitude ±100 ft in level turns up to 30° bank</li>
+            <li>Familiar with over-banking tendency and secondary effects of controls</li>
+            <li>Reviewed CAPA SOP §1.22.4 steep turn procedures prior to briefing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- OBJECTIVES -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.2"/><circle cx="8" cy="8" r="1" fill="white"/></svg>
+          </div>
+          <span class="ov-card-label">03 · Lesson Objectives</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Enter a 45° banked turn smoothly, adding power and back pressure simultaneously at 30°</li>
+            <li>Maintain 45° bank, target altitude, and coordination throughout the turn</li>
+            <li>Manage over-banking tendency — apply opposite aileron to hold 45° (not exceed)</li>
+            <li>Roll out on a pre-selected heading using 10–20° lead point</li>
+            <li>Perform both left and right steep turns — note left vs. right entry differences</li>
+            <li>Understand load factor implications: increased stall speed at 45° bank</li>
+          </ul>
+        </div>
+      </div>
+      <!-- TOLERANCES -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="#0D1B2A" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6V9M8 11H8.01" stroke="#0D1B2A" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">04 · Performance Tolerances</span>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">45°±5°</div>
+              <div class="tol-param">Bank Angle</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±100 ft</div>
+              <div class="tol-param">Altitude</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10 kt</div>
+              <div class="tol-param">IAS</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">10–20°</div>
+              <div class="tol-param">Roll-Out Lead</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10°</div>
+              <div class="tol-param">Exit HDG</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">Ball</div>
+              <div class="tol-param">Centred</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- MOTIVATION -->
+      <div class="ov-card motivation no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2L9.5 6H14L10.5 8.5L12 13L8 10.5L4 13L5.5 8.5L2 6H6.5L8 2Z" stroke="white" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="ov-card-label">05 · Motivation</span>
+        </div>
+        <div class="ov-card-body">
+          <p class="prose">The 45° banked turn is the threshold between normal manoeuvring flight and the regime where aerodynamic demands increase significantly. At 45° bank, load factor rises to 1.41 g and stall speed increases by ~19%. Pilots who have not practised steep turns tend to react to the unusual attitude by reducing bank — the wrong response — or by pulling back aggressively, which raises the risk of an accelerated stall. Mastering the steep turn develops the scan discipline, muscle memory, and confidence to manage the aircraft precisely in all phases of flight.</p>
+        </div>
+      </div>
+      <!-- COMMON MISTAKES -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <span class="ov-card-label">06 · Common Mistakes</span>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Not adding power on entry — airspeed decays and altitude drops</li>
+            <li>Not applying back pressure — nose drops as bank increases past 30°</li>
+            <li>Allowing bank to exceed 45° — over-banking tendency not managed</li>
+            <li>Ball not centred — using rudder to control yaw rather than aileron/elevator</li>
+            <li>Rolling out too late — no lead on exit heading, overshooting by 20–30°</li>
+            <li>Fixating inside on instruments — losing external horizon reference</li>
+            <li>Left turn: failing to add power early enough — engine torque aggravates descent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FI REFERENCES -->
+    <div class="ov-card references no-break">
+      <div class="ov-card-header">
+        <div class="ov-card-icon">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><rect x="3" y="1.5" width="10" height="13" rx="1.5" stroke="white" stroke-width="1.5"/><path d="M6 5H10M6 7.5H10M6 10H9" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="ov-card-label">07 · FI References</span>
+      </div>
+      <div class="ov-card-body" style="padding:7px 12px;">
+        <div class="ref-list">
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Steep Turns 45° Procedure</span>
+            <span class="ref-section">§ 1.22.4</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag sop">SOP</span>
+            <span class="ref-text">CAPA SOP E2R1 — Effects of Controls &amp; Load Factor</span>
+            <span class="ref-section">§ 1.3</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag lesson">LESSON</span>
+            <span class="ref-text">ATP INT. Lesson Prep — Steep Turns Student Notes</span>
+            <span class="ref-section">Steep Turns</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">The Flight Instructor's Manual — Steep Turns &amp; Load Factor</span>
+            <span class="ref-section">Kershner</span>
+          </div>
+          <div class="ref-row">
+            <span class="ref-tag manual">MANUAL</span>
+            <span class="ref-text">Tecnam P2002 Sierra POH — Manoeuvring Speed (VA)</span>
+            <span class="ref-section">POH §5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">TURNS 45° BANK — STEEP TURNS</span>
+    <span class="footer-right">Page 1 · OVERVIEW</span>
+  </div>
+</div>
+
+
+<!-- PAGE 2 — SECTIONS 01 + 02: ENVIRONMENT & SETUP -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">STEEP TURNS · 45° BANK</span>
+    <span class="page-num">Page 2</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-banner" data-num="01">
+      <div class="section-num">01</div>
+      <div class="section-text">
+        <div class="section-title">Environment</div>
+        <div class="section-subtitle">Operating area · altitude · weather · load factor theory · VA limits</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Aerodynamics of Steep Turns — Load Factor &amp; Stall Speed</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <div class="phase-label">▸ Load Factor at 45° Bank</div>
+            <ul class="brief-list">
+              <li>Load factor (n) = 1 / cos(bank angle). At 45°: n = 1 / cos(45°) = <strong>1.41 g</strong></li>
+              <li>At 60° bank: n = 2.0 g — double the normal weight of the aircraft</li>
+              <li>Stall speed increases with load factor: VS(steep) = VS(level) × √n</li>
+              <li>At 45° bank: stall speed ≈ VS × 1.19 — approximately 19% higher than level flight</li>
+              <li>P-Mentor VS ≈ 44 KIAS → steep turn stall speed ≈ 52 KIAS — maintain IAS well above this</li>
+            </ul>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">Do not exceed VA (manoeuvring speed) during steep turns — check POH for P-Mentor VA</span>
+              <span class="sop-section">§ 1.22.4</span>
+            </div>
+          </div>
+          <div>
+            <div class="phase-label">▸ Operating Environment</div>
+            <ul class="brief-list">
+              <li>Minimum altitude: 3000 ft AGL for initial exercises — allows safe recovery</li>
+              <li>Clear of cloud: minimum 1500 ft horizontally — maintain VMC throughout</li>
+              <li>Clear of controlled airspace — check chart for practice area boundaries</li>
+              <li>Light turbulence or less — moderate turbulence can cause structural exceedance at high bank</li>
+              <li>ACSEL check mandatory before each exercise: Height, Airspace, Security, Engine, Location, Lookout</li>
+            </ul>
+            <div class="sop-strip">
+              <span class="sop-badge">SOP</span>
+              <span class="sop-text">ACSEL check required before all steep turn exercises — no exceptions</span>
+              <span class="sop-section">§ 1.22.4</span>
+            </div>
+          </div>
+        </div>
+        <div class="warn-strip">
+          <span class="warn-icon">⛔</span>
+          <div>
+            <div class="warn-title">Steep Turn No-Go Criteria</div>
+            <div class="warn-text">Do NOT commence if: altitude below 3000 ft AGL · turbulence moderate or above · aircraft not within VA · ACSEL check incomplete · student unable to maintain S&amp;L flight within normal tolerances (prerequisite not met).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-banner" data-num="02" style="margin-top:4px;">
+      <div class="section-num">02</div>
+      <div class="section-text">
+        <div class="section-title">Setup</div>
+        <div class="section-subtitle">ACSEL check · entry airspeed · entry heading selection · power setting</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Procedure</span>
+        <span class="block-title">ACSEL Check &amp; Entry Setup</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Select a prominent visual reference point on the horizon for the entry heading — you will use this same point to identify roll-out. At 45° bank the turn rate is high; a clear reference makes the 10–20° lead instinctive rather than a guess.</div>
+        </div>
+        <div class="two-col">
+          <div>
+            <div class="phase-label">▸ ACSEL Check</div>
+            <ol class="procedure-list">
+              <li><strong>A</strong> — Altitude: minimum height for the exercise (min 3000 ft AGL). Verify safe recovery altitude.</li>
+              <li><strong>C</strong> — Configuration: clean aircraft, no loose items stowed, control surfaces free.</li>
+              <li><strong>S</strong> — Safety: lookout complete, harnesses secure, student briefed.</li>
+              <li><strong>E</strong> — Engine: ROTAX temperatures and pressures green, carb heat check.</li>
+              <li><strong>L</strong> — Location: practice area, clear of CAS, known position near recognisable landmark.</li>
+            </ol>
+          </div>
+          <div>
+            <div class="phase-label">▸ Entry Configuration</div>
+            <ol class="procedure-list" start="7">
+              <li>Set cruise power (2250 RPM). Establish S&amp;L at 80–90 KIAS — within normal cruise range.</li>
+              <li>Select entry heading aligned with a visual landmark. Note heading on HI.</li>
+              <li>Trim for S&amp;L — aircraft should be in trim before entry, not fighting hands-on.</li>
+              <li>Brief the student: "I will demonstrate. Note the power addition at 30° bank and the back pressure. Watch the ball."</li>
+            </ol>
+          </div>
+        </div>
+        <div class="instr-note">
+          <div class="instr-note-label">FI Note</div>
+          <div class="instr-note-text">Always demonstrate before the student attempts. Left and right steep turns have different power/control demands — demonstrate both. Point out over-banking tendency explicitly during the demonstration: "Notice I'm holding left aileron to prevent the bank increasing past 45°."</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">TURNS 45° BANK — STEEP TURNS</span>
+    <span class="footer-right">Page 2 · ENVIRONMENT &amp; SETUP</span>
+  </div>
+</div>
+
+
+<!-- PAGE 3 — SECTION 03: EXECUTION -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">STEEP TURNS · 45° BANK</span>
+    <span class="page-num">Page 3</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-banner" data-num="03">
+      <div class="section-num">03</div>
+      <div class="section-text">
+        <div class="section-title">Execution</div>
+        <div class="section-subtitle">Entry · maintaining the turn · over-banking · roll-out technique · left vs. right differences</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Procedure</span>
+        <span class="block-title">Right Turn Entry (SOP §1.22.4)</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Entry is a coordinated sequence — aileron to roll, back pressure as bank increases, power added at 30° bank. All three must happen together. Do not wait for altitude to drop before adding back pressure — anticipate the increased lift requirement.</div>
+        </div>
+        <div class="two-col">
+          <div>
+            <div class="phase-label">▸ Entry — Right Turn</div>
+            <ol class="procedure-list">
+              <li>Apply right aileron and right rudder — begin rolling smoothly.</li>
+              <li>At 30° bank: add power (approx. +200 RPM or as needed for type) AND begin increasing back pressure simultaneously.</li>
+              <li>Continue rolling to 45°. Apply opposite (left) aileron as needed to stop roll at 45° — over-banking tendency begins here.</li>
+              <li>Maintain 45° with reference to AI and visual horizon. Hold back pressure to maintain altitude. Ball centred.</li>
+            </ol>
+          </div>
+          <div>
+            <div class="phase-label">▸ Entry — Left Turn (Difference)</div>
+            <ol class="procedure-list" start="5">
+              <li>Apply left aileron and left rudder — begin rolling. Add power <strong>from the start</strong> of the roll (not at 30°) — engine torque and P-factor aggravate left-turning tendency, so power is needed earlier.</li>
+              <li>Same back pressure technique — apply as bank increases through 30°.</li>
+              <li>Over-banking tendency also present in left turn — hold right aileron to maintain 45°.</li>
+              <li>Left turn typically requires slightly more back pressure than right to hold altitude.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">Right turn: add power at 30° bank. Left turn: add power at entry start. Both: back pressure increases with bank.</span>
+          <span class="sop-section">§ 1.22.4</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Maintaining the Turn &amp; Roll-Out</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <div class="phase-label">▸ Maintaining 45° Turn</div>
+            <ul class="brief-list">
+              <li><strong>Altitude low:</strong> increase back pressure slightly — do not reduce bank</li>
+              <li><strong>Altitude high:</strong> reduce back pressure slightly — do not increase bank</li>
+              <li><strong>Bank increasing past 45°:</strong> apply opposite aileron — this is over-banking tendency and is normal. Do NOT reduce back pressure to correct bank.</li>
+              <li><strong>Ball out:</strong> apply rudder in direction of ball displacement — "step on the ball"</li>
+              <li>Scan: AI bank angle → external horizon → ALT → AI → repeat. Do not fixate.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-label">▸ Roll-Out Technique</div>
+            <ul class="brief-list">
+              <li>Lead the roll-out by <strong>10–20°</strong> before the target heading (half the roll-in bank angle is a reliable rule of thumb)</li>
+              <li>Apply opposite aileron to roll wings level — reduce back pressure simultaneously as bank decreases</li>
+              <li>Reduce power to cruise setting as wings reach level</li>
+              <li>Retrim if needed — aircraft will be slightly nose-high as back pressure is released</li>
+              <li>Call out entry heading when wings level — compare to target</li>
+            </ul>
+          </div>
+        </div>
+        <div class="caution-strip">
+          <span class="warn-icon">⚠️</span>
+          <div>
+            <div class="warn-title">Accelerated Stall Risk</div>
+            <div class="warn-text">Pulling back aggressively to correct altitude loss at 45° bank rapidly approaches the stall speed (VS × 1.19). If airspeed approaches 55 KIAS during the turn — reduce bank first, then recover altitude at lower bank angle. Never pull through a buffet at steep bank angles.</div>
+          </div>
+        </div>
+        <div class="instr-note">
+          <div class="instr-note-label">FI Note</div>
+          <div class="instr-note-text">Coach the scan verbally: "AI — 45°. Horizon. Altimeter — on target. Back to AI." If the student is altitude-low, say "more back pressure" not "pull up" — "pull up" leads to over-rotation and bank increase. The correction is always pressure on the yoke, not dramatic pitch input.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">TURNS 45° BANK — STEEP TURNS</span>
+    <span class="footer-right">Page 3 · EXECUTION</span>
+  </div>
+</div>
+
+
+<!-- PAGE 4 — SECTION 04: CHECK -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air · CAPA</span>
+    <span class="lesson-id-tag">STEEP TURNS · 45° BANK</span>
+    <span class="page-num">Page 4</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-banner" data-num="04">
+      <div class="section-num">04</div>
+      <div class="section-text">
+        <div class="section-title">Check</div>
+        <div class="section-subtitle">Assessment standards · debrief guide · progression decision · knowledge questions</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Standards</span>
+        <span class="block-title">Performance Standards (SOP §1.22.4)</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <div class="phase-label">▸ Minimum Acceptable Performance</div>
+            <ul class="brief-list checks">
+              <li>ACSEL check completed before each exercise without prompting</li>
+              <li>Bank angle maintained 45° ±5° throughout the turn</li>
+              <li>Altitude maintained ±100 ft entry altitude</li>
+              <li>Ball centred — coordinated flight demonstrated</li>
+              <li>Roll-out within ±10° of entry heading</li>
+              <li>Correctly identifies over-banking tendency and applies opposite aileron</li>
+              <li>States load factor at 45° bank and resulting stall speed increase</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-label">▸ Progression Decision</div>
+            <ul class="brief-list">
+              <li>Consolidation (repeat): bank exceeds 50° routinely, altitude loss &gt;200 ft, aggressive back pressure near stall, ball consistently displaced, no lead on roll-out</li>
+              <li>Progress (continue): tolerances met on 3 consecutive turns (both directions), ACSEL consistent, entry/exit technique smooth</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">Structured Debrief Guide</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <div class="debrief-num">1</div>
+            <span>At what bank angle did you add power for the right turn? For the left turn? What is the difference and why?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">2</div>
+            <span>Did you experience over-banking tendency? How did you recognise it and what control input did you use to correct it?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">3</div>
+            <span>Describe what happened to your altitude during the turn — was the trend consistently up, down, or stable?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">4</div>
+            <span>How much heading lead did you use for roll-out? Did you overshoot or undershoot the entry heading?</span>
+          </div>
+          <div class="debrief-item">
+            <div class="debrief-num">5</div>
+            <span>What is the stall speed in a 45° banked turn compared to level flight? How does that affect your minimum IAS during the manoeuvre?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-check no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Review</span>
+        <span class="block-title">End-of-Lesson Knowledge Check</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <ul class="brief-list">
+              <li>What is the load factor at 45° bank? At 60° bank?</li>
+              <li>Why does stall speed increase in a steep turn?</li>
+              <li>What is over-banking tendency and what causes it?</li>
+              <li>Why is left turn entry different from right turn entry?</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="brief-list">
+              <li>What are the five elements of an ACSEL check?</li>
+              <li>How much heading lead should you apply for roll-out from 45°?</li>
+              <li>If altitude drops in the steep turn, what is the correct corrective input?</li>
+              <li>What is VA and why does it matter for steep turns?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span class="footer-left">Center Air · CAPA · SOP E2R1</span>
+    <span class="footer-mid">TURNS 45° BANK — STEEP TURNS</span>
+    <span class="footer-right">Page 4 · CHECK</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flight Training Briefing – Climb and Level Off — Aviate with Max</title>
+  <style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+  </style>
+  <link rel="stylesheet" href="../../assets/css/briefing-chrome.css">
+</head>
+<body>
+<!-- AWM-TOPBAR -->
+<header class="awm-topbar" role="banner">
+  <div class="awm-topbar-inner">
+    <a class="awm-brand" href="../../index.html" aria-label="Aviate with Max — overview">
+      <span class="awm-dot"></span>
+      <span>Aviate with Max</span>
+    </a>
+    <div class="awm-spacer"></div>
+    <a class="awm-action" href="../../index.html" title="Back to overview">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span class="awm-label">Back to overview</span>
+    </a>
+    <a class="awm-action is-primary" href="manoeuvres-briefing-climb-leveloff.html" target="_blank" rel="noopener" title="Open full size in new window">
+      <svg class="awm-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 3h7v7M10 14 21 3M5 12v7a1 1 0 0 0 1 1h13"/>
+      </svg>
+      <span class="awm-label">Open full size</span>
+    </a>
+  </div>
+</header>
+
+
+<!-- PAGE 1: COVER -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · Climb & Level Off</span>
+    <span class="page-num">1 of 3</span>
+  </div>
+
+  <div class="page-body">
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">C</div>
+        <div>
+          <div class="cover-org-name">Center Air / CAPA Flight School</div>
+          <div class="cover-sop-badge">STRUCTURED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Climb Performance</div>
+      <h1 class="cover-lesson-title">Climb and Level Off</h1>
+      <p class="cover-lesson-subtitle">Take-off climb · Vy · cruise climb · level-off technique · power management</p>
+      <div class="cover-meta-row">
+        <span class="meta-chip aircraft">Tecnam P-Mentor P2002-JF Sierra</span>
+        <span class="meta-chip stage">Climb Performance</span>
+        <span class="meta-chip env">VFR · Day · Local</span>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- Duration Card -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Duration</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">10</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prerequisites Card -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list checks">
+            <li>Completed straight and level flight</li>
+            <li>Can maintain altitude ±100 ft</li>
+            <li>Understands power + attitude = performance</li>
+            <li>Can trim correctly</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objectives Card -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">🎯</div>
+          <div class="ov-card-label">Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Establish correct climb attitude for Vy (70 kt) using full power (MCP 2250 RPM)</li>
+            <li>Identify and use cruise climb speed (80 kt)</li>
+            <li>Perform level-off at target altitude using 10% ROC anticipation</li>
+            <li>Reduce to cruise power smoothly</li>
+            <li>Trim for level cruise flight</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tolerances Card -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">±</div>
+          <div class="ov-card-label">Tolerances</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">70 ±5</div>
+              <div class="tol-param">Vy (kt)</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">80 ±5</div>
+              <div class="tol-param">Cruise Climb (kt)</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±100</div>
+              <div class="tol-param">Level-off (ft)</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±10</div>
+              <div class="tol-param">IAS (kt)</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">Centered</div>
+              <div class="tol-param">Ball</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">MCP</div>
+              <div class="tol-param">Power</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Mistakes Card -->
+      <div class="ov-card mistakes no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⚠</div>
+          <div class="ov-card-label">Common Mistakes</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list mistakes">
+            <li>Nose too high in climb — speed below Vy</li>
+            <li>Level-off too late (zoom/bust)</li>
+            <li>Not reducing power at level-off</li>
+            <li>Forgetting to trim in each phase</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- References Card -->
+      <div class="ov-card references no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">📖</div>
+          <div class="ov-card-label">References</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="ref-list">
+            <div class="ref-row">
+              <span class="ref-tag sop">SOP</span>
+              <span class="ref-text">E2R1 §1.5 Climb</span>
+            </div>
+            <div class="ref-row">
+              <span class="ref-tag manual">AFM</span>
+              <span class="ref-text">Section 5 Performance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing Package</span>
+    <span class="footer-mid">Climb & Level Off</span>
+    <span>Center Air / CAPA</span>
+  </div>
+</div>
+
+<!-- PAGE 2: THEORY & TECHNIQUE -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · Climb & Level Off</span>
+    <span class="page-num">2 of 3</span>
+  </div>
+
+  <div class="page-body">
+    <!-- SECTION 1: CLIMB SPEEDS -->
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Climb Speeds</div>
+        <div class="section-subtitle">Best rate vs. cruise climb vs. rotation speeds</div>
+      </div>
+    </div>
+
+    <div class="content-block block-theory no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Theory</span>
+        <span class="block-title">Speed Reference Chart</span>
+      </div>
+      <div class="block-body">
+        <div class="prose">
+          <p style="margin-bottom:7px;"><strong>Vy (Best Rate of Climb):</strong> 70 KIAS → ~822–855 ft/min ROC at MTOW, ISA. Maximum altitude gain per unit time.</p>
+          <p style="margin-bottom:7px;"><strong>Cruise Climb:</strong> 80 KIAS → Better forward visibility, engine cooling, slightly lower ROC than Vy but more practical for extended climbs.</p>
+          <p style="margin-bottom:7px;"><strong>VR (Rotate):</strong> 53 KIAS with Flap 1 — Rotation attitude only; do not hold this speed in flight.</p>
+          <p style="margin-bottom:7px;"><strong>Vy Safe (Positive ROC):</strong> 56 KIAS — Minimum speed after take-off showing positive rate of climb on VSI; safe to retract flaps only when passing this speed.</p>
+          <p style="margin-bottom:7px;"><strong>CAPA SOP Departure Sequence:</strong></p>
+          <ul style="margin-left:16px;margin-bottom:7px;font-size:10.5px;color:var(--grey-700);">
+            <li style="margin-bottom:4px;">Rotate at 53 kt</li>
+            <li style="margin-bottom:4px;">Reach 56 kt → Flap retract → confirm positive ROC</li>
+            <li style="margin-bottom:4px;">Climb to 70 kt Vy</li>
+            <li style="margin-bottom:4px;">Transition to 80 kt cruise climb (if required)</li>
+          </ul>
+        </div>
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">After take-off: maintain MCP and 70 kt to 500 ft AGL minimum before any configuration change.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: CLIMB TECHNIQUE -->
+    <div class="section-banner" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Climb Technique</div>
+        <div class="section-subtitle">Take-off and climb phases with configuration management</div>
+      </div>
+    </div>
+
+    <div class="content-block block-manoeuvre no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Manoeuvre</span>
+        <span class="block-title">Take-off & Climb Procedure</span>
+      </div>
+      <div class="block-body">
+        <p class="phase-label">Take-Off Phase</p>
+        <ol class="procedure-list">
+          <li>Full power — MCP (2250 RPM) — smooth throttle advance</li>
+          <li>Rotate at 53 KIAS — raise nose to climb attitude</li>
+          <li>Positive rate of climb confirmed (VSI, ALT)</li>
+          <li>At 56 KIAS: Flap 1 → retract → confirm Vy 70 kt</li>
+        </ol>
+
+        <p class="phase-label">Climb Phase</p>
+        <ol class="procedure-list" style="counter-reset:proc;">
+          <li>Maintain 70 kt Vy — monitor AI pitch attitude reference</li>
+          <li>Check ball centred — slight right rudder tendency on ROTAX climb</li>
+          <li>At 500 ft AGL minimum: transition to 80 kt cruise climb if desired</li>
+          <li>Lookout: 180° clearing turns every 500 ft in practice area</li>
+          <li>Monitor engine temps: oil temp, coolant, EGT — all in green</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SECTION 3: LEVEL-OFF TECHNIQUE -->
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Level-Off Technique</div>
+        <div class="section-subtitle">Altitude capture, sequence, and trim</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Technique</span>
+        <span class="block-title">Altitude Capture & Transition to Cruise</span>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">Key Principle</div>
+          <div class="key-principle-text">Anticipate level-off = 10% of ROC before target altitude. At 800 ft/min ROC: start level-off 80 ft before target.</div>
+        </div>
+
+        <div class="prose" style="margin-bottom:7px;">
+          <p style="margin-bottom:6px;"><strong>Sequence (Pitch → Wait → Power → Trim):</strong></p>
+          <ol style="margin-left:16px;margin-bottom:7px;font-size:10.5px;color:var(--grey-700);">
+            <li style="margin-bottom:4px;">Lower nose first to level attitude (stop the climb)</li>
+            <li style="margin-bottom:4px;">Allow airspeed to build and altitude to stabilise</li>
+            <li style="margin-bottom:4px;">THEN reduce power to cruise setting</li>
+            <li style="margin-bottom:4px;">Apply trim for level cruise flight</li>
+          </ol>
+          <p style="margin-bottom:6px;"><strong>Critical:</strong> Do NOT reduce power simultaneously with lowering nose — aircraft will decelerate and lose altitude.</p>
+        </div>
+
+        <div class="instr-note">
+          <div class="instr-note-label">Instructor Note</div>
+          <div class="instr-note-text">Never chase the altimeter on level-off — set the attitude first, the instruments will follow.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: POWER SCHEDULE -->
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Power Schedule: Climb vs. Cruise</div>
+        <div class="section-subtitle">Configuration and power reduction sequence</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop no-break">
+      <div class="block-header">
+        <span class="block-type-pill">SOP</span>
+        <span class="block-title">Power Settings & Configuration</span>
+      </div>
+      <div class="block-body">
+        <div class="two-col">
+          <div>
+            <p style="font-weight:500;color:var(--navy);margin-bottom:6px;font-size:10.5px;">Climb Phase</p>
+            <div style="background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:8px;font-size:10px;color:var(--grey-700);">
+              <p><strong>Power:</strong> MCP 2250 RPM</p>
+              <p><strong>Configuration:</strong> Flap clean (after 56 kt)</p>
+              <p><strong>Speed:</strong> 70–80 kt</p>
+              <p><strong>Pitch:</strong> Climb attitude (AI reference)</p>
+            </div>
+          </div>
+          <div>
+            <p style="font-weight:500;color:var(--navy);margin-bottom:6px;font-size:10.5px;">Cruise Phase (Post Level-Off)</p>
+            <div style="background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:8px;font-size:10px;color:var(--grey-700);">
+              <p><strong>75% Power:</strong> 2060 RPM (~100–105 kt)</p>
+              <p><strong>65% Power:</strong> 1975 RPM (~90–95 kt)</p>
+              <p><strong>Configuration:</strong> Flap clean, trim set</p>
+              <p><strong>Procedure:</strong> Allow speed to stabilise before reducing power further</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sop-strip">
+          <span class="sop-badge">SOP</span>
+          <span class="sop-text">E2R1 §1.5 — Minimum altitude for power reduction after T/O: 500 ft AGL (clear of obstacles)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing Package</span>
+    <span class="footer-mid">Climb & Level Off</span>
+    <span>Center Air / CAPA</span>
+  </div>
+</div>
+
+<!-- PAGE 3: DEBRIEF -->
+<div class="page">
+  <div class="page-header">
+    <span class="org-name">Center Air / CAPA</span>
+    <span class="lesson-id-tag">DGH 03 · Climb & Level Off</span>
+    <span class="page-num">3 of 3</span>
+  </div>
+
+  <div class="page-body">
+    <!-- DEBRIEF SECTION -->
+    <div class="section-banner" data-num="5">
+      <div class="section-num">5</div>
+      <div class="section-text">
+        <div class="section-title">Debrief Criteria</div>
+        <div class="section-subtitle">Learning objectives assessment and feedback</div>
+      </div>
+    </div>
+
+    <div class="content-block block-debrief no-break">
+      <div class="block-header">
+        <span class="block-type-pill">Debrief</span>
+        <span class="block-title">Flight Performance Review</span>
+      </div>
+      <div class="block-body">
+        <div class="debrief-list">
+          <div class="debrief-item">
+            <span class="debrief-num">1</span>
+            <span>Was MCP maintained throughout the climb to 500 ft AGL?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">2</span>
+            <span>Was Vy of 70 kt maintained ±5 kt from 56 kt onwards?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">3</span>
+            <span>Was the level-off anticipation point correct (within ±100 ft of target)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">4</span>
+            <span>Was the pitch-first / power-second sequence used on level-off (no simultaneous reduction)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">5</span>
+            <span>Was trim applied correctly in each phase (climb, level-off, cruise)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">6</span>
+            <span>Was engine temperature monitoring conducted (oil, coolant, EGT all in green)?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">7</span>
+            <span>Was cruise climb speed (80 kt) achieved smoothly if required?</span>
+          </div>
+          <div class="debrief-item">
+            <span class="debrief-num">8</span>
+            <span>Was ball centred throughout climb (right rudder applied as needed)?</span>
+          </div>
+        </div>
+
+        <div class="caution-strip">
+          <span class="warn-icon">⚠</span>
+          <div>
+            <div class="warn-title">Climb Lookout</div>
+            <div class="warn-text">In a climb, the nose obstructs forward view. Perform gentle clearing turns (10–15° each side) every 500 ft in uncontrolled airspace to check for traffic.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES SECTION -->
+    <div class="content-block no-break" style="border:1px dashed var(--grey-300);background:#F9F9FB;">
+      <div class="block-header" style="background:none;border-bottom:1px dashed var(--grey-300);">
+        <span class="block-title" style="font-size:11px;">Post-Flight Notes</span>
+      </div>
+      <div class="block-body">
+        <div style="font-size:10px;color:var(--grey-700);line-height:1.5;height:120px;border:1px dashed var(--grey-300);padding:8px;border-radius:var(--radius);background:var(--white);">
+          <!-- Blank space for instructor notes -->
+        </div>
+      </div>
+    </div>
+
+    <div class="apa-references no-break">
+      <div class="apa-ref-heading">References</div>
+      <div class="apa-ref-list">
+        <div class="apa-ref-entry">Center Air APS. (2025, November). <em>CAPA standard operating procedure</em> (Ed. 2, Rev. 1). Center Air APS.</div>
+        <div class="apa-ref-entry">ATP International. (2020). <em>ATP integrated airline training programme — lesson preparation</em> [Student notes]. Center Air Pilot Academy.</div>
+        <div class="apa-ref-entry">Costruzioni Aeronautiche TECNAM S.p.A. (2024, October). <em>P-Mentor aircraft flight manual</em> (Doc. No. 2002/1032, Ed. 1, Rev. 10). Costruzioni Aeronautiche TECNAM S.p.A.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Flight Training Briefing Package</span>
+    <span class="footer-mid">Climb & Level Off</span>
+    <span>Center Air / CAPA</span>
+  </div>
+</div>
+
+</body>
+</html>

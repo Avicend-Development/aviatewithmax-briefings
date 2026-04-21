@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGH 06 — Landing Circuit & Flare — CAPA Briefing Package</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:        #0D1B2A;
+  --navy-mid:    #1A2E45;
+  --navy-light:  #243B55;
+  --sky:         #3A8FC8;
+  --sky-light:   #5AAEE0;
+  --sky-pale:    #D6EAF8;
+  --amber:       #E8A020;
+  --amber-pale:  #FEF3DC;
+  --red:         #C0392B;
+  --red-pale:    #FDECEA;
+  --green:       #1E8A4C;
+  --green-pale:  #E8F5ED;
+  --grey-100:    #F4F6F8;
+  --grey-200:    #E8ECF0;
+  --grey-300:    #CFD6DE;
+  --grey-500:    #8A9BB0;
+  --grey-700:    #4A5568;
+  --white:       #FFFFFF;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:   'Inter','Segoe UI',Arial,sans-serif;
+  --font-mono:   'JetBrains Mono','Courier New',monospace;
+  --radius:      6px;
+  --radius-lg:   10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--font-body);color:var(--navy);background:#D0D8E0;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.page{width:210mm;min-height:297mm;margin:10mm auto;background:var(--white);position:relative;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;}
+.page-header{background:var(--navy);color:var(--white);padding:8px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--amber);}
+.page-header .org-name{font-family:var(--font-display);font-size:13px;letter-spacing:0.08em;color:var(--grey-300);text-transform:uppercase;}
+.page-header .lesson-id-tag{font-family:var(--font-mono);font-size:10px;background:var(--navy-light);color:var(--sky-light);padding:3px 9px;border-radius:var(--radius);letter-spacing:0.05em;}
+.page-header .page-num{font-family:var(--font-mono);font-size:10px;color:var(--grey-500);}
+.page-footer{background:var(--navy);color:var(--grey-500);padding:6px 20px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-mono);font-size:9px;margin-top:auto;border-top:2px solid var(--navy-light);}
+.page-footer .footer-mid{color:var(--amber);font-weight:500;}
+.page-body{flex:1;padding:16px 20px 14px;display:flex;flex-direction:column;gap:10px;}
+.cover-header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 55%,var(--navy-light) 100%);color:var(--white);padding:20px 24px 16px;position:relative;overflow:hidden;}
+.cover-header::before{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:rgba(58,143,200,0.08);}
+.cover-org-line{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.cover-logo-block{width:38px;height:38px;background:var(--amber);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cover-org-name{font-family:var(--font-display);font-size:14px;letter-spacing:0.1em;color:var(--grey-300);text-transform:uppercase;}
+.cover-sop-badge{font-family:var(--font-mono);font-size:9px;color:var(--sky-light);letter-spacing:0.06em;}
+.cover-divider{height:1px;background:rgba(255,255,255,0.12);margin-bottom:12px;}
+.cover-lesson-type{font-family:var(--font-mono);font-size:10px;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.cover-lesson-title{font-family:var(--font-display);font-size:30px;font-weight:800;line-height:1.05;color:var(--white);text-transform:uppercase;letter-spacing:0.02em;margin-bottom:3px;}
+.cover-lesson-subtitle{font-size:12px;color:var(--grey-300);margin-bottom:12px;}
+.cover-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.meta-chip{font-family:var(--font-mono);font-size:9.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.04em;font-weight:500;}
+.meta-chip.aircraft{background:rgba(58,143,200,0.18);color:var(--sky-light);border:1px solid rgba(58,143,200,0.3);}
+.meta-chip.stage{background:rgba(232,160,32,0.18);color:var(--amber);border:1px solid rgba(232,160,32,0.3);}
+.meta-chip.env{background:rgba(255,255,255,0.08);color:var(--grey-300);border:1px solid rgba(255,255,255,0.12);}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.ov-card{background:var(--grey-100);border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.ov-card-header{display:flex;align-items:center;gap:7px;padding:6px 12px 5px;border-bottom:1px solid var(--grey-200);}
+.ov-card-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ov-card-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy);}
+.ov-card-body{padding:9px 12px;}
+.ov-card.duration .ov-card-header{background:var(--navy);}
+.ov-card.duration .ov-card-icon{background:var(--amber);}
+.ov-card.duration .ov-card-label{color:var(--white);}
+.ov-card.prereq .ov-card-header{background:#EBF5FF;border-bottom-color:var(--sky-pale);}
+.ov-card.prereq .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-header{background:var(--navy-light);}
+.ov-card.objectives .ov-card-icon{background:var(--sky);}
+.ov-card.objectives .ov-card-label{color:var(--white);}
+.ov-card.tolerances .ov-card-header{background:#F5F0E0;border-bottom-color:#E8D5A0;}
+.ov-card.tolerances .ov-card-icon{background:var(--amber);}
+.ov-card.motivation .ov-card-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.ov-card.motivation .ov-card-icon{background:var(--green);}
+.ov-card.mistakes .ov-card-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.ov-card.mistakes .ov-card-icon{background:var(--red);}
+.ov-card.references .ov-card-header{background:var(--navy);}
+.ov-card.references .ov-card-icon{background:var(--green);}
+.ov-card.references .ov-card-label{color:var(--white);}
+.duration-grid{display:flex;gap:7px;}
+.dur-item{flex:1;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:7px 9px;text-align:center;}
+.dur-value{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--navy);line-height:1;}
+.dur-unit{font-family:var(--font-mono);font-size:9px;color:var(--amber);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.dur-label{font-size:9px;color:var(--grey-500);margin-top:2px;}
+.dur-condition{background:var(--amber-pale);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:5px 8px;margin-top:7px;font-size:10px;color:var(--grey-700);}
+.brief-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.brief-list li{display:flex;align-items:flex-start;gap:7px;font-size:10.5px;line-height:1.45;color:var(--grey-700);}
+.brief-list li::before{content:'▸';color:var(--sky);font-size:9px;flex-shrink:0;margin-top:2px;}
+.brief-list.mistakes li::before{content:'✕';color:var(--red);font-size:8px;margin-top:3px;}
+.brief-list.checks li::before{content:'✓';color:var(--green);font-size:9px;margin-top:2px;}
+.tol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.tol-tile{background:var(--white);border:1px solid var(--grey-200);border-top:3px solid var(--amber);border-radius:var(--radius);padding:6px 7px;text-align:center;}
+.tol-value{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--navy);line-height:1;}
+.tol-param{font-family:var(--font-mono);font-size:8px;color:var(--grey-500);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+.ref-list{display:flex;flex-direction:column;gap:4px;}
+.ref-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--grey-200);border-radius:var(--radius);padding:5px 9px;}
+.ref-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:0.05em;text-transform:uppercase;flex-shrink:0;}
+.ref-tag.sop{background:var(--navy);color:var(--sky-light);}
+.ref-tag.lesson{background:var(--navy-light);color:var(--grey-300);}
+.ref-tag.manual{background:var(--green-pale);color:var(--green);border:1px solid #C3E6CE;}
+.ref-tag.reg{background:var(--amber-pale);color:#8B6000;border:1px solid #E8D5A0;}
+.ref-text{font-size:10.5px;color:var(--grey-700);flex:1;}
+.ref-section{font-family:var(--font-mono);font-size:9px;color:var(--sky);flex-shrink:0;}
+.section-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--radius-lg);padding:13px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;border-bottom:3px solid var(--amber);}
+.section-banner::after{content:attr(data-num);position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-display);font-size:52px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-0.04em;line-height:1;pointer-events:none;}
+.section-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--amber);line-height:1;flex-shrink:0;letter-spacing:-0.02em;}
+.section-text{display:flex;flex-direction:column;gap:2px;}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:0.05em;line-height:1;}
+.section-subtitle{font-size:10.5px;color:var(--grey-300);font-weight:400;}
+.content-block{border-radius:var(--radius);border:1px solid var(--grey-200);overflow:hidden;}
+.block-header{display:flex;align-items:center;gap:8px;padding:6px 13px;border-bottom:1px solid var(--grey-200);}
+.block-type-pill{font-family:var(--font-mono);font-size:8px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:0.07em;text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--navy);}
+.block-body{padding:10px 13px;}
+.block-theory .block-header{background:#EBF5FF;}
+.block-theory .block-type-pill{background:var(--sky);color:var(--white);}
+.block-manoeuvre .block-header{background:var(--navy);}
+.block-manoeuvre .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-manoeuvre .block-title{color:var(--white);}
+.block-sop .block-header{background:var(--green-pale);border-bottom-color:#C3E6CE;}
+.block-sop .block-type-pill{background:var(--green);color:var(--white);}
+.block-warning .block-header{background:var(--red-pale);border-bottom-color:#F5C6C3;}
+.block-warning .block-type-pill{background:var(--red);color:var(--white);}
+.block-warning .block-title{color:var(--red);}
+.block-warning .block-body{background:#FFF7F6;}
+.block-technique .block-header{background:var(--amber-pale);border-bottom-color:#E8D5A0;}
+.block-technique .block-type-pill{background:var(--amber);color:var(--navy);}
+.block-check .block-header{background:var(--grey-100);}
+.block-check .block-type-pill{background:var(--navy);color:var(--white);}
+.block-debrief .block-header{background:#F0E8FF;border-bottom-color:#D5C0F0;}
+.block-debrief .block-type-pill{background:#7B4FBF;color:var(--white);}
+.prose{font-size:10.5px;color:var(--grey-700);line-height:1.55;}
+.procedure-list{list-style:none;counter-reset:proc;display:flex;flex-direction:column;gap:5px;}
+.procedure-list li{counter-increment:proc;display:flex;align-items:flex-start;gap:9px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.procedure-list li::before{content:counter(proc);background:var(--navy);color:var(--amber);font-family:var(--font-mono);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.phase-label{font-family:var(--font-mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--sky);padding:3px 0 2px;border-bottom:1px dashed var(--grey-200);margin-bottom:5px;margin-top:8px;}
+.phase-label:first-child{margin-top:0;}
+.key-principle{background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 11px;margin-bottom:9px;}
+.key-principle-label{font-family:var(--font-mono);font-size:8px;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px;}
+.key-principle-text{font-size:10.5px;color:var(--white);font-weight:500;line-height:1.4;}
+.warn-strip{display:flex;align-items:flex-start;gap:8px;background:var(--red-pale);border:1px solid #F5C6C3;border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.warn-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.warn-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--red);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.warn-strip .warn-text{font-size:10px;color:#7B2020;line-height:1.45;}
+.caution-strip{display:flex;align-items:flex-start;gap:8px;background:var(--amber-pale);border:1px solid #E8D5A0;border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:6px 10px;margin-top:8px;}
+.caution-strip .warn-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.caution-strip .warn-title{font-family:var(--font-mono);font-size:9px;font-weight:500;color:#7A5A00;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:2px;}
+.caution-strip .warn-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.sop-strip{display:flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid #C3E6CE;border-left:4px solid var(--green);border-radius:0 var(--radius) var(--radius) 0;padding:5px 9px;margin-top:6px;}
+.sop-badge{font-family:var(--font-mono);font-size:8.5px;font-weight:500;background:var(--green);color:var(--white);padding:2px 7px;border-radius:3px;letter-spacing:0.05em;flex-shrink:0;}
+.sop-text{font-size:10px;color:#15532E;flex:1;}
+.sop-section{font-family:var(--font-mono);font-size:9px;color:var(--green);flex-shrink:0;}
+.instr-note{background:var(--amber-pale);border:1px dashed #E8C060;border-radius:var(--radius);padding:6px 10px;margin-top:8px;}
+.instr-note-label{font-family:var(--font-mono);font-size:8.5px;color:#7A5A00;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;}
+.instr-note-text{font-size:10px;color:#5A4400;line-height:1.45;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.debrief-list{display:flex;flex-direction:column;gap:4px;}
+.debrief-item{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;color:var(--grey-700);line-height:1.45;}
+.debrief-item .debrief-num{font-family:var(--font-mono);font-size:9px;background:#7B4FBF;color:var(--white);width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.callout-tag{font-family:var(--font-mono);font-size:9.5px;background:rgba(58,143,200,0.15);color:var(--sky);border:1px solid rgba(58,143,200,0.3);padding:2px 8px;border-radius:3px;display:inline-block;margin:2px 0;}
+.spoken{font-family:var(--font-mono);font-size:9px;background:rgba(232,160,32,0.15);color:#7A5A00;border:1px solid rgba(232,160,32,0.45);padding:2px 7px;border-radius:3px;display:inline-block;margin:1px 2px;white-space:nowrap;}
+/* Speed band visualiser */
+.speed-band{display:flex;height:18px;border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+.speed-seg{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;font-weight:500;color:var(--white);}
+.speed-seg.white{background:#9ECAE1;flex:1.2;}
+.speed-seg.green{background:var(--green);flex:1.5;}
+.speed-seg.sf-zone{background:var(--amber);flex:0.4;}
+.speed-seg.stall{background:var(--red);flex:0.25;}
+.speed-labels{display:flex;font-family:var(--font-mono);font-size:8px;color:var(--grey-500);gap:0;margin-bottom:6px;}
+/* Recovery flow */
+.recovery-flow{display:flex;align-items:stretch;gap:0;margin:8px 0;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--navy);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9px;font-weight:700;color:var(--amber);}
+.flow-connector{flex:1;height:2px;background:var(--grey-200);align-self:center;margin-top:0;}
+.flow-label{font-family:var(--font-mono);font-size:7.5px;color:var(--navy);text-align:center;line-height:1.2;font-weight:500;}
+.flow-spoken{font-size:7px;color:var(--grey-500);text-align:center;line-height:1.2;}
+.flow-row{display:flex;align-items:center;}
+/* ACSEL grid */
+.acsel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0;}
+.acsel-cell{background:var(--navy);border-radius:var(--radius);padding:7px 5px;text-align:center;}
+.acsel-letter{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--amber);line-height:1;}
+.acsel-word{font-family:var(--font-mono);font-size:7.5px;color:var(--sky-light);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+.acsel-detail{font-size:7.5px;color:var(--grey-300);margin-top:3px;line-height:1.3;}
+.no-break{page-break-inside:avoid;break-inside:avoid;}
+.spacer{height:8px;}.spacer-sm{height:4px;}
+@media print {
+  body{background:white;margin:0;padding:0;}
+  .page{width:210mm;min-height:297mm;margin:0;box-shadow:none;border-radius:0;page-break-after:always;break-after:page;}
+  .page:last-child{page-break-after:auto;break-after:auto;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-break{page-break-inside:avoid;break-inside:avoid;}
+  @page{size:A4;margin:0;}
+}
+@media screen {
+  .page{box-shadow:0 4px 24px rgba(0,0,0,0.20);border-radius:2px;margin:12mm auto;}
+}
+/* APA7 References */
+.apa-references{border-top:2px solid var(--grey-200);padding-top:8px;margin-top:10px;}
+.apa-ref-heading{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.apa-ref-list{display:flex;flex-direction:column;gap:4px;}
+.apa-ref-entry{font-size:9px;color:var(--grey-700);line-height:1.5;padding-left:18px;text-indent:-18px;font-family:var(--font-body);}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 1 — COVER / OVERVIEW
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 06 · Landing Circuit & Flare</div>
+    <div class="page-num">1 / 3</div>
+  </div>
+
+  <div class="page-body">
+    <!-- Cover banner -->
+    <div class="cover-header">
+      <div class="cover-org-line">
+        <div class="cover-logo-block">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+            <path d="M3 17L12 5L21 9.5L17.5 17L12 12.5L6.5 17H3Z" fill="#0D1B2A" opacity="0.9"/>
+            <path d="M6.5 17L12 12.5L15 15L10.5 19H6.5V17Z" fill="#0D1B2A" opacity="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="cover-org-name">Center Air · CAPA</div>
+          <div class="cover-sop-badge">SOP E2R1 · INTEGRATED TRAINING PROGRAMME</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-lesson-type">Flight Training Briefing Package · Fundamental Airwork</div>
+      <div class="cover-lesson-title">Landing Circuit & Flare</div>
+      <div class="cover-lesson-subtitle">Circuit standardisation · flare technique · go-around drills · crosswind landings</div>
+      <div class="cover-meta-row">
+        <div class="meta-chip aircraft">Piper PA-28 Cherokee Warrior II (OY-BTV)</div>
+        <div class="meta-chip stage">DGH 06 · Basic Handling</div>
+        <div class="meta-chip env">VMC · EKRK Landing Circuit</div>
+      </div>
+    </div>
+
+    <!-- Overview grid -->
+    <div class="overview-grid">
+
+      <!-- Timing -->
+      <div class="ov-card duration no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">⏱</div>
+          <div class="ov-card-label">Timing</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="duration-grid">
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Briefing</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">1.0</div>
+              <div class="dur-unit">hr</div>
+              <div class="dur-label">Flight</div>
+            </div>
+            <div class="dur-item">
+              <div class="dur-value">15</div>
+              <div class="dur-unit">min</div>
+              <div class="dur-label">Debrief</div>
+            </div>
+          </div>
+          <div class="dur-condition">Good visibility · defined cloudbase · EKRK landing circuit training operations</div>
+        </div>
+      </div>
+
+      <!-- Prerequisites -->
+      <div class="ov-card prereq no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">✓</div>
+          <div class="ov-card-label">Prerequisites</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Stalls &amp; landing techniques completed</li>
+            <li>Slow flight &amp; approach config mastered</li>
+            <li>Understands attitude flying principle</li>
+            <li>Effective trim technique established</li>
+            <li>Comfortable with EKRK layout</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Objectives -->
+      <div class="ov-card objectives no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">★</div>
+          <div class="ov-card-label">Learning Objectives</div>
+        </div>
+        <div class="ov-card-body">
+          <ul class="brief-list">
+            <li>Execute consistent, standardised circuits</li>
+            <li>Maintain approach control &amp; speed</li>
+            <li>Refine flare technique &amp; touchdown</li>
+            <li>Manage crosswind approaches &amp; landings</li>
+            <li>Execute go-around if landing not assured</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tolerances -->
+      <div class="ov-card tolerances no-break">
+        <div class="ov-card-header">
+          <div class="ov-card-icon">▭</div>
+          <div class="ov-card-label">Tolerances</div>
+        </div>
+        <div class="ov-card-body">
+          <div class="tol-grid">
+            <div class="tol-tile">
+              <div class="tol-value">±150</div>
+              <div class="tol-param">Altitude (ft)</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">±15°</div>
+              <div class="tol-param">Heading</div>
+            </div>
+            <div class="tol-tile">
+              <div class="tol-value">+10/−5</div>
+              <div class="tol-param">Airspeed (kt)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>Piper PA-28-161 (OY-BTV)</div>
+    <div class="footer-mid">DGH 06 — Landing Circuit & Flare</div>
+    <div>Page 1 of 3</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 2 — CIRCUIT STANDARDISATION & TECHNIQUE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 06 · Landing Circuit & Flare</div>
+    <div class="page-num">2 / 3</div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Section 1: Circuit Standardisation -->
+    <div class="section-banner" data-num="1">
+      <div class="section-num">1</div>
+      <div class="section-text">
+        <div class="section-title">Circuit Standardisation</div>
+        <div class="section-subtitle">Visual marks · repeatable legs · approach setup</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop">
+      <div class="block-header">
+        <div class="block-type-pill">SOP</div>
+        <div class="block-title">Standard Circuit Legs with Configuration Callouts</div>
+      </div>
+      <div class="block-body">
+        <div class="key-principle">
+          <div class="key-principle-label">KEY PRINCIPLE</div>
+          <div class="key-principle-text">The landing circuit is the "receipt for a good landing." A stabilised final of proper length gives maximum assistance for a safe landing. Make circuits as standardised as possible using pre-selected visual marks rather than DG hunting.</div>
+        </div>
+        <div class="phase-label">DOWNWIND</div>
+        <ul class="procedure-list">
+          <li>Abeam threshold: reduce power to descent power</li>
+          <li><span class="spoken">Speed 90 kts. Checked - Flaps 1</span> (Flaps 1 selected)</li>
+          <li><span class="spoken">Final clear</span> — check for traffic on final approach</li>
+        </ul>
+        <div class="phase-label">BASE</div>
+        <ul class="procedure-list">
+          <li>Turn base at appropriate point (pre-selected visual landmark)</li>
+          <li><span class="spoken">Speed 80 kts. Checked - Flaps 2</span> (Flaps 2 selected, 25°)</li>
+          <li>Maintain descent and approach speed</li>
+        </ul>
+        <div class="phase-label">FINAL</div>
+        <ul class="procedure-list">
+          <li><span class="spoken">Final clear</span> from base — confirm runway is clear</li>
+          <li>When landing is assured: <span class="spoken">Final check: Flaps full set</span></li>
+          <li>Maintain 75 KIAS on final approach</li>
+          <li>Nose attitude controls airspeed; power controls glidepath (descent rate)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 2: Approach & Flare -->
+    <div class="section-banner" data-num="2">
+      <div class="section-num">2</div>
+      <div class="section-text">
+        <div class="section-title">Approach Control & Flare Technique</div>
+        <div class="section-subtitle">Power vs. attitude · peripheral vision · ground closure rate</div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">TECHNIQUE</div>
+        <div class="block-title">Approach Configuration & Control</div>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Normal Approach Config:</strong> Flaps 25°, 75 KIAS. Nose attitude provides the correct flight path for approach; power controls glidepath (descent rate).</p>
+        <ul class="brief-list">
+          <li>Maintain 75 KIAS on final using pitch attitude</li>
+          <li>Adjust descent rate using power — add/reduce power smoothly</li>
+          <li>Do NOT adjust glidepath with attitude — use power only</li>
+          <li>Trim to remove control column pressure</li>
+        </ul>
+        <div class="warn-strip">
+          <div class="warn-icon">⚠</div>
+          <div class="warn-title">COMMON ERROR</div>
+          <div class="warn-text">Trying to adjust final glidepath with attitude instead of power leads to unstable approaches and altitude/speed conflicts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">TECHNIQUE</div>
+        <div class="block-title">Flare — Maintaining Height & Descent Rate Control</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">At the runway threshold, gradually raise the nose to reduce descent rate. <strong>Maintaining same height</strong> — progressively raise nose as aircraft decelerates, reducing ground closure rate from rapid descent to near zero by touchdown.</p>
+        <ul class="brief-list">
+          <li>Use <strong>peripheral vision</strong> to judge height and descent rate — not forward view down runway</li>
+          <li>Peripheral vision detects rate of ground closure more sensitively</li>
+          <li><strong>Judging rate of descent in the flare</strong> — the flare gradually arrests descent rate</li>
+          <li>Progressive nose-up pitch as airspeed decreases reduces descent rate smoothly</li>
+          <li>Target touchdown in middle third of runway with minimal descent rate</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 3: Go-Around & Crosswind -->
+    <div class="section-banner" data-num="3">
+      <div class="section-num">3</div>
+      <div class="section-text">
+        <div class="section-title">Go-Around Drills & Crosswind Landings</div>
+        <div class="section-subtitle">Decision-making · carburettor heat · crosswind technique</div>
+      </div>
+    </div>
+
+    <div class="content-block block-sop">
+      <div class="block-header">
+        <div class="block-type-pill">SOP</div>
+        <div class="block-title">Go-Around Decision & Execution</div>
+      </div>
+      <div class="block-body">
+        <p class="prose"><strong>Student Responsibility:</strong> The student is responsible for deciding to go-around if things don't look right. Once started, the go-around must NOT be abandoned.</p>
+        <ul class="brief-list">
+          <li>Conduct go-around if: unstable approach, excessive descent rate, not aligned with runway, traffic on final, or gusty winds</li>
+          <li>Execute standard go-around callout: <span class="spoken">Going around - Full power - Flaps 1 or less - G/A attitude - Positive ROC - Safe speed - Flaps up</span></li>
+          <li><strong>CRITICAL:</strong> Carb heat must be COLD (OFF) before applying full power</li>
+          <li>At 400 ft AGL: <span class="spoken">Max continuous power</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block block-technique">
+      <div class="block-header">
+        <div class="block-type-pill">TECHNIQUE</div>
+        <div class="block-title">Crosswind Landing Technique</div>
+      </div>
+      <div class="block-body">
+        <p class="prose">Maintain a small, steady bank toward the wind (into-wind wing slightly low). Do NOT position flight controls for crosswind — fly the aircraft using attitude and bank angle!</p>
+        <ul class="brief-list">
+          <li>Establish small bank (<5°) into wind during approach</li>
+          <li>Maintain coordinated flight with rudder</li>
+          <li>Reduce bank as you slow down on final</li>
+          <li>Apply slight into-wind aileron during flare to keep wings level relative to runway</li>
+          <li>Fly nose aligned with runway; let wings align naturally with bank</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>Piper PA-28-161 (OY-BTV)</div>
+    <div class="footer-mid">DGH 06 — Landing Circuit & Flare</div>
+    <div>Page 2 of 3</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 3 — COMMON ERRORS & REFERENCES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="org-name">Center Air · CAPA</div>
+    <div class="lesson-id-tag">DGH 06 · Landing Circuit & Flare</div>
+    <div class="page-num">3 / 3</div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Section 4: Common Errors -->
+    <div class="section-banner" data-num="4">
+      <div class="section-num">4</div>
+      <div class="section-text">
+        <div class="section-title">Common Errors</div>
+        <div class="section-subtitle">Attitude Flying · Landing Technique · Decision-Making</div>
+      </div>
+    </div>
+
+    <div class="content-block block-warning">
+      <div class="block-header">
+        <div class="block-type-pill">ERRORS</div>
+        <div class="block-title">Critical Mistakes to Avoid</div>
+      </div>
+      <div class="block-body">
+        <ul class="brief-list mistakes">
+          <li><strong>Forgetting attitude flying in circuit:</strong> Using power to control speed or attitude to control descent rate leads to oscillation and unstable approaches.</li>
+          <li><strong>Forgetting to adjust attitude &amp; trim after configuration change:</strong> After extending flaps, nose attitude changes. Must re-trim and re-establish pitch for desired speed.</li>
+          <li><strong>Trying to adjust final glidepath with attitude:</strong> Power controls descent rate; attitude controls speed. Using attitude for glidepath adjustment causes unstable approaches.</li>
+          <li><strong>Not using peripheral vision during flare:</strong> Forward vision down the runway is poor for height judgment. Peripheral vision detects ground closure rate better.</li>
+          <li><strong>Forgetting final check:</strong> PA28 final check when landing is assured: <span class="spoken">Final check: Flaps full set</span>. This confirms landing configuration.</li>
+          <li><strong>Positioning flight controls for crosswind:</strong> Fly the aircraft with attitude and bank; do NOT pre-position aileron/rudder for wind correction. Let coordinated flight naturally align the aircraft.</li>
+          <li><strong>Late or no decision to go-around:</strong> Go-around decision must be made early and decisively. If things don't look right, commit to go-around.</li>
+          <li><strong>Forgetting carburettor heat COLD during go-around:</strong> Carb heat must be OFF before applying full power. Critical engine damage risk if forgotten.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- APA7 References -->
+    <div class="content-block">
+      <div class="block-body">
+        <div class="apa-references">
+          <div class="apa-ref-heading">References</div>
+          <div class="apa-ref-list">
+            <div class="apa-ref-entry">Center Air Pilot Academy. (2025). <em>CAPA standard operating procedures</em> (Edition 2, Rev. 1). Center Air Pilot Academy.</div>
+            <div class="apa-ref-entry">Center Air Pilot Academy. (2020). <em>ATP integrated flight training: Lesson preparation notes</em> (NOV20/FRI). Center Air Pilot Academy.</div>
+            <div class="apa-ref-entry">Piper Aircraft. (n.d.). <em>Pilot's operating handbook: PA-28-161 Cherokee Warrior II</em> (Report No. VB-880). Piper Aircraft.</div>
+            <div class="apa-ref-entry">European Union Aviation Safety Agency. (2018). <em>Part-FCL: Flight crew licensing</em>. EASA.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <div>Piper PA-28-161 (OY-BTV)</div>
+    <div class="footer-mid">DGH 06 — Landing Circuit & Flare</div>
+    <div>Page 3 of 3</div>
+  </div>
+</div>
+
+</body>
+</html>
